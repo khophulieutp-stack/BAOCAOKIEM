@@ -1,15 +1,46 @@
-﻿/* final_report.js – Cấu hình font/chữ/màu cho 14 cột */
+/* final_report.js – Chạy song song cả trên Chrome Extension và Webapp GitHub Pages */
 document.addEventListener('DOMContentLoaded', () => {
-    chrome.storage.local.get('reportData_Countable', (result) => {
-        chrome.storage.local.remove('reportData_Countable');
 
-        if (!result.reportData_Countable) {
+    function loadReportData(callback) {
+        // 1. Nếu chạy trong Chrome Extension
+        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+            chrome.storage.local.get('reportData_Countable', (result) => {
+                if (result && result.reportData_Countable) {
+                    chrome.storage.local.remove('reportData_Countable');
+                    callback(result.reportData_Countable);
+                    return;
+                }
+                // Dự phòng đọc từ localStorage
+                readFromLocalStorage(callback);
+            });
+        } else {
+            // 2. Nếu chạy trên Webapp (GitHub Pages)
+            readFromLocalStorage(callback);
+        }
+    }
+
+    function readFromLocalStorage(callback) {
+        try {
+            const raw = localStorage.getItem('reportData_Countable') || localStorage.getItem('viewReportData');
+            if (raw) {
+                callback(JSON.parse(raw));
+            } else {
+                callback(null);
+            }
+        } catch (e) {
+            console.error(e);
+            callback(null);
+        }
+    }
+
+    loadReportData((reportData) => {
+        if (!reportData) {
             document.body.innerHTML = '<h1>Lỗi: Không tìm thấy dữ liệu báo cáo (DD).</h1>' +
-                '<p>Vui lòng thử lại. Có thể dữ liệu đã bị đọc bởi một tab khác.</p>';
+                '<p>Vui lòng quay lại trang danh sách và bấm "Xem Chi Tiết" một lần nữa.</p>';
             return;
         }
 
-        const { generalInfo, items } = result.reportData_Countable;
+        const { generalInfo, items } = reportData;
 
         const formatDate = (dateString) => {
             if (!dateString || dateString.split('-').length !== 3) return dateString;
@@ -32,25 +63,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const infoInspector = document.getElementById('info-inspector');
         if (infoInspector) infoInspector.textContent = inspectorName;
 
-        // Cấu hình font, size, màu cho 14 cột (chỉ cần chỉnh ở đây là cả bảng đổi)
         const columnStyles = [
-            { fontFamily: 'Arial', fontSize: '10px', color: '#000000' },        // Item
-            { fontFamily: 'Times New Roman', fontSize: '12px', color: '#000000' }, // Unit
-            { fontFamily: 'Times New Roman', fontSize: '12px', color: '#000000' },  // P.list qty
-            { fontFamily: 'Arial', fontSize: '12px', color: '#000000' },        // Act qty
-            { fontFamily: 'Verdana', fontSize: '12px', color: '#000000' },      // Inspected qty
-            { fontFamily: 'Tahoma', fontSize: '12px', color: '#000000' },       // Accepted AQL
-            { fontFamily: 'Tahoma', fontSize: '12px', color: '#000000' },       // Rejected AQL
-            { fontFamily: 'Arial', fontSize: '12px', color: '#000000' },        // Exceed
-            { fontFamily: 'Arial', fontSize: '12px', color: '#000000' },        // Short
-            { fontFamily: 'Courier New', fontSize: '9px', color: '#000000' },   // Metal Sample
-            { fontFamily: 'Courier New', fontSize: '9px', color: '#000000' },   // Accepted Metal
-            { fontFamily: 'Courier New', fontSize: '9px', color: '#000000' },   // Rejected Metal
-            { fontFamily: 'Verdana', fontSize: '10px', color: '#000000' },      // Result Sample
-            { fontFamily: 'Tahoma', fontSize: '10px', color: '#000000' }        // Remark
+            { fontFamily: 'Arial', fontSize: '10px', color: '#000000' },
+            { fontFamily: 'Times New Roman', fontSize: '12px', color: '#000000' },
+            { fontFamily: 'Times New Roman', fontSize: '12px', color: '#000000' },
+            { fontFamily: 'Arial', fontSize: '12px', color: '#000000' },
+            { fontFamily: 'Verdana', fontSize: '12px', color: '#000000' },
+            { fontFamily: 'Tahoma', fontSize: '12px', color: '#000000' },
+            { fontFamily: 'Tahoma', fontSize: '12px', color: '#000000' },
+            { fontFamily: 'Arial', fontSize: '12px', color: '#000000' },
+            { fontFamily: 'Arial', fontSize: '12px', color: '#000000' },
+            { fontFamily: 'Courier New', fontSize: '9px', color: '#000000' },
+            { fontFamily: 'Courier New', fontSize: '9px', color: '#000000' },
+            { fontFamily: 'Courier New', fontSize: '9px', color: '#000000' },
+            { fontFamily: 'Verdana', fontSize: '10px', color: '#000000' },
+            { fontFamily: 'Tahoma', fontSize: '10px', color: '#000000' }
         ];
 
-        // Điền bảng
         const tableBody = document.getElementById('report-table-body');
         tableBody.innerHTML = '';
         let overallFail = false;
@@ -84,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${item.remark || ''}</td>
                 `;
 
-                // Áp dụng font/chữ/màu từ columnStyles
                 row.querySelectorAll('td').forEach((td, index) => {
                     const style = columnStyles[index];
                     if (style) {
@@ -100,7 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
             tableBody.innerHTML = `<tr><td colspan="14">Lỗi nghiêm trọng khi vẽ bảng: ${e.message}</td></tr>`;
         }
 
-        // Điền kết luận
         const passTextSpan = document.getElementById('conclusion-pass-text');
         const failTextSpan = document.getElementById('conclusion-fail-text');
         const handlingInstructionSpan = document.getElementById('handling-instruction');
@@ -115,14 +142,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (handlingInstructionSpan) handlingInstructionSpan.textContent = 'Đưa vào lưu trữ chờ sản xuất.';
         }
 
-        // Hiển thị chữ ký / con dấu
         const inspectorWatermark = document.getElementById('inspector-watermark');
         const managerWatermark = document.getElementById('manager-watermark');
 
         if (inspectorName && inspectorWatermark) {
             const inspectorBoxStyle = `
-               /* border: 2px solid #28a745;
-                color:  */
                 border-radius: 8px;
                 padding: 5px 10px;
                 font-size: 16px;
@@ -138,8 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const managerName = generalInfo.nguoiDuyet || "QL Kho";
             const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
             const managerBoxStyle = `
-               /* border: 2px solid #007bff;
-                color: #007bff;*/
                 border-radius: 8px;
                 padding: 5px 10px;
                 font-size: 16px;
@@ -151,6 +173,5 @@ document.addEventListener('DOMContentLoaded', () => {
                                           <p style="margin: 0; font-weight: bold;">${managerName}</p>
                                           <p style="margin: 0; font-size: 12px; font-weight: normal;">${approveDate}</p>`;
         }
-
     });
 });
