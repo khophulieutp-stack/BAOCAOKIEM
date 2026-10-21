@@ -1,21 +1,44 @@
-﻿/*
- * report_uncountable.js (v6 - Cải tiến con dấu bo gốc)
- */
+/* report_uncountable.js – Chạy song song cả trên Chrome Extension và Webapp GitHub Pages */
 document.addEventListener('DOMContentLoaded', () => {
 
-    chrome.storage.local.get('reportData_Uncountable', (result) => {
+    function loadReportData(callback) {
+        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+            chrome.storage.local.get('reportData_Uncountable', (result) => {
+                if (result && result.reportData_Uncountable) {
+                    chrome.storage.local.remove('reportData_Uncountable');
+                    callback(result.reportData_Uncountable);
+                    return;
+                }
+                readFromLocalStorage(callback);
+            });
+        } else {
+            readFromLocalStorage(callback);
+        }
+    }
 
-        chrome.storage.local.remove('reportData_Uncountable');
+    function readFromLocalStorage(callback) {
+        try {
+            const raw = localStorage.getItem('reportData_Uncountable') || localStorage.getItem('viewReportData');
+            if (raw) {
+                callback(JSON.parse(raw));
+            } else {
+                callback(null);
+            }
+        } catch (e) {
+            console.error(e);
+            callback(null);
+        }
+    }
 
-        if (!result.reportData_Uncountable) {
+    loadReportData((reportData) => {
+        if (!reportData) {
             document.body.innerHTML = '<h1>Lỗi: Không tìm thấy dữ liệu báo cáo (KDD).</h1>' +
-            '<p>Vui lòng thử lại. Có thể dữ liệu đã bị đọc bởi một tab khác.</p>';
+                '<p>Vui lòng quay lại trang danh sách và bấm "Xem Chi Tiết" một lần nữa.</p>';
             return;
         }
 
-        const { generalInfo, items } = result.reportData_Uncountable;
+        const { generalInfo, items } = reportData;
 
-        // 1. Điền thông tin chung
         const formatDate = (dateString) => {
             if (!dateString || dateString.split('-').length !== 3) return dateString;
             try {
@@ -27,20 +50,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // Điền thông tin header (Giao diện mới)
         document.getElementById('info-supplier').textContent = generalInfo.supplier || '';
         document.getElementById('info-po').textContent = generalInfo.po || '';
         document.getElementById('info-receive-date').textContent = formatDate(generalInfo.ngayNhap);
         document.getElementById('info-style').textContent = generalInfo.style || '';
-        // document.getElementById('info-order-qty').textContent = ''; // Sếp chưa có trường này
         document.getElementById('info-date').textContent = formatDate(generalInfo.ngayKiem);
         
         const inspectorName = generalInfo.inspector || '';
         const infoInspector = document.getElementById('info-inspector');
         if (infoInspector) infoInspector.textContent = inspectorName;
 
-
-        // 2. Điền bảng
         const tableBody = document.getElementById('report-table-body');
         tableBody.innerHTML = '';
         let overallFail = false;
@@ -54,9 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     overallFail = true;
                 }
 
-                // Cập nhật đúng 11 cột theo giao diện mới
                 row.innerHTML = `
-                    <td>${item.loai} - ${item.mau} - ${item.tsSize}</i></td>
+                    <td>${item.loai} - ${item.mau} - ${item.tsSize}</td>
                     <td>${item.donVi || ''}</td>
                     <td>${item.slNhap || '0'}</td>
                     <td>${slThucNhan}</td>
@@ -74,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
             tableBody.innerHTML = `<tr><td colspan="11">Lỗi nghiêm trọng khi vẽ bảng: ${e.message}</td></tr>`;
         }
 
-        // 3. ĐIỀN KẾT LUẬN
         const passTextSpan = document.getElementById('conclusion-pass-text');
         const failTextSpan = document.getElementById('conclusion-fail-text');
         const handlingInstructionSpan = document.getElementById('handling-instruction');
@@ -88,18 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (failTextSpan) failTextSpan.innerHTML = '&#9744; Không đạt';
             if (handlingInstructionSpan) handlingInstructionSpan.textContent = 'Đưa vào lưu trữ chờ sản xuất.';
         }
-        
-        // =================================================================
-        // ✅ BƯỚC 4: HIỂN THỊ CHỮ KÝ (CON DẤU BO GỐC)
-        // =================================================================
+
         const inspectorWatermark = document.getElementById('inspector-watermark');
         const managerWatermark = document.getElementById('manager-watermark');
         
-        // 1. Watermark Người Kiểm (Con dấu "ĐÃ KIỂM TRA")
         if (inspectorName && inspectorWatermark) {
             const inspectorBoxStyle = `
-               /* border: 2px solid #28a745; 
-                color: #28a745; */
                 border-radius: 8px; 
                 padding: 5px 10px; 
                 font-size: 16px; 
@@ -113,14 +124,11 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
 
-        // 2. Watermark Quản Lý Kho (Con dấu "ĐÃ DUYỆT")
         if (generalInfo.daDuyet === true && managerWatermark) {
             const managerName = generalInfo.nguoiDuyet || "QL Kho";
             const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
             
             const managerBoxStyle = `
-               /* border: 2px solid #007bff; 
-                color: #007bff; */
                 border-radius: 8px; 
                 padding: 5px 10px; 
                 font-size: 16px; 
@@ -135,7 +143,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p style="margin: 0; font-size: 12px; font-weight: normal;">${approveDate}</p>
             `;
         }
-        // =================================================================
-        
     });
 });
