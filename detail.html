@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đang mở biên bản...</title>
+    <script>
+        const raw = localStorage.getItem('viewReportData');
+        if (raw) {
+            const report = JSON.parse(raw);
+            const isUncountable = item => {
+                const unit = (item.donVi || '').toLowerCase().trim();
+                return unit === 'm' || unit === 'yard' || unit === 'mét';
+            };
+            const countableItems = (report.items || []).filter(i => !isUncountable(i));
+            const uncountableItems = (report.items || []).filter(i => isUncountable(i));
+
+            if (uncountableItems.length > 0 && countableItems.length === 0) {
+                localStorage.setItem('reportData_Uncountable', JSON.stringify({ generalInfo: report.generalInfo, items: uncountableItems }));
+                window.location.replace('report_uncountable.html');
+            } else {
+                localStorage.setItem('reportData_Countable', JSON.stringify({ generalInfo: report.generalInfo, items: countableItems }));
+                window.location.replace('final_report.html');
+            }
+        } else {
+            window.location.replace('baocaokiemphulieutp.html');
+        }
+    </script>
+</head>
+<body></body>
+</html>
