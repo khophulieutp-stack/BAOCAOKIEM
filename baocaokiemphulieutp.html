@@ -8,15 +8,15 @@
         body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 15px; color: #333; }
         .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: #007bff; margin-bottom: 20px; }
-        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
-        .search-box input, .search-box select { flex: 1; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px; }
-        .report-card { border: 1px solid #dee2e6; border-left: 5px solid #007bff; border-radius: 4px; padding: 12px 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; background: #fff; }
+        .search-box { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .search-box input, .search-box select { flex: 1; min-width: 200px; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px; }
+        .report-card { border: 1px solid #dee2e6; border-left: 5px solid #007bff; border-radius: 4px; padding: 12px 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; background: #fff; flex-wrap: wrap; gap: 10px; }
         .report-card.fail { border-left-color: #dc3545; background-color: #fff8f8; }
         .info div { margin-bottom: 4px; font-size: 14px; }
         .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: #fff; }
         .badge.pass { background: #28a745; }
         .badge.fail { background: #dc3545; }
-        button { padding: 8px 14px; background: #007bff; color: #white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button { padding: 8px 14px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
         button:hover { background: #0056b3; }
         #loading { text-align: center; font-style: italic; color: #6c757d; padding: 30px; }
     </style>
@@ -24,7 +24,7 @@
 <body>
 
 <div class="container">
-    <h2>📦 BÁO CÁO KIỂM TRA PHỤ LIỆU TRIỆU PHONG</h2>
+    <h2>📦 HỆ THỐNG XEM BÁO CÁO KHO TỪ XA</h2>
     
     <div class="search-box">
         <input type="text" id="searchInput" placeholder="Nhập mã hàng, PO, hoặc tên khách...">
@@ -45,16 +45,12 @@
     const REPO_NAME = "BAOCAOKIEM";
     const FILE_PATH = "data/reportHistory.json";
     
-    // Nếu repo là Private, bạn cần dán Token công khai (đã giới hạn quyền đọc read:packages hoặc repo) vào đây
-    // Hoặc có thể để trống nếu đổi repo sang chế độ Public.
-    const GITHUB_TOKEN = ""; 
-
     let allReports = [];
 
     async function fetchReportsFromGitHub() {
-        const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`;
+        // Thêm tham số ngẫu nhiên _t để tránh trình duyệt cache dữ liệu cũ
+        const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?_t=${new Date().getTime()}`;
         const headers = { 'Accept': 'application/vnd.github.raw+json' };
-        if (GITHUB_TOKEN) headers['Authorization'] = `Bearer ${GITHUB_TOKEN}`;
 
         try {
             const response = await fetch(url, { headers });
@@ -64,19 +60,23 @@
             document.getElementById('loading').style.display = 'none';
             renderReports(allReports);
         } catch (error) {
-            document.getElementById('loading').innerHTML = `<span style="color:red;">❌ Lỗi: ${error.message}</span>`;
+            document.getElementById('loading').innerHTML = `<span style="color:red;">❌ Lỗi: ${error.message}. Hãy đảm bảo repository ở chế độ Public.</span>`;
         }
     }
 
     function checkFail(report) {
-        return report.items.some(item => item.resultAql === 'FAIL' || item.resultMetal === 'FAIL' || item.resultSample === 'FAIL');
+        return report.items.some(item => 
+            item.resultAql === 'FAIL' || 
+            item.resultMetal === 'FAIL' || 
+            item.resultSample === 'FAIL'
+        );
     }
 
     function renderReports(reports) {
         const listDiv = document.getElementById('reportList');
         listDiv.innerHTML = '';
 
-        if (reports.length === 0) {
+        if (!reports || reports.length === 0) {
             listDiv.innerHTML = '<p style="text-align:center; color:#6c757d;">Không tìm thấy báo cáo nào phù hợp.</p>';
             return;
         }
@@ -86,6 +86,7 @@
             const isFail = checkFail(report);
             const dateStr = info.date ? new Date(info.date).toLocaleDateString('vi-VN') : '';
             const statusBadge = isFail ? '<span class="badge fail">KHÔNG ĐẠT</span>' : '<span class="badge pass">ĐẠT</span>';
+            const approveStatus = info.daDuyet ? ' | ✅ Đã duyệt' : '';
 
             const card = document.createElement('div');
             card.className = `report-card ${isFail ? 'fail' : ''}`;
@@ -95,7 +96,7 @@
                     <div><b>Khách hàng:</b> ${info.supplier || ''}</div>
                     <div><b>Mã hàng (Style):</b> ${info.style || ''}</div>
                     <div><b>Số PO:</b> ${info.po || ''}</div>
-                    <div><b>Người kiểm:</b> ${info.inspector || ''} ${info.daDuyet ? ' | ✅ Đã duyệt' : ''}</div>
+                    <div><b>Người kiểm:</b> ${info.inspector || ''} ${approveStatus}</div>
                 </div>
                 <div>
                     <button onclick='viewDetail(${JSON.stringify(report)})'>Xem Chi Tiết</button>
@@ -106,9 +107,20 @@
     }
 
     function viewDetail(report) {
-        // Lưu tạm vào localStorage để trang xem chi tiết đọc lên hiển thị
+        // Lưu dữ liệu báo cáo tạm vào localStorage để trang xem chi tiết đọc lên
         localStorage.setItem('viewReportData', JSON.stringify(report));
-        window.open('detail.html', '_blank');
+
+        // Tự động phân loại mở form Đếm được hoặc Không đếm được
+        const hasUncountable = report.items.some(item => {
+            const unit = (item.donVi || '').toLowerCase().trim();
+            return unit === 'm' || unit === 'yard' || unit === 'mét';
+        });
+
+        if (hasUncountable) {
+            window.open('report_uncountable.html', '_blank');
+        } else {
+            window.open('final_report.html', '_blank');
+        }
     }
 
     // Bộ lọc sự kiện
@@ -121,7 +133,7 @@
 
         const filtered = allReports.filter(r => {
             const info = r.generalInfo || {};
-            const textMatch = (info.supplier + info.style + info.po + info.inspector).toLowerCase().includes(keyword);
+            const textMatch = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''}`.toLowerCase().includes(keyword);
             const isFail = checkFail(r);
 
             let statusMatch = true;
