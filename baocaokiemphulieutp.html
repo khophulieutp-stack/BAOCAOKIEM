@@ -40,15 +40,14 @@
 </div>
 
 <script>
-    // Cấu hình kết nối tới kho GitHub của bạn
     const REPO_OWNER = "khophulieutp-stack";
     const REPO_NAME = "BAOCAOKIEM";
     const FILE_PATH = "data/reportHistory.json";
     
     let allReports = [];
+    let currentDisplayedReports = [];
 
     async function fetchReportsFromGitHub() {
-        // Thêm tham số ngẫu nhiên _t để tránh trình duyệt cache dữ liệu cũ
         const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?_t=${new Date().getTime()}`;
         const headers = { 'Accept': 'application/vnd.github.raw+json' };
 
@@ -60,12 +59,12 @@
             document.getElementById('loading').style.display = 'none';
             renderReports(allReports);
         } catch (error) {
-            document.getElementById('loading').innerHTML = `<span style="color:red;">❌ Lỗi: ${error.message}. Hãy đảm bảo repository ở chế độ Public.</span>`;
+            document.getElementById('loading').innerHTML = `<span style="color:red;">❌ Lỗi: ${error.message}</span>`;
         }
     }
 
     function checkFail(report) {
-        return report.items.some(item => 
+        return (report.items || []).some(item => 
             item.resultAql === 'FAIL' || 
             item.resultMetal === 'FAIL' || 
             item.resultSample === 'FAIL'
@@ -73,6 +72,7 @@
     }
 
     function renderReports(reports) {
+        currentDisplayedReports = reports;
         const listDiv = document.getElementById('reportList');
         listDiv.innerHTML = '';
 
@@ -81,7 +81,7 @@
             return;
         }
 
-        reports.forEach(report => {
+        reports.forEach((report, idx) => {
             const info = report.generalInfo || {};
             const isFail = checkFail(report);
             const dateStr = info.date ? new Date(info.date).toLocaleDateString('vi-VN') : '';
@@ -99,31 +99,51 @@
                     <div><b>Người kiểm:</b> ${info.inspector || ''} ${approveStatus}</div>
                 </div>
                 <div>
-                    <button onclick='viewDetail(${JSON.stringify(report)})'>Xem Chi Tiết</button>
+                    <button type="button" data-index="${idx}" class="btn-detail">Xem Chi Tiết</button>
                 </div>
             `;
             listDiv.appendChild(card);
         });
+
+        // Gắn sự kiện click an toàn cho tất cả nút Xem Chi Tiết
+        document.querySelectorAll('.btn-detail').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = Number(this.getAttribute('data-index'));
+                viewDetail(currentDisplayedReports[index]);
+            });
+        });
     }
 
-   function viewDetail(report) {
-        // Lưu dữ liệu báo cáo tạm vào localStorage
-        localStorage.setItem('viewReportData', JSON.stringify(report));
+    function viewDetail(report) {
+        if (!report || !report.items) return;
 
-        // Tự động phân loại mở form Đếm được hoặc Không đếm được
-        const hasUncountable = report.items.some(item => {
+        const isUncountable = item => {
             const unit = (item.donVi || '').toLowerCase().trim();
             return unit === 'm' || unit === 'yard' || unit === 'mét';
-        });
+        };
 
-        // Xác định chính xác tên file mẫu nằm cùng thư mục
-        const targetPage = hasUncountable ? 'report_uncountable.html' : 'final_report.html';
-        
-        // Mở trực tiếp file mẫu trong tab mới
-        window.open(targetPage, '_blank');
+        const countableItems = report.items.filter(item => !isUncountable(item));
+        const uncountableItems = report.items.filter(item => isUncountable(item));
+
+        // Mở tab báo cáo Đếm được (nếu có phụ liệu đếm được)
+        if (countableItems.length > 0) {
+            localStorage.setItem('reportData_Countable', JSON.stringify({
+                generalInfo: report.generalInfo,
+                items: countableItems
+            }));
+            window.open('final_report.html', '_blank');
+        }
+
+        // Mở tab báo cáo Không đếm được (nếu có phụ liệu mét/yard)
+        if (uncountableItems.length > 0) {
+            localStorage.setItem('reportData_Uncountable', JSON.stringify({
+                generalInfo: report.generalInfo,
+                items: uncountableItems
+            }));
+            window.open('report_uncountable.html', '_blank');
+        }
     }
 
-    // Bộ lọc sự kiện
     document.getElementById('searchInput').addEventListener('input', filterData);
     document.getElementById('statusFilter').addEventListener('change', filterData);
 
@@ -146,7 +166,6 @@
         renderReports(filtered);
     }
 
-    // Khởi chạy tải dữ liệu khi mở trang
     fetchReportsFromGitHub();
 </script>
 
