@@ -1,0 +1,338 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Biên Bản Kiểm Tra Phụ Liệu</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Times New Roman', serif; font-size: 11px; margin: 0; background: #eee; }
+        .page { width: 297mm; min-height: 210mm; padding: 10mm; margin: 10mm auto; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .company-header {
+            display: grid; grid-template-columns: 1.2fr 2fr 1fr; align-items: center;
+            margin-bottom: 15px; padding-bottom: 5px;
+        }
+        .company-info { text-align: left; font-size: 9px; line-height: 1.3; }
+        .company-info .company-name { font-weight: bold; font-size: 10px; }
+        .report-title { text-align: center; }
+        .report-number { text-align: right; font-size: 9px; line-height: 1.3; }
+        .header { font-size: 15px; }
+        .subtitle { font-size: 14px; margin-top: 2px; }
+        
+        .info-grid { 
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            gap: 4px; margin-bottom: 10px; font-size: 10px; 
+        }
+        .info-grid label { font-weight: bold; }
+        .info-grid span { font-weight: normal; padding-left: 5px; }
+
+        table { width: 100%; border-collapse: collapse; border: 1.5px solid black; margin-bottom: 8px; }
+        th, td { border: 1px solid black; padding: 3px; text-align: center; vertical-align: middle; font-size: 19px; }
+        th { font-weight: bold; background-color: #f2f2f2; line-height: 1.2; }
+        
+        .bottom-section { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 10px; align-items: start; }
+        .left-section { font-size: 12px; }
+        
+        /* Cấu trúc phần kết luận đã sửa */
+        .conclusion-grid { display: grid; grid-template-columns: 1fr 2fr; margin-bottom: 5px; }
+        .handling-section { margin-bottom: 10px; }
+        
+        .notes-section { font-size: 12px; line-height: 1.5; }
+        .notes-section p { margin: 3px 0; }
+        .aql-container { background: white; }
+        .aql-header { background: #d9d9d9; text-align: center; font-weight: bold; font-size: 9px; padding: 2px; border-bottom: 1.5px solid black; }
+        .aql-table { width: 100%; border-collapse: collapse; font-size: 3px; }
+        .aql-table th, .aql-table td { border: 1px solid black; padding: 0.5px 1px; text-align: center; }
+        .aql-table th { background: #f2f2f2; font-weight: bold; font-size: 6px; line-height: 1.2; }
+        .aql-table .reject-col { background: #ffcccc; }
+        .signature-section { margin-top: 15px; padding-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; text-align: center; font-weight: bold; font-size: 10px; }
+        
+        /* ✅ SỬA PADDING-TOP TỪ 40PX XUỐNG 10PX */
+        .signature-box { padding-top: 10px; } 
+        
+        /* ✅ THÊM CSS CHO WATERMARK (ICON "V") */
+        .watermark {
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 1.0; 
+            margin-top: 10px; /* Khoảng cách từ "Người kiểm tra" xuống icon */
+            height: 75px; /* Giữ chiều cao cố định */
+            color: #333;
+            text-align: center;
+        }
+        .watermark p {
+            margin: 4px 0;
+        }
+        /* ✅ KẾT THÚC CSS CHO CHỮ KÝ */
+        
+        @media print {
+            body { margin: 0; background: white; }
+            .page { width: 297mm; height: 210mm; margin: 0; padding: 10mm; box-shadow: none; page-break-after: always; }
+            .company-header, .info-grid, table, .bottom-section, .signature-section { page-break-inside: avoid; }
+        }
+        @page { size: A4 landscape; margin: 0; }
+    </style>
+    
+    <style>
+        /* Cài đặt chung cho cả tiêu đề (th) và ô dữ liệu (td) */
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            vertical-align: middle;
+            
+            /* đổi '6px' để tăng/giảm chiều cao hàng */
+            padding: 4px; 
+        }
+
+        /* =========================================
+         ✅ 1. CHỈNH FONT CHỮ (ĐÃ TÁCH RA)
+         =========================================
+        */
+
+        /* Cài đặt RIÊNG cho DỮ LIỆU TRONG CỘT (td = table data) */
+        td {
+            /* chỉnh cỡ chữ DỮ LIỆU ở đây */
+            font-size: 10px; 
+        }
+        
+        /* Cài đặt RIÊNG cho TÊN CỘT (th = table header) */
+        th {
+            /* chỉnh cỡ chữ TÊN CỘT ở đây (lớn hơn 11px) */
+            font-size: 12px;
+            
+            font-weight: bold; /* Luôn in đậm tên cột */
+            
+            /* có thể bỏ ghi chú dòng dưới để thêm màu nền cho đẹp */
+            /* background-color: #f2f2f2; */
+        }
+
+
+        /* Cài đặt chung cho bảng */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        /* =========================================
+         ✅ 2. CHỈNH CHIỀU CAO HÀNG
+         =========================================
+        */
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            vertical-align: middle;
+            
+            /* * đổi '8px' để tăng/giảm chiều cao hàng
+             * (padding là khoảng đệm bên trong ô)
+             */
+            padding: 1px; 
+            
+            /* * Nếu muốn ép chiều cao cứng, 
+             * bỏ ghi chú dòng dưới và chỉnh 'px'
+             */
+             height: 1px; 
+        }
+
+
+        /* =========================================
+         ✅ 3. CHỈNH ĐỘ RỘNG CỘT
+         =========================================
+         chỉnh 'width' cho từng cột Sếp muốn
+        */
+
+        /* Ví dụ: Chỉnh CỘT ĐẦU TIÊN (Tên / Màu / Size) rộng ra */
+        #report-table-body td:nth-child(1) {
+            width: 250px; /* có thể đổi thành 150px */
+            text-align: left; /* Căn trái cho dễ đọc */
+            padding-left: 3px;
+        }
+
+        /* Ví dụ: Chỉnh CỘT THỨ 2 (Đơn vị) hẹp lại */
+        #report-table-body td:nth-child(2) {
+            width: 50px; 
+        }
+        
+        /* Ví dụ: Chỉnh CỘT THỨ 3 (SL Nhập) hẹp lại */
+        #report-table-body td:nth-child(3) {
+            width: 50px;
+        }
+        /* Ví dụ: Chỉnh CỘT THỨ 4 (SL Nhận) hẹp lại */
+        #report-table-body td:nth-child(4) {
+            width: 50px;
+        }
+        /* Ví dụ: Chỉnh CỘT THỨ 5 (SL kiểm) hẹp lại */
+        #report-table-body td:nth-child(5) {
+            width: 50px;
+        }
+        /* Ví dụ: Chỉnh CỘT THỨ 6 (SL Đạt) hẹp lại */
+        #report-table-body td:nth-child(6) {
+            width: 50px;
+        }
+       /* Ví dụ: Chỉnh CỘT THỨ 7 (SL không đạt) hẹp lại */
+        #report-table-body td:nth-child(7) {
+            width: 50px;
+        }
+       /* Ví dụ: Chỉnh CỘT THỨ 8 (SL Thừa) hẹp lại */
+        #report-table-body td:nth-child(8) {
+            width: 50px;
+        }
+       /* Ví dụ: Chỉnh CỘT THỨ 9 (SL Thiếu) hẹp lại */
+        #report-table-body td:nth-child(9) {
+            width: 50px;
+        }
+         /* Ví dụ: Chỉnh CỘT THỨ 10 (SL dò kim 10%) hẹp lại */
+        #report-table-body td:nth-child(10) {
+            width: 50px;
+        }
+       /* Ví dụ: Chỉnh CỘT THỨ 11 (SL Đạt) hẹp lại */
+        #report-table-body td:nth-child(11) {
+            width: 50px;
+        }
+       /* Ví dụ: Chỉnh CỘT THỨ 12 (SL không đạt) hẹp lại */
+        #report-table-body td:nth-child(12) {
+            width: 50px;
+        }
+        /* Ví dụ: Chỉnh CỘT THỨ 13 ( mẫu) hẹp lại */
+        #report-table-body td:nth-child(13) {
+            width: 200px;
+        }
+       /* Ví dụ: Chỉnh CỘT THỨ 14 (Ghi chú) hẹp lại */
+        #report-table-body td:nth-child(14) {
+            width: 70px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="page">
+        <div class="company-header">
+            <div class="company-info">
+                <div class="company-name">TỔNG CTY CP DỆT MAY HÒA THỌ</div>
+                <div>Hoa Tho Textile- Garment J.S Corp</div>
+                <div>Đơn vị: Hòa Thọ Triệu Phong</div>
+            </div>
+            <div class="report-title">
+                <div class="header">BIÊN BẢN KIỂM TRA PHỤ LIỆU ĐẾM ĐƯỢC</div>
+                <div class="subtitle">COUNTABLE ACCESSORIES INSPECTION REPORT</div>
+            </div>
+            <div class="report-number">
+                <div><strong>Mã số: CL-BM-PL-01 </strong></div>
+                <div><strong>Lần SĐ:01/</strong></div>
+               
+               
+            </div>
+        </div>
+        
+        <div class="info-grid">
+            <div><label>Buyer (Kh.hàng):</label> <span id="info-supplier"></span></div>
+            <div><label>PO#:</label> <span id="info-po"></span></div>
+            <div><label>Ngày nhập:</label> <span id="info-receive-date"></span></div>
+            
+            <div><label>Style (Mã hàng):</label> <span id="info-style"></span></div>
+            <div><label>Order q'ty (SL đơn hàng):</label> <span id="info-order-qty"></span></div>
+            <div><label>Ngày kiểm tra:</label> <span id="info-date"></span></div>
+            
+            <div></div> <div></div> <div><label>Inspector (Người kiểm):</label> <span id="info-inspector"></span></div>
+        </div> 
+        
+        <table>
+            <thead>
+                <tr>
+                    <th rowspan="2">Item<br>Phụ liệu</th>
+                    <th rowspan="2">Unit<br>Đ.vị</th>
+                    <th rowspan="2">P.list<br>q'ty<br>Số lượng<br>theo<br>P.list</th>
+                    <th rowspan="2">Act.<br>Q'ty<br>Số lượng<br>thực nhận</th>
+                    <th rowspan="2">Inspected<br>Q'ty<br>Số lượng<br>kiểm</th>
+                    <th colspan="2">Inspected Q'ty<br>SL kiểm chất lượng(1)</th>
+                    <th colspan="2">Checked Q'ty<br>SL kiểm</th>
+                    <th colspan="3">Metal detection<br>Dò kim</th>
+                    <th rowspan="2">Accessory<br>sample/<br>Mẫu phụ<br>liệu</th>
+                    <th rowspan="2">Remarks/<br>Ghi chú</th>
+                </tr>
+                <tr>
+                    <th>Accepted<br>q'ty<br>Đạt</th>
+                    <th>Rejected<br>q'ty<br>Không đạt</th>
+                    <th>Exceed<br>Thừa</th>
+                    <th>Short<br>Thiếu</th>
+                    <th>Detected<br>qty<br>Số lượng<br>dò kim<br>10%</th>
+                    <th>Accepted<br>q'ty<br>Đạt</th>
+                    <th>Rejected<br>q'ty<br>Không đạt</th>
+                </tr>
+            </thead>
+            <tbody id="report-table-body">
+                </tbody>
+        </table>
+        
+        <div class="bottom-section">
+            <div class="left-section">
+                
+                <p>
+    Kết luận: Lô hàng của các loại phụ liệu trên
+    <b id="conclusion-pass-text" style="margin-left: 20px;">
+        &#9744; Đạt
+    </b>,
+    
+    <b id="conclusion-fail-text" style="margin-left: 10px;">
+        &#9744; Không đạt
+    </b>
+    </p>
+            <div class="handling-section">
+                    <p><strong>Hướng xử lý:</strong> <span id="handling-instruction"></span></p>
+                </div>
+                <div class="notes-section">
+                    <p><i>(1): Số lượng kiểm lấy theo bảng AQL Kiểm Phụ Liệu bên góc phải của form này</i></p>
+                    <p><i>(2): Dò kim 10% số lượng nhập kho đối với phụ liệu kim loại...</i></p>
+                </div>
+                
+                <div class="signature-section">
+                    <div class="signature-box">
+                        <p>Quản lý kho/Warehouse-keeper</p>
+ <p>Lê Đức Văn</p>
+                        <div id="manager-watermark" class="watermark">
+                            </div>
+                    </div>
+                    <div class="signature-box">
+                        <p>Người kiểm tra/Inspector</p>
+                        <div id="inspector-watermark" class="watermark">
+                            </div>
+                    </div>
+                </div>
+                </div>
+            
+            <div class="aql-container">
+                 <div class="aql-header">AQL 0.65 LEVEL I PHỤ LIỆU ĐẾM ĐƯỢC</div>
+                <table class="aql-table">
+                    <thead>
+                        <tr>
+                            <th>LOT SIZE<br>Cỡ mẫu</th>
+                            <th>CODE<br>LETTER<br>Mã</th>
+                            <th>SAMPLE<br>SIZE<br>(KIỂM)</th>
+                            <th>ACCEPT<br>(ĐẠT)</th>
+                            <th>REJECT<br>(LOẠI)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2 -> 8</td><td>A</td><td>2</td><td>0</td><td class="reject-col">1</td></tr>
+                        <tr><td>9 -> 15</td><td>A</td><td>2</td><td>0</td><td class="reject-col">1</td></tr>
+                        <tr><td>16 -> 25</td><td>B</td><td>3</td><td>0</td><td class="reject-col">1</td></tr>
+                        <tr><td>26 -> 50</td><td>C</td><td>5</td><td>0</td><td class="reject-col">1</td></tr>
+                        <tr><td>51 -> 90</td><td>C</td><td>5</td><td>0</td><td class="reject-col">1</td></tr>
+                        <tr><td>91 -> 150</td><td>D</td><td>8</td><td>0</td><td class="reject-col">1</td></tr>
+                        <tr><td>151 -> 280</td><td>E</td><td>13</td><td>0</td><td class="reject-col">1</td></tr>
+                        <tr><td>281 -> 500</td><td>F</td><td>20</td><td>0</td><td class="reject-col">1</td></tr>
+                        <tr><td>501 -> 1,200</td><td>G</td><td>32</td><td>0</td><td class="reject-col">1</td></tr>
+                        <tr><td>1,201 -> 3,200</td><td>H</td><td>50</td><td>0</td><td class="reject-col">1</td></tr>
+                        <tr><td>3,201 -> 10,000</td><td>J</td><td>80</td><td>1</td><td class="reject-col">2</td></tr>
+                        <tr><td>10,001 -> 35,000</td><td>K</td><td>125</td><td>2</td><td class="reject-col">3</td></tr>
+                        <tr><td>35,001 -> 150,000</td><td>L</td><td>200</td><td>3</td><td class="reject-col">4</td></tr>
+                        <tr><td>150,001 -> 500,000</td><td>M</td><td>315</td><td>5</td><td class="reject-col">6</td></tr>
+                        <tr><td>500,000 ->and over</td><td>N</td><td>500</td><td>7</td><td class="reject-col">8</td></tr>
+                    </tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script src="final_report.js"></script>
+</body>
+</html>
