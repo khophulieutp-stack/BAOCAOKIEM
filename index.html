@@ -10,9 +10,10 @@
     
     <style>
         :root {
-            --primary: #1e40af;
+            --primary: #19398a;
             --primary-light: #eff6ff;
-            --primary-hover: #1e3a8a;
+            --primary-hover: #122a68;
+            --hoatho-red: #e31e24;
             --success: #10b981;
             --success-bg: #ecfdf5;
             --danger: #ef4444;
@@ -41,9 +42,9 @@
 
         /* ================= TOP NAVBAR ================= */
         .top-navbar {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #19398a 100%);
             color: #fff;
-            padding: 16px 28px;
+            padding: 12px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -52,16 +53,23 @@
             top: 0;
             z-index: 100;
         }
-        .brand-box { display: flex; align-items: center; gap: 14px; }
-        .brand-icon {
-            width: 42px; height: 42px;
-            background: rgba(255,255,255,0.15);
+        .brand-box { display: flex; align-items: center; gap: 15px; }
+        .brand-logo-wrap {
+            width: 52px; height: 52px;
+            background: #ffffff;
             border-radius: 10px;
+            padding: 4px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 20px; color: #60a5fa;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+        .brand-logo-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
         .brand-title h1 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: 0.3px; }
-        .brand-title p { margin: 2px 0 0 0; font-size: 12px; color: #cbd5e1; }
+        .brand-title p { margin: 3px 0 0 0; font-size: 12px; color: #cbd5e1; }
         .nav-actions { display: flex; align-items: center; gap: 12px; }
         .btn-refresh {
             background: rgba(255,255,255,0.12);
@@ -126,6 +134,11 @@
             border: 1px solid var(--border-color);
             margin-bottom: 20px;
             display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .toolbar-row {
+            display: flex;
             flex-wrap: wrap;
             gap: 12px;
             align-items: center;
@@ -134,13 +147,14 @@
         .filter-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             flex: 1;
+            align-items: center;
         }
         .search-wrapper {
             position: relative;
             flex: 2;
-            min-width: 260px;
+            min-width: 240px;
         }
         .search-wrapper i {
             position: absolute;
@@ -151,31 +165,79 @@
         }
         .search-wrapper input {
             width: 100%;
-            padding: 10px 14px 10px 38px;
+            padding: 9px 14px 9px 38px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13.5px;
             font-family: inherit;
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
-        .search-wrapper input:focus, .filter-select:focus {
+        .search-wrapper input:focus, .filter-select:focus, .date-input-group input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.12);
+            box-shadow: 0 0 0 3px rgba(25, 57, 138, 0.12);
         }
         .filter-select {
-            flex: 1;
-            min-width: 160px;
-            padding: 10px 14px;
+            padding: 9px 12px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13.5px;
             font-family: inherit;
             background: #fff;
             color: var(--text-main);
             cursor: pointer;
             outline: none;
         }
+        
+        /* Date Range Box */
+        .date-range-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
+            border-radius: 8px;
+            flex-wrap: wrap;
+        }
+        .date-input-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12.5px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .date-input-group input[type="date"] {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 5px 8px;
+            font-size: 13px;
+            font-family: inherit;
+            color: var(--text-main);
+            background: #fff;
+            outline: none;
+            cursor: pointer;
+        }
+        .btn-reset {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid var(--border-color);
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-reset:hover {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+
         .view-toggle {
             display: flex;
             background: #f1f5f9;
@@ -333,7 +395,7 @@
         }
         .empty-state i { font-size: 40px; color: #cbd5e1; margin-bottom: 12px; }
 
-        /* ================= GIAO DIỆN BIÊN BẢN A4 NGANG (GIỮ NGUYÊN CHUẨN IN) ================= */
+        /* ================= GIAO DIỆN BIÊN BẢN A4 NGANG (CÓ LOGO HÒA THỌ) ================= */
         #detailView { display: none; padding: 20px; }
         .action-bar { 
             max-width: 297mm; 
@@ -349,9 +411,14 @@
         }
         .action-bar-title { font-weight: 600; font-size: 15px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
         .report-page { font-family: 'Times New Roman', serif; font-size: 11px; width: 297mm; min-height: 210mm; padding: 10mm; margin: 0 auto 25px auto; background: white; box-shadow: 0 0 15px rgba(0,0,0,0.12); color: #000; }
-        .company-header { display: grid; grid-template-columns: 1.2fr 2fr 1fr; align-items: center; margin-bottom: 15px; padding-bottom: 5px; }
-        .company-info { text-align: left; font-size: 9px; line-height: 1.3; }
+        
+        /* Header biên bản có Logo Hòa Thọ */
+        .company-header { display: grid; grid-template-columns: 1.35fr 1.85fr 0.8fr; align-items: center; margin-bottom: 15px; padding-bottom: 5px; }
+        .company-brand { display: flex; align-items: center; gap: 10px; }
+        .report-logo { width: 46px; height: 44px; object-fit: contain; flex-shrink: 0; }
+        .company-info { text-align: left; font-size: 9px; line-height: 1.35; }
         .company-info .company-name { font-weight: bold; font-size: 10px; }
+        
         .report-title { text-align: center; }
         .report-number { text-align: right; font-size: 9px; line-height: 1.3; }
         .header-title { font-size: 15px; font-weight: bold; }
@@ -388,15 +455,18 @@
         @media (max-width: 768px) {
             .top-navbar { flex-direction: column; align-items: flex-start; gap: 10px; }
             .action-bar { flex-direction: column; gap: 10px; align-items: stretch; }
+            .date-range-box { width: 100%; justify-content: space-between; }
         }
     </style>
 </head>
 <body>
 
-<!-- THANH ĐIỀU HƯỚNG TRÊN CÙNG -->
+<!-- THANH ĐIỀU HƯỚNG TRÊN CÙNG CÓ LOGO HÒA THỌ -->
 <header class="top-navbar">
     <div class="brand-box">
-        <div class="brand-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+        <div class="brand-logo-wrap">
+            <img id="navLogo" src="102537773_HT-logo.png" alt="Hòa Thọ Logo">
+        </div>
         <div class="brand-title">
             <h1>HÒA THỌ TRIỆU PHONG - KHO PHỤ LIỆU</h1>
             <p>Hệ Thống Quản Lý & Tra Cứu Biên Bản Kiểm Tra Chất Lượng (QC/AQL)</p>
@@ -418,7 +488,7 @@
             <div class="kpi-info">
                 <h4>Tổng Biên Bản</h4>
                 <p class="kpi-value" id="kpiTotal">0</p>
-                <div class="kpi-sub">Đang hiển thị trên hệ thống</div>
+                <div class="kpi-sub">Đang hiển thị theo bộ lọc</div>
             </div>
             <div class="kpi-icon"><i class="fa-solid fa-file-contract"></i></div>
         </div>
@@ -450,30 +520,56 @@
 
     <!-- THANH CÔNG CỤ TÌM KIẾM & LỌC -->
     <div class="toolbar-card">
-        <div class="filter-group">
-            <div class="search-wrapper">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Tìm theo Mã hàng (Style), Số PO, Khách hàng, Người kiểm...">
-            </div>
-            <select id="statusFilter" class="filter-select">
-                <option value="all">📊 Tất cả kết quả</option>
-                <option value="pass">✅ Chỉ xem Đạt (Pass)</option>
-                <option value="fail">❌ Chỉ xem Không Đạt (Fail)</option>
-            </select>
-            <select id="approveFilter" class="filter-select">
-                <option value="all">📋 Tất cả phê duyệt</option>
-                <option value="approved">✔️ Đã duyệt</option>
-                <option value="pending">⏳ Chờ duyệt</option>
-            </select>
-        </div>
+        <div class="toolbar-row">
+            <div class="filter-group">
+                <!-- Ô tìm kiếm từ khóa -->
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Tìm theo Mã hàng (Style), Số PO, Khách hàng, Người kiểm...">
+                </div>
 
-        <div class="view-toggle">
-            <button type="button" class="view-btn active" id="btnTableView" onclick="switchViewMode('table')">
-                <i class="fa-solid fa-table-list"></i> Dạng Bảng
-            </button>
-            <button type="button" class="view-btn" id="btnCardView" onclick="switchViewMode('card')">
-                <i class="fa-solid fa-grip"></i> Dạng Thẻ
-            </button>
+                <!-- Bộ lọc Từ ngày - Đến ngày -->
+                <div class="date-range-box">
+                    <div class="date-input-group">
+                        <label for="fromDate"><i class="fa-regular fa-calendar"></i> Từ ngày:</label>
+                        <input type="date" id="fromDate">
+                    </div>
+                    <span style="color: #cbd5e1;">—</span>
+                    <div class="date-input-group">
+                        <label for="toDate">Đến ngày:</label>
+                        <input type="date" id="toDate">
+                    </div>
+                </div>
+
+                <!-- Lọc trạng thái QC -->
+                <select id="statusFilter" class="filter-select">
+                    <option value="all">📊 Tất cả kết quả</option>
+                    <option value="pass">✅ Chỉ xem Đạt (Pass)</option>
+                    <option value="fail">❌ Chỉ xem Không Đạt (Fail)</option>
+                </select>
+
+                <!-- Lọc trạng thái Duyệt -->
+                <select id="approveFilter" class="filter-select">
+                    <option value="all">📋 Tất cả phê duyệt</option>
+                    <option value="approved">✔️ Đã duyệt</option>
+                    <option value="pending">⏳ Chờ duyệt</option>
+                </select>
+
+                <!-- Nút đặt lại bộ lọc -->
+                <button type="button" class="btn-reset" onclick="resetFilters()" title="Xóa toàn bộ điều kiện lọc">
+                    <i class="fa-solid fa-filter-circle-xmark"></i> Đặt lại
+                </button>
+            </div>
+
+            <!-- Chuyển đổi chế độ xem -->
+            <div class="view-toggle">
+                <button type="button" class="view-btn active" id="btnTableView" onclick="switchViewMode('table')">
+                    <i class="fa-solid fa-table-list"></i> Dạng Bảng
+                </button>
+                <button type="button" class="view-btn" id="btnCardView" onclick="switchViewMode('card')">
+                    <i class="fa-solid fa-grip"></i> Dạng Thẻ
+                </button>
+            </div>
         </div>
     </div>
 
@@ -506,9 +602,35 @@
     const REPO_NAME = "BAOCAOKIEM";
     const FILE_PATH = "data/reportHistory.json";
     
+    // Logo Hòa Thọ chuẩn Vector được nhúng trực tiếp để đảm bảo không bao giờ lỗi ảnh khi in/xem từ xa
+    const DEFAULT_HOATHO_LOGO = "data:image/svg+xml;utf8," + encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260" width="100%" height="100%">
+            <rect width="300" height="260" fill="#ffffff"/>
+            <!-- Thanh xanh 1 (Trái) -->
+            <path d="M 35 175 L 55 120 Q 64 96 90 96 L 108 96 L 86 152 Q 77 175 52 175 Z" fill="#19398a"/>
+            <!-- Thanh xanh 2 (Giữa) -->
+            <path d="M 112 175 L 148 80 Q 157 56 183 56 L 202 56 L 164 152 Q 155 175 130 175 Z" fill="#19398a"/>
+            <!-- Thanh xanh 3 (Phải) -->
+            <path d="M 188 175 L 240 38 Q 249 15 274 15 L 292 15 L 238 152 Q 229 175 204 175 Z" fill="#19398a"/>
+            <!-- Chấm tròn đỏ 1 -->
+            <circle cx="110" cy="134" r="22" fill="#e31e24"/>
+            <!-- Chấm tròn đỏ 2 -->
+            <circle cx="206" cy="54" r="22" fill="#e31e24"/>
+            <!-- Chữ HOATHO -->
+            <text x="162" y="232" font-family="Arial, Helvetica, sans-serif" font-size="47" font-weight="500" letter-spacing="4" fill="#e31e24" text-anchor="middle">HOATHO</text>
+        </svg>
+    `);
+
+    // Gắn fallback tự động cho Logo trên thanh Navbar
+    const navLogoEl = document.getElementById('navLogo');
+    navLogoEl.onerror = function() {
+        this.onerror = null;
+        this.src = DEFAULT_HOATHO_LOGO;
+    };
+
     let allReports = [];
     let currentDisplayedReports = [];
-    let currentViewMode = 'table'; // 'table' hoặc 'card'
+    let currentViewMode = 'table';
 
     async function fetchReportsFromGitHub() {
         const loadingEl = document.getElementById('loading');
@@ -537,6 +659,24 @@
         if (!dateString || dateString.split('-').length !== 3) return dateString || '';
         const parts = dateString.split('-');
         return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
+    function extractReportYMD(info) {
+        const rawDate = info.ngayKiem || info.date || info.ngayNhap;
+        if (!rawDate) return null;
+
+        if (/^\d{4}-\d{2}-\d{2}$/.test(rawDate.trim())) {
+            return rawDate.trim();
+        }
+
+        const parsed = new Date(rawDate);
+        if (!isNaN(parsed.getTime())) {
+            const y = parsed.getFullYear();
+            const m = String(parsed.getMonth() + 1).padStart(2, '0');
+            const d = String(parsed.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+        return null;
     }
 
     function updateKPIs(reports) {
@@ -573,8 +713,8 @@
             listDiv.innerHTML = `
                 <div class="empty-state">
                     <i class="fa-regular fa-folder-open"></i>
-                    <h3>Không tìm thấy biên bản nào</h3>
-                    <p>Hãy thử thay đổi từ khóa tìm kiếm hoặc bộ lọc trạng thái.</p>
+                    <h3>Không tìm thấy biên bản nào phù hợp</h3>
+                    <p>Hãy thử điều chỉnh lại khoảng ngày hoặc bấm nút "Đặt lại" trên thanh công cụ.</p>
                 </div>`;
             return;
         }
@@ -701,6 +841,29 @@
         container.appendChild(grid);
     }
 
+    function getCompanyHeaderHTML(title, subtitle, code) {
+        return `
+            <div class="company-header">
+                <div class="company-brand">
+                    <img class="report-logo" src="102537773_HT-logo.png" onerror="this.onerror=null;this.src=DEFAULT_HOATHO_LOGO;" alt="Hòa Thọ Logo">
+                    <div class="company-info">
+                        <div class="company-name">TỔNG CTY CP DỆT MAY HÒA THỌ</div>
+                        <div>Hoa Tho Textile- Garment J.S Corp</div>
+                        <div>Đơn vị: Hòa Thọ Triệu Phong</div>
+                    </div>
+                </div>
+                <div class="report-title">
+                    <div class="header-title">${title}</div>
+                    <div class="subtitle">${subtitle}</div>
+                </div>
+                <div class="report-number">
+                    <div><strong>Mã số: ${code}</strong></div>
+                    <div><strong>Lần SĐ: 01/</strong></div>
+                </div>
+            </div>
+        `;
+    }
+
     function showReportDetail(report) {
         if (!report || !report.items) return;
         const info = report.generalInfo || {};
@@ -750,11 +913,7 @@
         const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
         return `
         <div class="report-page">
-            <div class="company-header">
-                <div class="company-info"><div class="company-name">TỔNG CTY CP DỆT MAY HÒA THỌ</div><div>Hoa Tho Textile- Garment J.S Corp</div><div>Đơn vị: Hòa Thọ Triệu Phong</div></div>
-                <div class="report-title"><div class="header-title">BIÊN BẢN KIỂM TRA PHỤ LIỆU ĐẾM ĐƯỢC</div><div class="subtitle">COUNTABLE ACCESSORIES INSPECTION REPORT</div></div>
-                <div class="report-number"><div><strong>Mã số: CL-BM-PL-01</strong></div><div><strong>Lần SĐ: 01/</strong></div></div>
-            </div>
+            ${getCompanyHeaderHTML('BIÊN BẢN KIỂM TRA PHỤ LIỆU ĐẾM ĐƯỢC', 'COUNTABLE ACCESSORIES INSPECTION REPORT', 'CL-BM-PL-01')}
             <div class="info-grid">
                 <div><label>Buyer (Kh.hàng):</label> <span>${generalInfo.supplier || ''}</span></div>
                 <div><label>PO#:</label> <span>${generalInfo.po || ''}</span></div>
@@ -830,11 +989,7 @@
         const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
         return `
         <div class="report-page">
-            <div class="company-header">
-                <div class="company-info"><div class="company-name">TỔNG CTY CP DỆT MAY HÒA THỌ</div><div>Hoa Tho Textile- Garment J.S Corp</div><div>Đơn vị: Hòa Thọ Triệu Phong</div></div>
-                <div class="report-title"><div class="header-title">BIÊN BẢN KIỂM TRA PHỤ LIỆU</div><div class="subtitle">(LOẠI PHỤ LIỆU KHÔNG ĐẾM ĐƯỢC)</div></div>
-                <div class="report-number"><div><strong>Mã số: CL-BM-PL-02</strong></div><div><strong>Lần SĐ: 01/</strong></div></div>
-            </div>
+            ${getCompanyHeaderHTML('BIÊN BẢN KIỂM TRA PHỤ LIỆU', '(LOẠI PHỤ LIỆU KHÔNG ĐẾM ĐƯỢC)', 'CL-BM-PL-02')}
             <div class="info-grid">
                 <div><label>Buyer (Kh.hàng):</label> <span>${generalInfo.supplier || ''}</span></div>
                 <div><label>PO#:</label> <span>${generalInfo.po || ''}</span></div>
@@ -869,19 +1024,46 @@
     }
 
     document.getElementById('searchInput').addEventListener('input', filterData);
+    document.getElementById('fromDate').addEventListener('change', filterData);
+    document.getElementById('toDate').addEventListener('change', filterData);
     document.getElementById('statusFilter').addEventListener('change', filterData);
     document.getElementById('approveFilter').addEventListener('change', filterData);
 
+    function resetFilters() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('fromDate').value = '';
+        document.getElementById('toDate').value = '';
+        document.getElementById('statusFilter').value = 'all';
+        document.getElementById('approveFilter').value = 'all';
+        filterData();
+    }
+
     function filterData() {
-        const keyword = document.getElementById('searchInput').value.toLowerCase();
+        const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+        const fromDateVal = document.getElementById('fromDate').value;
+        const toDateVal = document.getElementById('toDate').value;
         const status = document.getElementById('statusFilter').value;
         const approve = document.getElementById('approveFilter').value;
 
         const filtered = allReports.filter(r => {
             const info = r.generalInfo || {};
-            const textMatch = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''}`.toLowerCase().includes(keyword);
-            const isFail = checkFail(r);
             
+            const textMatch = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''}`
+                .toLowerCase()
+                .includes(keyword);
+            
+            let dateMatch = true;
+            if (fromDateVal || toDateVal) {
+                const reportYMD = extractReportYMD(info);
+                if (!reportYMD) {
+                    dateMatch = false;
+                } else {
+                    if (fromDateVal && reportYMD < fromDateVal) dateMatch = false;
+                    if (toDateVal && reportYMD > toDateVal) dateMatch = false;
+                }
+            }
+
+            const isFail = checkFail(r);
             let statusMatch = true;
             if (status === 'pass') statusMatch = !isFail;
             if (status === 'fail') statusMatch = isFail;
@@ -890,8 +1072,9 @@
             if (approve === 'approved') approveMatch = Boolean(info.daDuyet);
             if (approve === 'pending') approveMatch = !info.daDuyet;
 
-            return textMatch && statusMatch && approveMatch;
+            return textMatch && dateMatch && statusMatch && approveMatch;
         });
+
         renderReports(filtered);
     }
 
