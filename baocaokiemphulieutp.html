@@ -106,8 +106,8 @@
         });
     }
 
-    function viewDetail(report) {
-        // Lưu dữ liệu báo cáo tạm vào localStorage để trang xem chi tiết đọc lên
+   function viewDetail(report) {
+        // Lưu dữ liệu báo cáo tạm vào localStorage
         localStorage.setItem('viewReportData', JSON.stringify(report));
 
         // Tự động phân loại mở form Đếm được hoặc Không đếm được
@@ -116,11 +116,11 @@
             return unit === 'm' || unit === 'yard' || unit === 'mét';
         });
 
-        if (hasUncountable) {
-            window.open('report_uncountable.html', '_blank');
-        } else {
-            window.open('final_report.html', '_blank');
-        }
+        // Xác định chính xác tên file mẫu nằm cùng thư mục
+        const targetPage = hasUncountable ? 'report_uncountable.html' : 'final_report.html';
+        
+        // Mở trực tiếp file mẫu trong tab mới
+        window.open(targetPage, '_blank');
     }
 
     // Bộ lọc sự kiện
