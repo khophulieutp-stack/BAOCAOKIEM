@@ -4,16 +4,21 @@
     <meta charset="UTF-8">
     <title>Đang mở biên bản...</title>
     <script>
-        const raw = localStorage.getItem('viewReportData');
-        if (raw) {
-            const report = JSON.parse(raw);
+        // Lấy dữ liệu lô hàng được lưu tạm khi bấm Xem Chi Tiết
+        const rawData = localStorage.getItem('viewReportData');
+        if (rawData) {
+            const report = JSON.parse(rawData);
+            
+            // Phân loại đếm được hay không đếm được (mét, yard)
             const isUncountable = item => {
                 const unit = (item.donVi || '').toLowerCase().trim();
                 return unit === 'm' || unit === 'yard' || unit === 'mét';
             };
+
             const countableItems = (report.items || []).filter(i => !isUncountable(i));
             const uncountableItems = (report.items || []).filter(i => isUncountable(i));
 
+            // Đẩy dữ liệu chuẩn vào storage để các file final_report.js / report_uncountable.js đọc được
             if (uncountableItems.length > 0 && countableItems.length === 0) {
                 localStorage.setItem('reportData_Uncountable', JSON.stringify({ generalInfo: report.generalInfo, items: uncountableItems }));
                 window.location.replace('report_uncountable.html');
@@ -22,9 +27,12 @@
                 window.location.replace('final_report.html');
             }
         } else {
-            window.location.replace('baocaokiemphulieutp.html');
+            alert('Không tìm thấy dữ liệu báo cáo! Vui lòng quay lại danh sách.');
+            window.close();
         }
     </script>
 </head>
-<body></body>
+<body>
+    <p style="text-align: center; margin-top: 50px; font-family: Arial;">Đang tải biên bản kiểm tra...</p>
+</body>
 </html>
