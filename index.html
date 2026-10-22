@@ -7,6 +7,8 @@
     <!-- Google Fonts & FontAwesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         :root {
@@ -14,6 +16,8 @@
             --primary-light: #eff6ff;
             --primary-hover: #122a68;
             --hoatho-red: #e31e24;
+            --indigo: #6366f1;
+            --indigo-bg: #eef2ff;
             --success: #10b981;
             --success-bg: #ecfdf5;
             --danger: #ef4444;
@@ -109,63 +113,172 @@
 
         /* ================= DASHBOARD CONTAINER ================= */
         .dashboard-container {
-            max-width: 1360px;
-            margin: 24px auto;
+            max-width: 1440px;
+            margin: 22px auto;
             padding: 0 20px 40px 20px;
         }
 
-        /* ================= KPI CARDS ================= */
+        /* ================= 5 SMART KPI CARDS ================= */
         .kpi-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 18px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
         }
         .kpi-card {
             background: var(--bg-card);
             border-radius: var(--radius);
-            padding: 20px;
+            padding: 18px;
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--border-color);
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
+            gap: 12px;
             transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
         }
+        .kpi-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+        }
+        .kpi-card.total::after { background: var(--primary); }
+        .kpi-card.styles::after { background: var(--indigo); }
+        .kpi-card.pass::after { background: var(--success); }
+        .kpi-card.fail::after { background: var(--danger); }
+        .kpi-card.diff::after { background: var(--warning); }
+
         .kpi-card:hover {
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
         .kpi-info h4 {
             margin: 0 0 6px 0;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
         .kpi-info .kpi-value {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
             color: var(--text-main);
             margin: 0;
+            line-height: 1.15;
         }
         .kpi-info .kpi-sub {
             font-size: 12px;
             color: var(--text-muted);
-            margin-top: 4px;
+            margin-top: 6px;
+            font-weight: 500;
         }
         .kpi-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 20px;
+            flex-shrink: 0;
         }
         .kpi-card.total .kpi-icon { background: var(--primary-light); color: var(--primary); }
+        .kpi-card.styles .kpi-icon { background: var(--indigo-bg); color: var(--indigo); }
         .kpi-card.pass .kpi-icon { background: var(--success-bg); color: var(--success); }
         .kpi-card.fail .kpi-icon { background: var(--danger-bg); color: var(--danger); }
+        .kpi-card.diff .kpi-icon { background: var(--warning-bg); color: var(--warning); }
+
+        /* ================= 3 INTERACTIVE CHARTS SECTION ================= */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr 1.35fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .chart-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .chart-title i {
+            color: var(--primary);
+        }
+        .chart-subtitle {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+        .chart-badge-hint {
+            font-size: 11px;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 99px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .chart-canvas-wrap {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        /* Active Buyer Filter Banner */
+        .active-buyer-banner {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e3a8a;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .active-buyer-banner.show {
+            display: flex;
+        }
+        .btn-clear-buyer {
+            background: #fff;
+            border: 1px solid #93c5fd;
+            color: #1d4ed8;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-clear-buyer:hover {
+            background: #dbeafe;
+        }
 
         /* ================= FILTER & TOOLBAR ================= */
         .toolbar-card {
@@ -177,7 +290,7 @@
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
         .toolbar-row {
             display: flex;
@@ -196,7 +309,7 @@
         .search-wrapper {
             position: relative;
             flex: 2;
-            min-width: 240px;
+            min-width: 220px;
         }
         .search-wrapper i {
             position: absolute;
@@ -322,6 +435,7 @@
         }
         .badge.pass { background: var(--success-bg); color: #047857; border: 1px solid #a7f3d0; }
         .badge.fail { background: var(--danger-bg); color: #b91c1c; border: 1px solid #fecaca; }
+        .badge.diff { background: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; margin-left: 4px; }
 
         /* ================= TABLE VIEW ================= */
         .table-container {
@@ -495,6 +609,10 @@
         }
         @page { size: A4 landscape; margin: 0; }
 
+        @media (max-width: 1200px) {
+            .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+            .charts-grid { grid-template-columns: 1fr; }
+        }
         @media (max-width: 768px) {
             .top-navbar { flex-direction: column; align-items: flex-start; gap: 10px; }
             .action-bar { flex-direction: column; gap: 10px; align-items: stretch; }
@@ -512,7 +630,7 @@
             </div>
             <div class="brand-title">
                 <h1>HÒA THỌ TRIỆU PHONG - KHO PHỤ LIỆU</h1>
-                <p>Hệ Thống Quản Lý & Tra Cứu Biên Bản Kiểm Tra Chất Lượng (QC/AQL)</p>
+                <p>Hệ Thống Quản Lý & Phân Tích Biên Bản Kiểm Tra Chất Lượng (QC/AQL)</p>
             </div>
         </div>
         <div class="nav-actions">
@@ -525,16 +643,29 @@
     <!-- GIAO DIỆN DASHBOARD CHÍNH -->
     <div id="listView" class="dashboard-container">
         
-        <!-- THẺ THỐNG KÊ KPI -->
+        <!-- HỆ THỐNG 5 THẺ KPI THÔNG MINH -->
         <div class="kpi-grid">
+            <!-- KPI 1: Tổng Biên Bản Kiểm -->
             <div class="kpi-card total">
                 <div class="kpi-info">
-                    <h4>Tổng Biên Bản</h4>
+                    <h4>Tổng Biên Bản Kiểm</h4>
                     <p class="kpi-value" id="kpiTotal">0</p>
-                    <div class="kpi-sub">Đang hiển thị theo bộ lọc</div>
+                    <div class="kpi-sub" id="kpiTotalItems">Tổng cộng: 0 mục phụ liệu</div>
                 </div>
                 <div class="kpi-icon"><i class="fa-solid fa-file-contract"></i></div>
             </div>
+
+            <!-- KPI 2: Mã Hàng & Khách Hàng -->
+            <div class="kpi-card styles">
+                <div class="kpi-info">
+                    <h4>Mã Hàng & Khách Hàng</h4>
+                    <p class="kpi-value" id="kpiStyles" style="color: var(--indigo);">0 <span style="font-size:14px; font-weight:600; color:var(--text-muted);">Styles</span></p>
+                    <div class="kpi-sub" id="kpiBuyers">Thuộc 0 Khách hàng (Buyers)</div>
+                </div>
+                <div class="kpi-icon"><i class="fa-solid fa-shirt"></i></div>
+            </div>
+
+            <!-- KPI 3: Lô Hàng Đạt (Pass) -->
             <div class="kpi-card pass">
                 <div class="kpi-info">
                     <h4>Lô Hàng Đạt (Pass)</h4>
@@ -543,18 +674,81 @@
                 </div>
                 <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
             </div>
+
+            <!-- KPI 4: Không Đạt (Fail) -->
             <div class="kpi-card fail">
                 <div class="kpi-info">
                     <h4>Không Đạt (Fail)</h4>
                     <p class="kpi-value" id="kpiFail" style="color: var(--danger);">0</p>
-                    <div class="kpi-sub">Cần PKD & NCC xử lý</div>
+                    <div class="kpi-sub" id="kpiFailItems">0 mục lỗi cần PKD & NCC xử lý</div>
                 </div>
                 <div class="kpi-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            </div>
+
+            <!-- KPI 5: Lệch SL (Thừa/Thiếu) -->
+            <div class="kpi-card diff">
+                <div class="kpi-info">
+                    <h4>Lệch SL (Thừa / Thiếu)</h4>
+                    <p class="kpi-value" id="kpiDiff" style="color: var(--warning);">0 <span style="font-size:14px; font-weight:600; color:var(--text-muted);">mục</span></p>
+                    <div class="kpi-sub" id="kpiDiffSub">Thừa: 0 mục | Thiếu: 0 mục</div>
+                </div>
+                <div class="kpi-icon"><i class="fa-solid fa-scale-unbalanced"></i></div>
+            </div>
+        </div>
+
+        <!-- TRUNG TÂM 3 BIỂU ĐỒ PHÂN TÍCH TƯƠNG TÁC (CHART.JS) -->
+        <div class="charts-grid">
+            <!-- Biểu đồ 1: Khách hàng (Buyer) -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <h3 class="chart-title"><i class="fa-solid fa-chart-column"></i> Thống Kê Theo Khách Hàng (Buyer)</h3>
+                        <div class="chart-subtitle">So sánh số Mã hàng (Style), Biên bản Đạt & Không đạt</div>
+                    </div>
+                    <span class="chart-badge-hint"><i class="fa-solid fa-hand-pointer"></i> Nhấn cột để lọc</span>
+                </div>
+                <div class="chart-canvas-wrap">
+                    <canvas id="buyerChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Biểu đồ 2: Phân tích Chất lượng & Nguyên nhân lỗi -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <h3 class="chart-title"><i class="fa-solid fa-chart-pie"></i> Cơ Cấu Chất Lượng & Nguyên Nhân Lỗi</h3>
+                        <div class="chart-subtitle">Bóc tách chi tiết trên từng danh mục phụ liệu</div>
+                    </div>
+                </div>
+                <div class="chart-canvas-wrap">
+                    <canvas id="defectChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Biểu đồ 3: Xu hướng theo Ngày -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <h3 class="chart-title"><i class="fa-solid fa-chart-line"></i> Xu Hướng Kiểm Hàng Theo Ngày</h3>
+                        <div class="chart-subtitle">Biến động số lượng Biên bản & Mã hàng qua từng ngày</div>
+                    </div>
+                </div>
+                <div class="chart-canvas-wrap">
+                    <canvas id="trendChart"></canvas>
+                </div>
             </div>
         </div>
 
         <!-- THANH CÔNG CỤ TÌM KIẾM & LỌC -->
         <div class="toolbar-card">
+            <!-- Thanh thông báo khi đang lọc theo cột Khách hàng trên Biểu đồ 1 -->
+            <div id="activeBuyerBanner" class="active-buyer-banner">
+                <span><i class="fa-solid fa-filter"></i> Đang lọc theo Khách hàng (Buyer): <strong id="activeBuyerName"></strong></span>
+                <button type="button" class="btn-clear-buyer" onclick="clearBuyerFilter()">
+                    <i class="fa-solid fa-xmark"></i> Bỏ lọc Khách hàng
+                </button>
+            </div>
+
             <div class="toolbar-row">
                 <div class="filter-group">
                     <!-- Ô tìm kiếm từ khóa -->
@@ -562,6 +756,11 @@
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" id="searchInput" placeholder="Tìm theo Mã hàng (Style), Số PO, Khách hàng, Người kiểm...">
                     </div>
+
+                    <!-- Bộ lọc Khách hàng (đồng bộ với Biểu đồ 1) -->
+                    <select id="buyerFilter" class="filter-select">
+                        <option value="all">🏢 Tất cả Khách hàng</option>
+                    </select>
 
                     <!-- Bộ lọc Từ ngày - Đến ngày -->
                     <div class="date-range-box">
@@ -581,6 +780,7 @@
                         <option value="all">📊 Tất cả kết quả</option>
                         <option value="pass">✅ Chỉ xem Đạt (Pass)</option>
                         <option value="fail">❌ Chỉ xem Không Đạt (Fail)</option>
+                        <option value="diff">⚠️ Có lệch SL (Thừa/Thiếu)</option>
                     </select>
 
                     <!-- Nút đặt lại bộ lọc -->
@@ -630,7 +830,7 @@
         const REPO_NAME = "BAOCAOKIEM";
         const FILE_PATH = "data/reportHistory.json";
         
-        // Logo Hòa Thọ chuẩn Vector được nhúng trực tiếp để đảm bảo không bao giờ lỗi ảnh khi in/xem từ xa
+        // Logo Hòa Thọ chuẩn Vector nhúng trực tiếp để không bao giờ lỗi ảnh khi in/xem từ xa
         const DEFAULT_HOATHO_LOGO = "data:image/svg+xml;utf8," + encodeURIComponent(`
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260" width="100%" height="100%">
                 <rect width="300" height="260" fill="#ffffff"/>
@@ -643,7 +843,6 @@
             </svg>
         `);
 
-        // Gắn fallback tự động cho Logo trên thanh Navbar
         const navLogoEl = document.getElementById('navLogo');
         navLogoEl.onerror = function() {
             this.onerror = null;
@@ -653,6 +852,11 @@
         let allReports = [];
         let currentDisplayedReports = [];
         let currentViewMode = 'table';
+
+        // Biến lưu trữ đối tượng biểu đồ Chart.js
+        let buyerChartInstance = null;
+        let defectChartInstance = null;
+        let trendChartInstance = null;
 
         async function fetchReportsFromGitHub() {
             const loadingEl = document.getElementById('loading');
@@ -668,17 +872,27 @@
                 if (!response.ok) throw new Error('Không thể tải dữ liệu từ GitHub.');
                 allReports = await response.json();
                 loadingEl.style.display = 'none';
+                populateBuyerDropdown(allReports);
                 filterData();
             } catch (error) {
                 loadingEl.innerHTML = `<span style="color:var(--danger); font-weight:600;"><i class="fa-solid fa-circle-exclamation"></i> Lỗi: ${error.message}</span>`;
             }
         }
 
+        // Kiểm tra biên bản có mục lỗi hay không
         function checkFail(report) {
             return (report.items || []).some(item => 
                 item.resultAql === 'FAIL' || 
                 item.resultMetal === 'FAIL' || 
                 item.resultSample === 'FAIL'
+            );
+        }
+
+        // Kiểm tra biên bản có mục lệch số lượng (Thừa/Thiếu) so với Packing List
+        function checkDiff(report) {
+            return (report.items || []).some(item => 
+                (parseFloat(item.qtyExceed) || 0) > 0 || 
+                (parseFloat(item.qtyShort) || 0) > 0
             );
         }
 
@@ -704,16 +918,352 @@
             return null;
         }
 
-        function updateKPIs(reports) {
-            const total = reports.length;
-            const failCount = reports.filter(r => checkFail(r)).length;
-            const passCount = total - failCount;
-            const passRate = total > 0 ? Math.round((passCount / total) * 100) : 0;
+        function populateBuyerDropdown(reports) {
+            const buyerSelect = document.getElementById('buyerFilter');
+            const currentVal = buyerSelect.value;
+            const buyersSet = new Set();
 
-            document.getElementById('kpiTotal').textContent = total;
-            document.getElementById('kpiPass').textContent = passCount;
-            document.getElementById('kpiPassRate').textContent = `Tỷ lệ đạt: ${passRate}%`;
-            document.getElementById('kpiFail').textContent = failCount;
+            reports.forEach(r => {
+                const buyer = (r.generalInfo?.supplier || '').trim();
+                if (buyer) buyersSet.add(buyer);
+            });
+
+            const sortedBuyers = Array.from(buyersSet).sort((a, b) => a.localeCompare(b, 'vi'));
+            buyerSelect.innerHTML = '<option value="all">🏢 Tất cả Khách hàng</option>';
+            sortedBuyers.forEach(b => {
+                const opt = document.createElement('option');
+                opt.value = b;
+                opt.textContent = `🏢 ${b}`;
+                buyerSelect.appendChild(opt);
+            });
+
+            if (sortedBuyers.includes(currentVal)) {
+                buyerSelect.value = currentVal;
+            }
+        }
+
+        // ================= CẬP NHẬT 5 THẺ KPI THÔNG MINH =================
+        function updateKPIs(reports) {
+            const totalReports = reports.length;
+            let totalItems = 0;
+            let failReportsCount = 0;
+            let failItemsCount = 0;
+            let diffItemsCount = 0;
+            let exceedItemsCount = 0;
+            let shortItemsCount = 0;
+
+            const uniqueStyles = new Set();
+            const uniqueBuyers = new Set();
+
+            reports.forEach(r => {
+                const info = r.generalInfo || {};
+                const styleStr = (info.style || '').trim().toUpperCase();
+                const buyerStr = (info.supplier || '').trim().toUpperCase();
+                if (styleStr) uniqueStyles.add(styleStr);
+                if (buyerStr) uniqueBuyers.add(buyerStr);
+
+                if (checkFail(r)) failReportsCount++;
+
+                const items = r.items || [];
+                totalItems += items.length;
+
+                items.forEach(item => {
+                    const isItemFail = item.resultAql === 'FAIL' || item.resultMetal === 'FAIL' || item.resultSample === 'FAIL';
+                    if (isItemFail) failItemsCount++;
+
+                    const exceed = parseFloat(item.qtyExceed) || 0;
+                    const short = parseFloat(item.qtyShort) || 0;
+                    if (exceed > 0) exceedItemsCount++;
+                    if (short > 0) shortItemsCount++;
+                    if (exceed > 0 || short > 0) diffItemsCount++;
+                });
+            });
+
+            const passReportsCount = totalReports - failReportsCount;
+            const passRate = totalReports > 0 ? Math.round((passReportsCount / totalReports) * 100) : 0;
+
+            // Render KPI 1: Tổng Biên Bản
+            document.getElementById('kpiTotal').textContent = totalReports;
+            document.getElementById('kpiTotalItems').textContent = `Tổng cộng: ${totalItems} mục phụ liệu`;
+
+            // Render KPI 2: Mã Hàng & Khách Hàng
+            document.getElementById('kpiStyles').innerHTML = `${uniqueStyles.size} <span style="font-size:14px; font-weight:600; color:var(--text-muted);">Styles</span>`;
+            document.getElementById('kpiBuyers').textContent = `Thuộc ${uniqueBuyers.size} Khách hàng (Buyers)`;
+
+            // Render KPI 3: Lô Hàng Đạt
+            document.getElementById('kpiPass').textContent = passReportsCount;
+            document.getElementById('kpiPassRate').textContent = `Tỷ lệ đạt: ${passRate}% (${passReportsCount}/${totalReports} lô)`;
+
+            // Render KPI 4: Không Đạt
+            document.getElementById('kpiFail').textContent = failReportsCount;
+            document.getElementById('kpiFailItems').textContent = `${failItemsCount} mục lỗi cần PKD & NCC xử lý`;
+
+            // Render KPI 5: Lệch SL (Thừa/Thiếu)
+            document.getElementById('kpiDiff').innerHTML = `${diffItemsCount} <span style="font-size:14px; font-weight:600; color:var(--text-muted);">mục</span>`;
+            document.getElementById('kpiDiffSub').textContent = `Thừa: ${exceedItemsCount} mục | Thiếu: ${shortItemsCount} mục`;
+        }
+
+        // ================= CẬP NHẬT 3 BIỂU ĐỒ TƯƠNG TÁC (CHART.JS) =================
+        function updateCharts(reports) {
+            renderBuyerChart(reports);
+            renderDefectChart(reports);
+            renderTrendChart(reports);
+        }
+
+        // Biểu đồ 1: Khách hàng (Buyer) - Tương tác click lọc trực tiếp
+        function renderBuyerChart(reports) {
+            const buyerMap = {};
+            reports.forEach(r => {
+                const info = r.generalInfo || {};
+                const buyerName = (info.supplier || 'Chưa rõ').trim();
+                if (!buyerMap[buyerName]) {
+                    buyerMap[buyerName] = {
+                        styles: new Set(),
+                        pass: 0,
+                        fail: 0
+                    };
+                }
+                const styleName = (info.style || '').trim().toUpperCase();
+                if (styleName) buyerMap[buyerName].styles.add(styleName);
+
+                if (checkFail(r)) {
+                    buyerMap[buyerName].fail++;
+                } else {
+                    buyerMap[buyerName].pass++;
+                }
+            });
+
+            const labels = Object.keys(buyerMap).sort((a, b) => {
+                const totalB = buyerMap[b].pass + buyerMap[b].fail;
+                const totalA = buyerMap[a].pass + buyerMap[a].fail;
+                return totalB - totalA;
+            });
+
+            const styleCounts = labels.map(l => buyerMap[l].styles.size);
+            const passCounts = labels.map(l => buyerMap[l].pass);
+            const failCounts = labels.map(l => buyerMap[l].fail);
+
+            const ctx = document.getElementById('buyerChart').getContext('2d');
+            if (buyerChartInstance) buyerChartInstance.destroy();
+
+            buyerChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Số Mã hàng (Style)',
+                            data: styleCounts,
+                            backgroundColor: '#6366f1',
+                            borderRadius: 5
+                        },
+                        {
+                            label: 'Biên bản Đạt (Pass)',
+                            data: passCounts,
+                            backgroundColor: '#10b981',
+                            borderRadius: 5
+                        },
+                        {
+                            label: 'Không Đạt (Fail)',
+                            data: failCounts,
+                            backgroundColor: '#ef4444',
+                            borderRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const clickedBuyer = labels[index];
+                            const buyerSelect = document.getElementById('buyerFilter');
+                            // Toggle nếu nhấn lại đúng khách hàng đang lọc
+                            if (buyerSelect.value === clickedBuyer) {
+                                buyerSelect.value = 'all';
+                            } else {
+                                buyerSelect.value = clickedBuyer;
+                            }
+                            filterData();
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { boxWidth: 12, font: { size: 11, family: 'Inter' } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                footer: () => '💡 Nhấn vào cột để lọc danh sách theo Khách hàng này'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { font: { size: 11, family: 'Inter' } }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0, font: { size: 11, family: 'Inter' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Biểu đồ 2: Phân tích Chất lượng & Nguyên nhân lỗi (Doughnut)
+        function renderDefectChart(reports) {
+            let standardPass = 0;
+            let aqlDefect = 0;
+            let metalDefect = 0;
+            let sampleDefect = 0;
+            let qtyDiscrepancy = 0;
+
+            reports.forEach(r => {
+                (r.items || []).forEach(item => {
+                    const isAqlFail = item.resultAql === 'FAIL';
+                    const isMetalFail = item.resultMetal === 'FAIL';
+                    const isSampleFail = item.resultSample === 'FAIL';
+                    const isQtyDiff = (parseFloat(item.qtyExceed) || 0) > 0 || (parseFloat(item.qtyShort) || 0) > 0;
+
+                    if (isAqlFail) aqlDefect++;
+                    if (isMetalFail) metalDefect++;
+                    if (isSampleFail) sampleDefect++;
+                    if (isQtyDiff) qtyDiscrepancy++;
+
+                    if (!isAqlFail && !isMetalFail && !isSampleFail && !isQtyDiff) {
+                        standardPass++;
+                    }
+                });
+            });
+
+            const ctx = document.getElementById('defectChart').getContext('2d');
+            if (defectChartInstance) defectChartInstance.destroy();
+
+            defectChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Đạt chuẩn 100%',
+                        'Lỗi ngoại quan AQL',
+                        'Lỗi Dò kim loại',
+                        'Lỗi Mẫu phụ liệu',
+                        'Lệch SL (Thừa/Thiếu)'
+                    ],
+                    datasets: [{
+                        data: [standardPass, aqlDefect, metalDefect, sampleDefect, qtyDiscrepancy],
+                        backgroundColor: [
+                            '#10b981', // Đạt chuẩn
+                            '#ef4444', // Lỗi AQL
+                            '#dc2626', // Lỗi Dò kim
+                            '#8b5cf6', // Lỗi Mẫu PL
+                            '#f59e0b'  // Lệch SL
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '62%',
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { boxWidth: 12, padding: 10, font: { size: 11, family: 'Inter' } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const dataArr = context.dataset.data;
+                                    const sum = dataArr.reduce((acc, val) => acc + val, 0);
+                                    const val = context.parsed;
+                                    const pct = sum > 0 ? ((val / sum) * 100).toFixed(1) : 0;
+                                    return ` ${context.label}: ${val} mục (${pct}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Biểu đồ 3: Xu hướng theo Ngày (Line Chart)
+        function renderTrendChart(reports) {
+            const dateMap = {};
+            reports.forEach(r => {
+                const info = r.generalInfo || {};
+                const ymd = extractReportYMD(info);
+                if (!ymd) return;
+
+                if (!dateMap[ymd]) {
+                    dateMap[ymd] = {
+                        reportCount: 0,
+                        styles: new Set()
+                    };
+                }
+                dateMap[ymd].reportCount++;
+                const styleName = (info.style || '').trim().toUpperCase();
+                if (styleName) dateMap[ymd].styles.add(styleName);
+            });
+
+            const sortedDates = Object.keys(dateMap).sort();
+            const displayDates = sortedDates.map(d => formatDate(d));
+            const reportSeries = sortedDates.map(d => dateMap[d].reportCount);
+            const styleSeries = sortedDates.map(d => dateMap[d].styles.size);
+
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            if (trendChartInstance) trendChartInstance.destroy();
+
+            trendChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: displayDates,
+                    datasets: [
+                        {
+                            label: 'Số biên bản kiểm',
+                            data: reportSeries,
+                            borderColor: '#19398a',
+                            backgroundColor: 'rgba(25, 57, 138, 0.12)',
+                            fill: true,
+                            tension: 0.35,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#19398a'
+                        },
+                        {
+                            label: 'Số mã hàng (Style)',
+                            data: styleSeries,
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.08)',
+                            borderDash: [5, 4],
+                            fill: false,
+                            tension: 0.35,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#f59e0b'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { boxWidth: 12, font: { size: 11, family: 'Inter' } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { font: { size: 11, family: 'Inter' } }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0, font: { size: 11, family: 'Inter' } }
+                        }
+                    }
+                }
+            });
         }
 
         function switchViewMode(mode) {
@@ -726,6 +1276,7 @@
         function renderReports(reports) {
             currentDisplayedReports = reports;
             updateKPIs(reports);
+            updateCharts(reports);
 
             const listDiv = document.getElementById('reportList');
             listDiv.innerHTML = '';
@@ -735,7 +1286,7 @@
                     <div class="empty-state">
                         <i class="fa-regular fa-folder-open"></i>
                         <h3>Không tìm thấy biên bản nào phù hợp</h3>
-                        <p>Hãy thử điều chỉnh lại khoảng ngày hoặc bấm nút "Đặt lại" trên thanh công cụ.</p>
+                        <p>Hãy thử điều chỉnh lại điều kiện lọc hoặc bấm nút "Đặt lại" trên thanh công cụ.</p>
                     </div>`;
                 return;
             }
@@ -759,11 +1310,15 @@
             reports.forEach((report, idx) => {
                 const info = report.generalInfo || {};
                 const isFail = checkFail(report);
+                const hasDiff = checkDiff(report);
                 const itemCount = (report.items || []).length;
                 const dateStr = info.date ? new Date(info.date).toLocaleDateString('vi-VN') : (formatDate(info.ngayKiem) || '---');
                 const statusBadge = isFail 
                     ? '<span class="badge fail"><i class="fa-solid fa-xmark"></i> KHÔNG ĐẠT</span>' 
                     : '<span class="badge pass"><i class="fa-solid fa-check"></i> ĐẠT</span>';
+                const diffBadge = hasDiff
+                    ? '<span class="badge diff" title="Có phát sinh thừa hoặc thiếu số lượng"><i class="fa-solid fa-scale-unbalanced"></i> LỆCH SL</span>'
+                    : '';
 
                 rowsHtml += `
                     <tr class="${isFail ? 'row-fail' : ''}">
@@ -774,7 +1329,7 @@
                         <td><span class="po-tag">${info.po || '---'}</span></td>
                         <td style="text-align:center;"><b>${itemCount}</b> mục</td>
                         <td>${info.inspector || '---'}</td>
-                        <td>${statusBadge}</td>
+                        <td>${statusBadge}${diffBadge}</td>
                         <td style="text-align:right;">
                             <button type="button" class="btn btn-detail" data-index="${idx}">
                                 <i class="fa-regular fa-eye"></i> Chi tiết
@@ -813,11 +1368,15 @@
             reports.forEach((report, idx) => {
                 const info = report.generalInfo || {};
                 const isFail = checkFail(report);
+                const hasDiff = checkDiff(report);
                 const itemCount = (report.items || []).length;
                 const dateStr = info.date ? new Date(info.date).toLocaleDateString('vi-VN') : (formatDate(info.ngayKiem) || '---');
                 const statusBadge = isFail 
                     ? '<span class="badge fail"><i class="fa-solid fa-xmark"></i> KHÔNG ĐẠT</span>' 
                     : '<span class="badge pass"><i class="fa-solid fa-check"></i> ĐẠT</span>';
+                const diffBadge = hasDiff
+                    ? '<span class="badge diff"><i class="fa-solid fa-scale-unbalanced"></i> LỆCH SL</span>'
+                    : '';
 
                 const card = document.createElement('div');
                 card.className = `report-card ${isFail ? 'fail' : ''}`;
@@ -828,7 +1387,7 @@
                                 <h3 class="card-style">${info.style || 'Chưa rõ Style'}</h3>
                                 <div class="card-supplier"><i class="fa-regular fa-building"></i> ${info.supplier || '---'}</div>
                             </div>
-                            ${statusBadge}
+                            <div>${statusBadge}${diffBadge}</div>
                         </div>
                         <div class="card-body" style="margin-top: 12px;">
                             <div><span>Số PO</span><strong>${info.po || '---'}</strong></div>
@@ -1033,12 +1592,19 @@
         }
 
         document.getElementById('searchInput').addEventListener('input', filterData);
+        document.getElementById('buyerFilter').addEventListener('change', filterData);
         document.getElementById('fromDate').addEventListener('change', filterData);
         document.getElementById('toDate').addEventListener('change', filterData);
         document.getElementById('statusFilter').addEventListener('change', filterData);
 
+        function clearBuyerFilter() {
+            document.getElementById('buyerFilter').value = 'all';
+            filterData();
+        }
+
         function resetFilters() {
             document.getElementById('searchInput').value = '';
+            document.getElementById('buyerFilter').value = 'all';
             document.getElementById('fromDate').value = '';
             document.getElementById('toDate').value = '';
             document.getElementById('statusFilter').value = 'all';
@@ -1047,15 +1613,28 @@
 
         function filterData() {
             const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+            const selectedBuyer = document.getElementById('buyerFilter').value;
             const fromDateVal = document.getElementById('fromDate').value;
             const toDateVal = document.getElementById('toDate').value;
             const status = document.getElementById('statusFilter').value;
+
+            // Hiển thị banner khi đang lọc theo một Khách hàng cụ thể
+            const bannerEl = document.getElementById('activeBuyerBanner');
+            const bannerNameEl = document.getElementById('activeBuyerName');
+            if (selectedBuyer !== 'all') {
+                bannerNameEl.textContent = selectedBuyer;
+                bannerEl.classList.add('show');
+            } else {
+                bannerEl.classList.remove('show');
+            }
 
             const filtered = allReports.filter(r => {
                 const info = r.generalInfo || {};
                 const textMatch = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''}`
                     .toLowerCase()
                     .includes(keyword);
+
+                const buyerMatch = selectedBuyer === 'all' || (info.supplier || '').trim() === selectedBuyer;
 
                 let dateMatch = true;
                 if (fromDateVal || toDateVal) {
@@ -1069,11 +1648,13 @@
                 }
 
                 const isFail = checkFail(r);
+                const hasDiff = checkDiff(r);
                 let statusMatch = true;
                 if (status === 'pass') statusMatch = !isFail;
                 if (status === 'fail') statusMatch = isFail;
+                if (status === 'diff') statusMatch = hasDiff;
 
-                return textMatch && dateMatch && statusMatch;
+                return textMatch && buyerMatch && dateMatch && statusMatch;
             });
 
             renderReports(filtered);
