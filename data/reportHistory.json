@@ -2,6 +2,48 @@
   {
     "generalInfo": {
       "supplier": "FAM",
+      "po": "KT 9.10",
+      "style": "GP016570",
+      "date": "2026-10-23T08:34:09.355Z",
+      "ngayNhap": "2026-10-09",
+      "ngayKiem": "2026-10-12",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "FAM",
+        "maHang": "GP016570",
+        "po": "KT 9.10",
+        "loai": "Thun 28mm",
+        "mau": "WHITE",
+        "tsSize": "28MM",
+        "donVi": "Y",
+        "slNhap": "80000.0",
+        "ngay": null,
+        "ngayNhap": "2026-10-09",
+        "ngayKiem": "2026-10-12",
+        "aqlSampleSize": "200",
+        "acceptedAql": "200",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1517
+  },
+  {
+    "generalInfo": {
+      "supplier": "FAM",
       "po": "KT6.10",
       "style": "GP016570",
       "date": "2026-10-23T08:33:52.643Z",
