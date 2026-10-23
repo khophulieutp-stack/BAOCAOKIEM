@@ -4,6 +4,48 @@
       "supplier": "FAM",
       "po": "1K TCT",
       "style": "GP016570",
+      "date": "2026-10-23T08:42:05.987Z",
+      "ngayNhap": "2026-10-14",
+      "ngayKiem": "2026-10-16",
+      "inspector": "Ngô Thị Lý",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "FAM",
+        "maHang": "GP016570",
+        "po": "1K TCT",
+        "loai": "Nhãn care",
+        "mau": "WHITE",
+        "tsSize": "COSTCO ORDER",
+        "donVi": "PCS",
+        "slNhap": "30000.0",
+        "ngay": null,
+        "ngayNhap": "2026-10-14",
+        "ngayKiem": "2026-10-16",
+        "aqlSampleSize": "125",
+        "acceptedAql": "125",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1524
+  },
+  {
+    "generalInfo": {
+      "supplier": "FAM",
+      "po": "1K TCT",
+      "style": "GP016570",
       "date": "2026-10-23T08:41:46.018Z",
       "ngayNhap": "2026-10-14",
       "ngayKiem": "2026-10-16",
