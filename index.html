@@ -32,7 +32,8 @@
             --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
             --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.06);
             --radius: 10px;
-            --sticky-th-top: 148px;
+            --sticky-toolbar-top: 76px;
+            --sticky-th-top: 144px;
         }
 
         * { box-sizing: border-box; }
@@ -276,20 +277,26 @@
             background: #dbeafe;
         }
 
-        /* ================= FILTER & TOOLBAR ================= */
+        /* ================= FILTER & TOOLBAR (KHỚP KHÍT KHOẢNG HỞ = 0 VỚI TIÊU ĐỀ BẢNG) ================= */
         .toolbar-card {
             position: sticky;
-            top: 76px;
+            top: var(--sticky-toolbar-top, 76px);
             z-index: 95;
             background: var(--bg-card);
-            border-radius: var(--radius);
+            border-radius: var(--radius) var(--radius) 0 0;
             padding: 14px 16px;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
             border: 1px solid var(--border-color);
-            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0; /* Khoảng hở = 0 so với bảng phía dưới */
             display: flex;
             flex-direction: column;
             gap: 12px;
+        }
+        /* Khi chuyển sang chế độ xem Dạng Thẻ thì bo tròn lại 4 góc và tạo khoảng cách dưới */
+        .toolbar-card.card-mode {
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
         }
         .toolbar-row {
             display: flex;
@@ -463,12 +470,13 @@
         .badge.fail { background: var(--danger-bg); color: #b91c1c; border: 1px solid #fecaca; }
         .badge.diff { background: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; margin-left: 4px; }
 
-        /* ================= TABLE VIEW ================= */
+        /* ================= TABLE VIEW (NỐI LIỀN KHỐI VỚI TOOLBAR) ================= */
         .table-container {
             background: var(--bg-card);
-            border-radius: var(--radius);
+            border-radius: 0 0 var(--radius) var(--radius);
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--border-color);
+            border-top: none;
             overflow: visible;
         }
         .modern-table {
@@ -480,7 +488,7 @@
         }
         .modern-table th {
             position: sticky;
-            top: var(--sticky-th-top, 148px);
+            top: var(--sticky-th-top, 144px);
             z-index: 90;
             background: #f8fafc;
             color: var(--text-muted);
@@ -489,6 +497,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             padding: 14px 16px;
+            border-top: 1px solid var(--border-color);
             border-bottom: 2px solid var(--border-color);
             box-shadow: 0 2px 4px rgba(15, 23, 42, 0.04);
         }
@@ -496,6 +505,15 @@
             padding: 14px 16px;
             border-bottom: 1px solid var(--border-color);
             vertical-align: middle;
+        }
+        .modern-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .modern-table tbody tr:last-child td:first-child {
+            border-bottom-left-radius: var(--radius);
+        }
+        .modern-table tbody tr:last-child td:last-child {
+            border-bottom-right-radius: var(--radius);
         }
         .modern-table tbody tr { transition: background 0.15s; }
         .modern-table tbody tr:hover { background: #f8fafc; }
@@ -580,8 +598,9 @@
             color: var(--text-muted);
             padding: 60px 20px;
             background: var(--bg-card);
-            border-radius: var(--radius);
+            border-radius: 0 0 var(--radius) var(--radius);
             border: 1px dashed var(--border-color);
+            border-top: none;
         }
         .empty-state i { font-size: 40px; color: #cbd5e1; margin-bottom: 12px; }
 
@@ -674,7 +693,7 @@
 <body>
 
     <!-- THANH ĐIỀU HƯỚNG TRÊN CÙNG CÓ LOGO HÒA THỌ -->
-    <header class="top-navbar">
+    <header class="top-navbar" id="topNavbar">
         <div class="brand-box">
             <div class="brand-logo-wrap">
                 <img id="navLogo" src="102537773_HT-logo.png" alt="Hòa Thọ Logo">
@@ -788,7 +807,7 @@
         </div>
 
         <!-- THANH CÔNG CỤ TÌM KIẾM & LỌC -->
-        <div class="toolbar-card">
+        <div class="toolbar-card" id="toolbarCard">
             <!-- Thanh thông báo khi đang lọc theo cột Khách hàng trên Biểu đồ 1 -->
             <div id="activeBuyerBanner" class="active-buyer-banner">
                 <span><i class="fa-solid fa-filter"></i> Đang lọc theo Khách hàng (Buyer): <strong id="activeBuyerName"></strong></span>
@@ -879,7 +898,7 @@
         const BRANCH = "main";
         const FILE_PATH = "data/reportHistory.json";
         
-        // Logo Hòa Thọ chuẩn Vector nhúng trực tiếp để không bao giờ lỗi ảnh khi in/xem từ xa
+        // Logo Hòa Thọ chuẩn Vector nhúng trực tiếp
         const DEFAULT_HOATHO_LOGO = "data:image/svg+xml;utf8," + encodeURIComponent(`
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260" width="100%" height="100%">
                 <rect width="300" height="260" fill="#ffffff"/>
@@ -906,7 +925,6 @@
         let defectChartInstance = null;
         let trendChartInstance = null;
 
-        // Hàm bảo vệ chuỗi HTML không bị lỗi mất chữ khi có ký tự <, >, &, "
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
             return String(str)
@@ -917,15 +935,30 @@
                 .replace(/'/g, '&#39;');
         }
 
-        // Tự động cập nhật vị trí ghim của tiêu đề bảng (th) theo chiều cao thực tế của Navbar + Toolbar
+        // Đồng bộ chính xác 100% vị trí ghim của Toolbar và Tiêu đề cột bảng (Khoảng hở = 0px)
         function updateStickyTableOffset() {
-            requestAnimationFrame(() => {
-                const navH = document.querySelector('.top-navbar')?.offsetHeight || 76;
-                const toolH = document.querySelector('.toolbar-card')?.offsetHeight || 68;
-                document.documentElement.style.setProperty('--sticky-th-top', `${navH + toolH + 4}px`);
+            const navEl = document.getElementById('topNavbar');
+            const toolEl = document.getElementById('toolbarCard');
+            if (!navEl || !toolEl) return;
+
+            const navHeight = Math.round(navEl.getBoundingClientRect().height);
+            const toolHeight = Math.round(toolEl.getBoundingClientRect().height);
+
+            document.documentElement.style.setProperty('--sticky-toolbar-top', `${navHeight}px`);
+            // Trừ 1px để đường viền trên của th chồng khít lên đường viền dưới của toolbarCard, không bao giờ hở khe sáng
+            document.documentElement.style.setProperty('--sticky-th-top', `${navHeight + toolHeight - 1}px`);
+        }
+
+        window.addEventListener('resize', updateStickyTableOffset);
+        if (window.ResizeObserver) {
+            const stickyObserver = new ResizeObserver(() => updateStickyTableOffset());
+            window.addEventListener('DOMContentLoaded', () => {
+                const navEl = document.getElementById('topNavbar');
+                const toolEl = document.getElementById('toolbarCard');
+                if (navEl) stickyObserver.observe(navEl);
+                if (toolEl) stickyObserver.observe(toolEl);
             });
         }
-        window.addEventListener('resize', updateStickyTableOffset);
 
         async function fetchReportsFromGitHub() {
             const loadingEl = document.getElementById('loading');
@@ -962,7 +995,6 @@
             }
         }
 
-        // Kiểm tra biên bản có mục lỗi hay không
         function checkFail(report) {
             return (report.items || []).some(item => 
                 item.resultAql === 'FAIL' || 
@@ -971,7 +1003,6 @@
             );
         }
 
-        // Kiểm tra biên bản có mục lệch số lượng (Thừa/Thiếu) so với Packing List
         function checkDiff(report) {
             return (report.items || []).some(item => 
                 (parseFloat(item.qtyExceed) || 0) > 0 || 
@@ -989,7 +1020,6 @@
             return str;
         }
 
-        // Chuẩn hóa trích xuất ngày YYYY-MM-DD đồng nhất cho cả Bảng, Thẻ, Biểu đồ và Bộ lọc
         function extractReportYMD(info) {
             const rawDate = info.ngayKiem || info.date || info.ngayNhap;
             if (!rawDate) return null;
@@ -1043,7 +1073,6 @@
             }
         }
 
-        // ================= CẬP NHẬT 5 THẺ KPI THÔNG MINH =================
         function updateKPIs(reports) {
             const totalReports = reports.length;
             let totalItems = 0;
@@ -1099,14 +1128,12 @@
             document.getElementById('kpiDiffSub').textContent = `Thừa: ${exceedItemsCount} mục | Thiếu: ${shortItemsCount} mục`;
         }
 
-        // ================= CẬP NHẬT 3 BIỂU ĐỒ TƯƠNG TÁC (CHART.JS) =================
         function updateCharts(filteredReports, reportsForBuyerChart) {
             renderBuyerChart(reportsForBuyerChart || filteredReports);
             renderDefectChart(filteredReports);
             renderTrendChart(filteredReports);
         }
 
-        // Biểu đồ 1: Khách hàng (Buyer) - Tương tác click lọc trực tiếp & làm nổi bật cột đang chọn
         function renderBuyerChart(reports) {
             const selectedBuyer = document.getElementById('buyerFilter').value;
             const buyerMap = {};
@@ -1140,7 +1167,6 @@
             const passCounts = labels.map(l => buyerMap[l].pass);
             const failCounts = labels.map(l => buyerMap[l].fail);
 
-            // Làm mờ nhẹ các cột không được chọn khi đang lọc theo 1 Buyer
             const styleColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#6366f1' : 'rgba(99, 102, 241, 0.25)');
             const passColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#10b981' : 'rgba(16, 185, 129, 0.25)');
             const failColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#ef4444' : 'rgba(239, 68, 68, 0.25)');
@@ -1213,7 +1239,6 @@
             });
         }
 
-        // Biểu đồ 2: Phân tích Chất lượng & Nguyên nhân lỗi (Doughnut)
         function renderDefectChart(reports) {
             let standardPass = 0;
             let aqlDefect = 0;
@@ -1290,7 +1315,6 @@
             });
         }
 
-        // Biểu đồ 3: Xu hướng theo Ngày (Line Chart)
         function renderTrendChart(reports) {
             const dateMap = {};
             reports.forEach(r => {
@@ -1371,6 +1395,7 @@
             currentViewMode = mode;
             document.getElementById('btnTableView').classList.toggle('active', mode === 'table');
             document.getElementById('btnCardView').classList.toggle('active', mode === 'card');
+            document.getElementById('toolbarCard').classList.toggle('card-mode', mode === 'card');
             renderReports(currentDisplayedReports);
         }
 
@@ -1763,7 +1788,6 @@
                 bannerEl.classList.remove('show');
             }
 
-            // Tập dữ liệu khớp Từ khóa + Ngày + Trạng thái (giữ tất cả Buyer để biểu đồ cột Buyer không bị mất các cột khác)
             const baseFiltered = allReports.filter(r => {
                 const info = r.generalInfo || {};
                 const textMatch = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''}`
@@ -1791,7 +1815,6 @@
                 return textMatch && dateMatch && statusMatch;
             });
 
-            // Tập dữ liệu cuối cùng sau khi áp dụng thêm bộ lọc Buyer
             const finalFiltered = baseFiltered.filter(r => {
                 const info = r.generalInfo || {};
                 return selectedBuyer === 'all' || (info.supplier || '').trim() === selectedBuyer;
