@@ -280,11 +280,11 @@
             background: #dbeafe;
         }
 
-        /* ================= FILTER & TOOLBAR ================= */
+       /* ================= FILTER & TOOLBAR ================= */
         .toolbar-card {
             background: var(--bg-card);
             border-radius: var(--radius);
-            padding: 16px 20px;
+            padding: 14px 16px;
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--border-color);
             margin-bottom: 20px;
@@ -294,36 +294,52 @@
         }
         .toolbar-row {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
+            flex-wrap: nowrap;
+            gap: 8px;
             align-items: center;
             justify-content: space-between;
+            width: 100%;
         }
         .filter-group {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            flex-wrap: nowrap;
+            gap: 8px;
             flex: 1;
             align-items: center;
+            min-width: 0;
+        }
+        /* Đồng bộ chiều cao 40px cho toàn bộ thẻ trên thanh công cụ */
+        .search-wrapper input,
+        .filter-select,
+        .date-range-box,
+        .btn-reset,
+        .view-toggle {
+            height: 40px;
+            box-sizing: border-box;
+        }
+        /* Chia đều kích thước các ô tìm kiếm và ô chọn lọc */
+        .search-wrapper,
+        .filter-select {
+            flex: 1 1 0;
+            min-width: 130px;
         }
         .search-wrapper {
             position: relative;
-            flex: 2;
-            min-width: 220px;
         }
         .search-wrapper i {
             position: absolute;
-            left: 14px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
+            font-size: 13px;
         }
         .search-wrapper input {
             width: 100%;
-            padding: 9px 14px 9px 38px;
+            padding: 0 10px 0 34px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            font-size: 13.5px;
+            font-size: 13px;
             font-family: inherit;
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -335,41 +351,47 @@
             box-shadow: 0 0 0 3px rgba(25, 57, 138, 0.12);
         }
         .filter-select {
-            padding: 9px 12px;
+            padding: 0 10px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            font-size: 13.5px;
+            font-size: 13px;
             font-family: inherit;
             background: #fff;
             color: var(--text-main);
             cursor: pointer;
             outline: none;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         /* Date Range Box */
         .date-range-box {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: #f8fafc;
             border: 1px solid var(--border-color);
-            padding: 4px 10px;
+            padding: 0 8px;
             border-radius: 8px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
         .date-input-group {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 12.5px;
+            gap: 4px;
+            font-size: 12px;
             color: var(--text-muted);
             font-weight: 500;
         }
         .date-input-group input[type="date"] {
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 5px 8px;
-            font-size: 13px;
+            padding: 0 6px;
+            height: 28px;
+            font-size: 12px;
             font-family: inherit;
             color: var(--text-main);
             background: #fff;
@@ -381,15 +403,18 @@
             background: #f1f5f9;
             color: #475569;
             border: 1px solid var(--border-color);
-            padding: 9px 14px;
+            padding: 0 12px;
             border-radius: 8px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .btn-reset:hover {
             background: #e2e8f0;
@@ -398,32 +423,34 @@
 
         .view-toggle {
             display: flex;
+            align-items: center;
             background: #f1f5f9;
             padding: 4px;
             border-radius: 8px;
             gap: 4px;
+            flex-shrink: 0;
         }
         .view-btn {
             border: none;
             background: transparent;
-            padding: 7px 12px;
+            padding: 0 10px;
+            height: 30px;
             border-radius: 6px;
             cursor: pointer;
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             transition: all 0.2s;
+            white-space: nowrap;
         }
         .view-btn.active {
             background: #fff;
             color: var(--primary);
             box-shadow: var(--shadow-sm);
         }
-
-        /* ================= STATUS BADGES ================= */
         .badge {
             display: inline-flex;
             align-items: center;
