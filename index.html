@@ -32,6 +32,7 @@
             --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
             --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.06);
             --radius: 10px;
+            --sticky-th-top: 148px;
         }
 
         * { box-sizing: border-box; }
@@ -229,11 +230,6 @@
         .chart-title i {
             color: var(--primary);
         }
-        .chart-subtitle {
-            font-size: 11.5px;
-            color: var(--text-muted);
-            margin-top: 3px;
-        }
         .chart-badge-hint {
             font-size: 11px;
             background: var(--primary-light);
@@ -280,10 +276,10 @@
             background: #dbeafe;
         }
 
-        /* ================= FILTER & TOOLBAR (GHIM CỐ ĐỊNH & CÙNG 1 HÀNG) ================= */
+        /* ================= FILTER & TOOLBAR ================= */
         .toolbar-card {
             position: sticky;
-            top: 76px; /* Ghim cố định ngay dưới thanh Top Navbar */
+            top: 76px;
             z-index: 95;
             background: var(--bg-card);
             border-radius: var(--radius);
@@ -311,7 +307,6 @@
             align-items: center;
             min-width: 0;
         }
-        /* Đồng bộ chiều cao 40px cho toàn bộ thẻ trên thanh công cụ */
         .search-wrapper input,
         .filter-select,
         .date-range-box,
@@ -320,7 +315,6 @@
             height: 40px;
             box-sizing: border-box;
         }
-        /* Chia đều kích thước các ô tìm kiếm và ô chọn lọc */
         .search-wrapper,
         .filter-select {
             flex: 1 1 0;
@@ -469,15 +463,13 @@
         .badge.fail { background: var(--danger-bg); color: #b91c1c; border: 1px solid #fecaca; }
         .badge.diff { background: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; margin-left: 4px; }
 
-        /* ================= TABLE VIEW (GHIM CỐ ĐỊNH TIÊU ĐỀ CỘT) ================= */
+        /* ================= TABLE VIEW ================= */
         .table-container {
             background: var(--bg-card);
             border-radius: var(--radius);
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--border-color);
-            overflow-x: auto;
-            overflow-y: auto;
-            max-height: calc(100vh - 165px); /* Khung cuộn dữ liệu độc lập */
+            overflow: visible;
         }
         .modern-table {
             width: 100%;
@@ -488,8 +480,8 @@
         }
         .modern-table th {
             position: sticky;
-            top: 0; /* Ghim chặt tiêu đề cột ở đỉnh bảng khi cuộn */
-            z-index: 20;
+            top: var(--sticky-th-top, 148px);
+            z-index: 90;
             background: #f8fafc;
             color: var(--text-muted);
             font-weight: 600;
@@ -498,6 +490,7 @@
             letter-spacing: 0.5px;
             padding: 14px 16px;
             border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(15, 23, 42, 0.04);
         }
         .modern-table td {
             padding: 14px 16px;
@@ -592,7 +585,7 @@
         }
         .empty-state i { font-size: 40px; color: #cbd5e1; margin-bottom: 12px; }
 
-        /* ================= GIAO DIỆN BIÊN BẢN A4 NGANG (CÓ LOGO HÒA THỌ) ================= */
+        /* ================= GIAO DIỆN BIÊN BẢN A4 NGANG ================= */
         #detailView { display: none; padding: 20px; }
         .action-bar {
             max-width: 297mm;
@@ -638,12 +631,26 @@
         .aql-table .reject-col { background: #ffcccc; }
         .signature-section { margin-top: 15px; padding-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; text-align: center; font-weight: bold; font-size: 11px; }
         .watermark { font-size: 12px; font-weight: bold; margin-top: 15px; min-height: 60px; color: #333; text-align: center; }
+        .pending-sign { color: #94a3b8; font-weight: normal; font-style: italic; font-size: 11px; }
 
         @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
             body { background: white; padding: 0; margin: 0; }
-            .top-navbar, #listView, .action-bar { display: none !important; }
+            .top-navbar, #listView, .action-bar, .pending-sign { display: none !important; }
             #detailView { display: block !important; padding: 0 !important; }
-            .report-page { width: 297mm; height: 210mm; margin: 0; padding: 10mm; box-shadow: none; page-break-after: always; }
+            .report-page {
+                width: 297mm;
+                min-height: 200mm;
+                height: auto;
+                margin: 0;
+                padding: 10mm;
+                box-shadow: none;
+                page-break-after: always;
+            }
+            .report-page:last-child { page-break-after: auto; }
         }
         @page { size: A4 landscape; margin: 0; }
 
@@ -652,9 +659,13 @@
             .charts-grid { grid-template-columns: 1fr; }
             .toolbar-row, .filter-group { flex-wrap: wrap; }
         }
+        @media (max-width: 992px) {
+            .table-container { overflow-x: auto; }
+            .modern-table th { position: static; }
+        }
         @media (max-width: 768px) {
             .top-navbar { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .toolbar-card { top: 110px; }
+            .toolbar-card { position: static; }
             .action-bar { flex-direction: column; gap: 10px; align-items: stretch; }
             .date-range-box { width: 100%; justify-content: space-between; }
         }
@@ -743,7 +754,7 @@
                 <div class="chart-header">
                     <div>
                         <h3 class="chart-title"><i class="fa-solid fa-chart-column"></i> Thống Kê Khách Hàng</h3>
-                       </div>
+                    </div>
                     <span class="chart-badge-hint"><i class="fa-solid fa-hand-pointer"></i> Nhấn cột để lọc</span>
                 </div>
                 <div class="chart-canvas-wrap">
@@ -755,8 +766,7 @@
             <div class="chart-card">
                 <div class="chart-header">
                     <div>
-                        <h3 class="chart-title"><i class="fa-solid fa-chart-pie"></i>Chất Lượng & Nguyên Nhân Lỗi</h3>
-                       
+                        <h3 class="chart-title"><i class="fa-solid fa-chart-pie"></i> Chất Lượng & Nguyên Nhân Lỗi</h3>
                     </div>
                 </div>
                 <div class="chart-canvas-wrap">
@@ -769,7 +779,6 @@
                 <div class="chart-header">
                     <div>
                         <h3 class="chart-title"><i class="fa-solid fa-chart-line"></i> Xu Hướng Kiểm Hàng Theo Ngày</h3>
-                     
                     </div>
                 </div>
                 <div class="chart-canvas-wrap">
@@ -867,6 +876,7 @@
     <script>
         const REPO_OWNER = "khophulieutp-stack";
         const REPO_NAME = "BAOCAOKIEM";
+        const BRANCH = "main";
         const FILE_PATH = "data/reportHistory.json";
         
         // Logo Hòa Thọ chuẩn Vector nhúng trực tiếp để không bao giờ lỗi ảnh khi in/xem từ xa
@@ -892,29 +902,63 @@
         let currentDisplayedReports = [];
         let currentViewMode = 'table';
 
-        // Biến lưu trữ đối tượng biểu đồ Chart.js
         let buyerChartInstance = null;
         let defectChartInstance = null;
         let trendChartInstance = null;
+
+        // Hàm bảo vệ chuỗi HTML không bị lỗi mất chữ khi có ký tự <, >, &, "
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // Tự động cập nhật vị trí ghim của tiêu đề bảng (th) theo chiều cao thực tế của Navbar + Toolbar
+        function updateStickyTableOffset() {
+            requestAnimationFrame(() => {
+                const navH = document.querySelector('.top-navbar')?.offsetHeight || 76;
+                const toolH = document.querySelector('.toolbar-card')?.offsetHeight || 68;
+                document.documentElement.style.setProperty('--sticky-th-top', `${navH + toolH + 4}px`);
+            });
+        }
+        window.addEventListener('resize', updateStickyTableOffset);
 
         async function fetchReportsFromGitHub() {
             const loadingEl = document.getElementById('loading');
             const listDiv = document.getElementById('reportList');
             loadingEl.style.display = 'block';
+            loadingEl.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 28px; color: var(--primary); margin-bottom: 10px;"></i>
+                <div>Đang đồng bộ dữ liệu báo cáo từ kho ...</div>
+            `;
             listDiv.innerHTML = '';
 
-            const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?_t=${new Date().getTime()}`;
-            const headers = { 'Accept': 'application/vnd.github.raw+json' };
+            const cacheBuster = Date.now();
+            const rawMainUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${FILE_PATH}?_t=${cacheBuster}`;
+            const rawMasterUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/master/${FILE_PATH}?_t=${cacheBuster}`;
+            const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?_t=${cacheBuster}`;
 
             try {
-                const response = await fetch(url, { headers });
-                if (!response.ok) throw new Error('Không thể tải dữ liệu từ GitHub.');
-                allReports = await response.json();
+                let response = await fetch(rawMainUrl);
+                if (!response.ok) {
+                    response = await fetch(rawMasterUrl);
+                }
+                if (!response.ok) {
+                    response = await fetch(apiUrl, { headers: { 'Accept': 'application/vnd.github.raw+json' } });
+                }
+                if (!response.ok) throw new Error('Không thể tải dữ liệu từ kho lưu trữ GitHub.');
+
+                const data = await response.json();
+                allReports = Array.isArray(data) ? data : [];
                 loadingEl.style.display = 'none';
                 populateBuyerDropdown(allReports);
                 filterData();
             } catch (error) {
-                loadingEl.innerHTML = `<span style="color:var(--danger); font-weight:600;"><i class="fa-solid fa-circle-exclamation"></i> Lỗi: ${error.message}</span>`;
+                loadingEl.innerHTML = `<span style="color:var(--danger); font-weight:600;"><i class="fa-solid fa-circle-exclamation"></i> Lỗi: ${escapeHtml(error.message)}</span>`;
             }
         }
 
@@ -936,18 +980,31 @@
         }
 
         function formatDate(dateString) {
-            if (!dateString || dateString.split('-').length !== 3) return dateString || '';
-            const parts = dateString.split('-');
-            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            if (!dateString) return '';
+            const str = String(dateString).trim();
+            if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+                const parts = str.split('-');
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return str;
         }
 
+        // Chuẩn hóa trích xuất ngày YYYY-MM-DD đồng nhất cho cả Bảng, Thẻ, Biểu đồ và Bộ lọc
         function extractReportYMD(info) {
             const rawDate = info.ngayKiem || info.date || info.ngayNhap;
             if (!rawDate) return null;
-            if (/^\d{4}-\d{2}-\d{2}$/.test(rawDate.trim())) {
-                return rawDate.trim();
+            const str = String(rawDate).trim();
+
+            if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+                return str;
             }
-            const parsed = new Date(rawDate);
+
+            const dmyMatch = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+            if (dmyMatch) {
+                return `${dmyMatch[3]}-${dmyMatch[2].padStart(2, '0')}-${dmyMatch[1].padStart(2, '0')}`;
+            }
+
+            const parsed = new Date(str);
             if (!isNaN(parsed.getTime())) {
                 const y = parsed.getFullYear();
                 const m = String(parsed.getMonth() + 1).padStart(2, '0');
@@ -955,6 +1012,11 @@
                 return `${y}-${m}-${d}`;
             }
             return null;
+        }
+
+        function getDisplayDate(info) {
+            const ymd = extractReportYMD(info);
+            return ymd ? formatDate(ymd) : '---';
         }
 
         function populateBuyerDropdown(reports) {
@@ -1021,36 +1083,32 @@
             const passReportsCount = totalReports - failReportsCount;
             const passRate = totalReports > 0 ? Math.round((passReportsCount / totalReports) * 100) : 0;
 
-            // Render KPI 1: Tổng Biên Bản
             document.getElementById('kpiTotal').textContent = totalReports;
             document.getElementById('kpiTotalItems').textContent = `Tổng cộng: ${totalItems} mục phụ liệu`;
 
-            // Render KPI 2: Mã Hàng & Khách Hàng
             document.getElementById('kpiStyles').innerHTML = `${uniqueStyles.size} <span style="font-size:14px; font-weight:600; color:var(--text-muted);">Styles</span>`;
             document.getElementById('kpiBuyers').textContent = `Thuộc ${uniqueBuyers.size} Khách hàng (Buyers)`;
 
-            // Render KPI 3: Lô Hàng Đạt
             document.getElementById('kpiPass').textContent = passReportsCount;
             document.getElementById('kpiPassRate').textContent = `Tỷ lệ đạt: ${passRate}% (${passReportsCount}/${totalReports} lô)`;
 
-            // Render KPI 4: Không Đạt
             document.getElementById('kpiFail').textContent = failReportsCount;
             document.getElementById('kpiFailItems').textContent = `${failItemsCount} mục lỗi cần PKD & NCC xử lý`;
 
-            // Render KPI 5: Lệch SL (Thừa/Thiếu)
             document.getElementById('kpiDiff').innerHTML = `${diffItemsCount} <span style="font-size:14px; font-weight:600; color:var(--text-muted);">mục</span>`;
             document.getElementById('kpiDiffSub').textContent = `Thừa: ${exceedItemsCount} mục | Thiếu: ${shortItemsCount} mục`;
         }
 
         // ================= CẬP NHẬT 3 BIỂU ĐỒ TƯƠNG TÁC (CHART.JS) =================
-        function updateCharts(reports) {
-            renderBuyerChart(reports);
-            renderDefectChart(reports);
-            renderTrendChart(reports);
+        function updateCharts(filteredReports, reportsForBuyerChart) {
+            renderBuyerChart(reportsForBuyerChart || filteredReports);
+            renderDefectChart(filteredReports);
+            renderTrendChart(filteredReports);
         }
 
-        // Biểu đồ 1: Khách hàng (Buyer) - Tương tác click lọc trực tiếp
+        // Biểu đồ 1: Khách hàng (Buyer) - Tương tác click lọc trực tiếp & làm nổi bật cột đang chọn
         function renderBuyerChart(reports) {
+            const selectedBuyer = document.getElementById('buyerFilter').value;
             const buyerMap = {};
             reports.forEach(r => {
                 const info = r.generalInfo || {};
@@ -1082,6 +1140,11 @@
             const passCounts = labels.map(l => buyerMap[l].pass);
             const failCounts = labels.map(l => buyerMap[l].fail);
 
+            // Làm mờ nhẹ các cột không được chọn khi đang lọc theo 1 Buyer
+            const styleColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#6366f1' : 'rgba(99, 102, 241, 0.25)');
+            const passColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#10b981' : 'rgba(16, 185, 129, 0.25)');
+            const failColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#ef4444' : 'rgba(239, 68, 68, 0.25)');
+
             const ctx = document.getElementById('buyerChart').getContext('2d');
             if (buyerChartInstance) buyerChartInstance.destroy();
 
@@ -1093,19 +1156,19 @@
                         {
                             label: 'Số Mã hàng (Style)',
                             data: styleCounts,
-                            backgroundColor: '#6366f1',
+                            backgroundColor: styleColors,
                             borderRadius: 5
                         },
                         {
                             label: 'Biên bản Đạt (Pass)',
                             data: passCounts,
-                            backgroundColor: '#10b981',
+                            backgroundColor: passColors,
                             borderRadius: 5
                         },
                         {
                             label: 'Không Đạt (Fail)',
                             data: failCounts,
-                            backgroundColor: '#ef4444',
+                            backgroundColor: failColors,
                             borderRadius: 5
                         }
                     ]
@@ -1118,7 +1181,6 @@
                             const index = elements[0].index;
                             const clickedBuyer = labels[index];
                             const buyerSelect = document.getElementById('buyerFilter');
-                            // Toggle nếu nhấn lại đúng khách hàng đang lọc
                             if (buyerSelect.value === clickedBuyer) {
                                 buyerSelect.value = 'all';
                             } else {
@@ -1134,7 +1196,7 @@
                         },
                         tooltip: {
                             callbacks: {
-                                footer: () => '💡 Nhấn vào cột để lọc danh sách theo Khách hàng này'
+                                footer: () => '💡 Nhấn vào cột để lọc / bỏ lọc Khách hàng này'
                             }
                         }
                     },
@@ -1193,11 +1255,11 @@
                     datasets: [{
                         data: [standardPass, aqlDefect, metalDefect, sampleDefect, qtyDiscrepancy],
                         backgroundColor: [
-                            '#10b981', // Đạt chuẩn
-                            '#ef4444', // Lỗi AQL
-                            '#dc2626', // Lỗi Dò kim
-                            '#8b5cf6', // Lỗi Mẫu PL
-                            '#f59e0b'  // Lệch SL
+                            '#10b981',
+                            '#ef4444',
+                            '#dc2626',
+                            '#8b5cf6',
+                            '#f59e0b'
                         ],
                         borderWidth: 2,
                         borderColor: '#ffffff'
@@ -1312,10 +1374,10 @@
             renderReports(currentDisplayedReports);
         }
 
-        function renderReports(reports) {
+        function renderReports(reports, reportsForBuyerChart) {
             currentDisplayedReports = reports;
             updateKPIs(reports);
-            updateCharts(reports);
+            updateCharts(reports, reportsForBuyerChart);
 
             const listDiv = document.getElementById('reportList');
             listDiv.innerHTML = '';
@@ -1327,6 +1389,7 @@
                         <h3>Không tìm thấy biên bản nào phù hợp</h3>
                         <p>Hãy thử điều chỉnh lại điều kiện lọc hoặc bấm nút "Đặt lại" trên thanh công cụ.</p>
                     </div>`;
+                updateStickyTableOffset();
                 return;
             }
 
@@ -1342,6 +1405,8 @@
                     showReportDetail(currentDisplayedReports[index]);
                 });
             });
+
+            updateStickyTableOffset();
         }
 
         function renderTableView(reports, container) {
@@ -1351,7 +1416,7 @@
                 const isFail = checkFail(report);
                 const hasDiff = checkDiff(report);
                 const itemCount = (report.items || []).length;
-                const dateStr = info.date ? new Date(info.date).toLocaleDateString('vi-VN') : (formatDate(info.ngayKiem) || '---');
+                const dateStr = getDisplayDate(info);
                 const statusBadge = isFail 
                     ? '<span class="badge fail"><i class="fa-solid fa-xmark"></i> KHÔNG ĐẠT</span>' 
                     : '<span class="badge pass"><i class="fa-solid fa-check"></i> ĐẠT</span>';
@@ -1362,12 +1427,12 @@
                 rowsHtml += `
                     <tr class="${isFail ? 'row-fail' : ''}">
                         <td><strong>#${idx + 1}</strong></td>
-                        <td>${dateStr}</td>
-                        <td><strong>${info.supplier || '---'}</strong></td>
-                        <td><strong style="color: var(--primary);">${info.style || '---'}</strong></td>
-                        <td><span class="po-tag">${info.po || '---'}</span></td>
+                        <td>${escapeHtml(dateStr)}</td>
+                        <td><strong>${escapeHtml(info.supplier || '---')}</strong></td>
+                        <td><strong style="color: var(--primary);">${escapeHtml(info.style || '---')}</strong></td>
+                        <td><span class="po-tag">${escapeHtml(info.po || '---')}</span></td>
                         <td style="text-align:center;"><b>${itemCount}</b> mục</td>
-                        <td>${info.inspector || '---'}</td>
+                        <td>${escapeHtml(info.inspector || '---')}</td>
                         <td>${statusBadge}${diffBadge}</td>
                         <td style="text-align:right;">
                             <button type="button" class="btn btn-detail" data-index="${idx}">
@@ -1409,7 +1474,7 @@
                 const isFail = checkFail(report);
                 const hasDiff = checkDiff(report);
                 const itemCount = (report.items || []).length;
-                const dateStr = info.date ? new Date(info.date).toLocaleDateString('vi-VN') : (formatDate(info.ngayKiem) || '---');
+                const dateStr = getDisplayDate(info);
                 const statusBadge = isFail 
                     ? '<span class="badge fail"><i class="fa-solid fa-xmark"></i> KHÔNG ĐẠT</span>' 
                     : '<span class="badge pass"><i class="fa-solid fa-check"></i> ĐẠT</span>';
@@ -1423,15 +1488,15 @@
                     <div>
                         <div class="card-header">
                             <div>
-                                <h3 class="card-style">${info.style || 'Chưa rõ Style'}</h3>
-                                <div class="card-supplier"><i class="fa-regular fa-building"></i> ${info.supplier || '---'}</div>
+                                <h3 class="card-style">${escapeHtml(info.style || 'Chưa rõ Style')}</h3>
+                                <div class="card-supplier"><i class="fa-regular fa-building"></i> ${escapeHtml(info.supplier || '---')}</div>
                             </div>
                             <div>${statusBadge}${diffBadge}</div>
                         </div>
                         <div class="card-body" style="margin-top: 12px;">
-                            <div><span>Số PO</span><strong>${info.po || '---'}</strong></div>
-                            <div><span>Ngày tạo</span><strong>${dateStr}</strong></div>
-                            <div><span>Người kiểm</span><strong>${info.inspector || '---'}</strong></div>
+                            <div><span>Số PO</span><strong>${escapeHtml(info.po || '---')}</strong></div>
+                            <div><span>Ngày kiểm/tạo</span><strong>${escapeHtml(dateStr)}</strong></div>
+                            <div><span>Người kiểm</span><strong>${escapeHtml(info.inspector || '---')}</strong></div>
                             <div><span>Số danh mục</span><strong>${itemCount} phụ liệu</strong></div>
                         </div>
                     </div>
@@ -1474,20 +1539,20 @@
             if (!report || !report.items) return;
             const info = report.generalInfo || {};
             document.getElementById('detailPreviewTitle').innerHTML = `
-                <i class="fa-regular fa-file-lines"></i> Style: <b style="color:var(--primary)">${info.style || ''}</b> | PO: <b>${info.po || ''}</b> | Khách hàng: <b>${info.supplier || ''}</b>
+                <i class="fa-regular fa-file-lines"></i> Style: <b style="color:var(--primary)">${escapeHtml(info.style || '')}</b> | PO: <b>${escapeHtml(info.po || '')}</b> | Khách hàng: <b>${escapeHtml(info.supplier || '')}</b>
             `;
 
             const isUncountable = item => {
                 const unit = (item.donVi || '').toLowerCase().trim();
-                return unit === 'm' || unit === 'yard' || unit === 'mét';
+                return ['m', 'mét', 'met', 'yard', 'yards', 'yd', 'yds'].includes(unit);
             };
             const countableItems = report.items.filter(item => !isUncountable(item));
             const uncountableItems = report.items.filter(item => isUncountable(item));
             const renderArea = document.getElementById('reportRenderArea');
             renderArea.innerHTML = '';
 
-            if (countableItems.length > 0) renderArea.innerHTML += buildCountableHTML(report.generalInfo, countableItems);
-            if (uncountableItems.length > 0) renderArea.innerHTML += buildUncountableHTML(report.generalInfo, uncountableItems);
+            if (countableItems.length > 0) renderArea.innerHTML += buildCountableHTML(info, countableItems);
+            if (uncountableItems.length > 0) renderArea.innerHTML += buildUncountableHTML(info, uncountableItems);
 
             document.getElementById('listView').style.display = 'none';
             document.getElementById('detailView').style.display = 'block';
@@ -1497,38 +1562,48 @@
         function closeDetail() {
             document.getElementById('detailView').style.display = 'none';
             document.getElementById('listView').style.display = 'block';
+            updateStickyTableOffset();
+        }
+
+        function calcActualQty(slNhap, qtyExceed, qtyShort) {
+            const total = (parseFloat(slNhap) || 0) + (parseFloat(qtyExceed) || 0) - (parseFloat(qtyShort) || 0);
+            return Number(total.toFixed(2));
         }
 
         function buildCountableHTML(generalInfo, items) {
             let overallFail = false;
             let rowsHtml = '';
             items.forEach(item => {
-                const slThucNhan = (parseInt(item.slNhap, 10) || 0) + (parseInt(item.qtyExceed, 10) || 0) - (parseInt(item.qtyShort, 10) || 0);
-                if (item.resultAql === 'FAIL' || item.resultSample === 'FAIL' || (item.resultMetal && item.resultMetal === 'FAIL')) overallFail = true;
+                const slThucNhan = calcActualQty(item.slNhap, item.qtyExceed, item.qtyShort);
+                if (item.resultAql === 'FAIL' || item.resultSample === 'FAIL' || item.resultMetal === 'FAIL') overallFail = true;
                 rowsHtml += `
                     <tr>
-                        <td>${item.loai || ''}_${item.mau || ''}_${item.tsSize || ''}</td>
-                        <td>${item.donVi || ''}</td><td>${item.slNhap || '0'}</td><td>${slThucNhan}</td>
-                        <td>${item.aqlSampleSize || '0'}</td><td>${item.acceptedAql || '0'}</td><td>${item.defectAql || '0'}</td>
-                        <td>${item.qtyExceed || '0'}</td><td>${item.qtyShort || '0'}</td><td>${item.metalSampleSize || ''}</td>
-                        <td>${item.acceptedMetal || ''}</td><td>${item.defectMetal || ''}</td><td>${item.resultSample || ''}</td><td>${item.remark || ''}</td>
+                        <td>${escapeHtml(item.loai || '')}_${escapeHtml(item.mau || '')}_${escapeHtml(item.tsSize || '')}</td>
+                        <td>${escapeHtml(item.donVi || '')}</td><td>${escapeHtml(item.slNhap || '0')}</td><td>${slThucNhan}</td>
+                        <td>${escapeHtml(item.aqlSampleSize || '0')}</td><td>${escapeHtml(item.acceptedAql || '0')}</td><td>${escapeHtml(item.defectAql || '0')}</td>
+                        <td>${escapeHtml(item.qtyExceed || '0')}</td><td>${escapeHtml(item.qtyShort || '0')}</td><td>${escapeHtml(item.metalSampleSize || '')}</td>
+                        <td>${escapeHtml(item.acceptedMetal || '')}</td><td>${escapeHtml(item.defectMetal || '')}</td><td>${escapeHtml(item.resultSample || '')}</td><td>${escapeHtml(item.remark || '')}</td>
                     </tr>`;
             });
             const passHtml = overallFail ? '&#9744; Đạt' : '&#9745; <span style="color:green; font-weight:bold;">Đạt</span>';
             const failHtml = overallFail ? '&#9745; <span style="color:red; font-weight:bold;">Không đạt</span>' : '&#9744; Không đạt';
             const handlingText = overallFail ? 'PKD làm việc với NCC để xác nhận và xử lý lô hàng trên.' : 'Đưa vào lưu trữ chờ sản xuất.';
             const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
+            const warehouseKeeperSign = generalInfo.daDuyet
+                ? escapeHtml(generalInfo.nguoiDuyet || 'Lê Đức Văn')
+                : '<span class="pending-sign">(Chờ duyệt)</span>';
+
             return `
             <div class="report-page">
                 ${getCompanyHeaderHTML('BIÊN BẢN KIỂM TRA PHỤ LIỆU ĐẾM ĐƯỢC', 'COUNTABLE ACCESSORIES INSPECTION REPORT', 'CL-BM-PL-01')}
                 <div class="info-grid">
-                    <div><label>Buyer (Kh.hàng):</label> <span>${generalInfo.supplier || ''}</span></div>
-                    <div><label>PO#:</label> <span>${generalInfo.po || ''}</span></div>
-                    <div><label>Ngày nhập:</label> <span>${formatDate(generalInfo.ngayNhap)}</span></div>
-                    <div><label>Style (Mã hàng):</label> <span>${generalInfo.style || ''}</span></div>
-                    <div><label>Order q'ty (SL đơn hàng):</label> <span></span></div>
-                    <div><label>Ngày kiểm tra:</label> <span>${formatDate(generalInfo.ngayKiem)}</span></div>
-                    <div></div><div></div><div><label>Inspector (Người kiểm):</label> <span>${generalInfo.inspector || ''}</span></div>
+                    <div><label>Buyer (Kh.hàng):</label> <span>${escapeHtml(generalInfo.supplier || '')}</span></div>
+                    <div><label>PO#:</label> <span>${escapeHtml(generalInfo.po || '')}</span></div>
+                    <div><label>Ngày nhập:</label> <span>${escapeHtml(formatDate(generalInfo.ngayNhap))}</span></div>
+                    <div><label>Style (Mã hàng):</label> <span>${escapeHtml(generalInfo.style || '')}</span></div>
+                    <div><label>Order q'ty (SL đơn hàng):</label> <span>${escapeHtml(generalInfo.orderQty || '')}</span></div>
+                    <div><label>Ngày kiểm tra:</label> <span>${escapeHtml(formatDate(generalInfo.ngayKiem))}</span></div>
+                    <div></div><div></div><div><label>Inspector (Người kiểm):</label> <span>${escapeHtml(generalInfo.inspector || '')}</span></div>
                 </div>
                 <table class="report-table">
                     <thead>
@@ -1545,8 +1620,17 @@
                         <p style="margin-top:5px;"><strong>Hướng xử lý:</strong> <span>${handlingText}</span></p>
                         <div class="notes-section"><p><i>(1): Số lượng kiểm lấy theo bảng AQL Kiểm Phụ Liệu bên góc phải của form này</i></p><p><i>(2): Dò kim 10% số lượng nhập kho đối với phụ liệu kim loại...</i></p></div>
                         <div class="signature-section">
-                            <div><p>Quản lý kho/Warehouse-keeper</p><div class="watermark"><p>${generalInfo.daDuyet ? (generalInfo.nguoiDuyet || 'Lê Đức Văn') : 'Lê Đức Văn'}</p><p style="font-weight:normal; font-size:10px;">${generalInfo.daDuyet ? approveDate : ''}</p></div></div>
-                            <div><p>Người kiểm tra/Inspector</p><div class="watermark"><p>${generalInfo.inspector || ''}</p></div></div>
+                            <div>
+                                <p>Quản lý kho/Warehouse-keeper</p>
+                                <div class="watermark">
+                                    <p>${warehouseKeeperSign}</p>
+                                    <p style="font-weight:normal; font-size:10px;">${generalInfo.daDuyet ? escapeHtml(approveDate) : ''}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p>Người kiểm tra/Inspector</p>
+                                <div class="watermark"><p>${escapeHtml(generalInfo.inspector || '')}</p></div>
+                            </div>
                         </div>
                     </div>
                     <div class="aql-container">
@@ -1554,21 +1638,21 @@
                         <table class="aql-table">
                             <thead><tr><th>LOT SIZE</th><th>CODE</th><th>SAMPLE</th><th>ACCEPT</th><th>REJECT</th></tr></thead>
                             <tbody>
-                                <tr><td>2 -> 8</td><td>A</td><td>2</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>9 -> 15</td><td>A</td><td>2</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>16 -> 25</td><td>B</td><td>3</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>26 -> 50</td><td>C</td><td>5</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>51 -> 90</td><td>C</td><td>5</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>91 -> 150</td><td>D</td><td>8</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>151 -> 280</td><td>E</td><td>13</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>281 -> 500</td><td>F</td><td>20</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>501 -> 1,200</td><td>G</td><td>32</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>1,201 -> 3,200</td><td>H</td><td>50</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>3,201 -> 10,000</td><td>J</td><td>80</td><td>1</td><td class="reject-col">2</td></tr>
-                                <tr><td>10,001 -> 35,000</td><td>K</td><td>125</td><td>2</td><td class="reject-col">3</td></tr>
-                                <tr><td>35,001 -> 150,000</td><td>L</td><td>200</td><td>3</td><td class="reject-col">4</td></tr>
-                                <tr><td>150,001 -> 500,000</td><td>M</td><td>315</td><td>5</td><td class="reject-col">6</td></tr>
-                                <tr><td>500,000 -> over</td><td>N</td><td>500</td><td>7</td><td class="reject-col">8</td></tr>
+                                <tr><td>2 -&gt; 8</td><td>A</td><td>2</td><td>0</td><td class="reject-col">1</td></tr>
+                                <tr><td>9 -&gt; 15</td><td>A</td><td>2</td><td>0</td><td class="reject-col">1</td></tr>
+                                <tr><td>16 -&gt; 25</td><td>B</td><td>3</td><td>0</td><td class="reject-col">1</td></tr>
+                                <tr><td>26 -&gt; 50</td><td>C</td><td>5</td><td>0</td><td class="reject-col">1</td></tr>
+                                <tr><td>51 -&gt; 90</td><td>C</td><td>5</td><td>0</td><td class="reject-col">1</td></tr>
+                                <tr><td>91 -&gt; 150</td><td>D</td><td>8</td><td>0</td><td class="reject-col">1</td></tr>
+                                <tr><td>151 -&gt; 280</td><td>E</td><td>13</td><td>0</td><td class="reject-col">1</td></tr>
+                                <tr><td>281 -&gt; 500</td><td>F</td><td>20</td><td>0</td><td class="reject-col">1</td></tr>
+                                <tr><td>501 -&gt; 1,200</td><td>G</td><td>32</td><td>0</td><td class="reject-col">1</td></tr>
+                                <tr><td>1,201 -&gt; 3,200</td><td>H</td><td>50</td><td>0</td><td class="reject-col">1</td></tr>
+                                <tr><td>3,201 -&gt; 10,000</td><td>J</td><td>80</td><td>1</td><td class="reject-col">2</td></tr>
+                                <tr><td>10,001 -&gt; 35,000</td><td>K</td><td>125</td><td>2</td><td class="reject-col">3</td></tr>
+                                <tr><td>35,001 -&gt; 150,000</td><td>L</td><td>200</td><td>3</td><td class="reject-col">4</td></tr>
+                                <tr><td>150,001 -&gt; 500,000</td><td>M</td><td>315</td><td>5</td><td class="reject-col">6</td></tr>
+                                <tr><td>500,000 -&gt; over</td><td>N</td><td>500</td><td>7</td><td class="reject-col">8</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1580,31 +1664,35 @@
             let overallFail = false;
             let rowsHtml = '';
             items.forEach(item => {
-                const slThucNhan = (parseInt(item.slNhap, 10) || 0) + (parseInt(item.qtyExceed, 10) || 0) - (parseInt(item.qtyShort, 10) || 0);
+                const slThucNhan = calcActualQty(item.slNhap, item.qtyExceed, item.qtyShort);
                 if (item.resultAql === 'FAIL' || item.resultSample === 'FAIL') overallFail = true;
                 rowsHtml += `
                     <tr>
-                        <td>${item.loai || ''} - ${item.mau || ''} - ${item.tsSize || ''}</td>
-                        <td>${item.donVi || ''}</td><td>${item.slNhap || '0'}</td><td>${slThucNhan}</td>
-                        <td>${item.aqlSampleSize || '0'}</td><td>${item.acceptedAql || '0'}</td><td>${item.defectAql || '0'}</td>
-                        <td>${item.qtyExceed || '0'}</td><td>${item.qtyShort || '0'}</td><td>${item.resultSample || ''}</td><td>${item.remark || ''}</td>
+                        <td>${escapeHtml(item.loai || '')} - ${escapeHtml(item.mau || '')} - ${escapeHtml(item.tsSize || '')}</td>
+                        <td>${escapeHtml(item.donVi || '')}</td><td>${escapeHtml(item.slNhap || '0')}</td><td>${slThucNhan}</td>
+                        <td>${escapeHtml(item.aqlSampleSize || '0')}</td><td>${escapeHtml(item.acceptedAql || '0')}</td><td>${escapeHtml(item.defectAql || '0')}</td>
+                        <td>${escapeHtml(item.qtyExceed || '0')}</td><td>${escapeHtml(item.qtyShort || '0')}</td><td>${escapeHtml(item.resultSample || '')}</td><td>${escapeHtml(item.remark || '')}</td>
                     </tr>`;
             });
             const passHtml = overallFail ? '&#9744; Đạt' : '&#9745; <span style="color:green; font-weight:bold;">Đạt</span>';
             const failHtml = overallFail ? '&#9745; <span style="color:red; font-weight:bold;">Không đạt</span>' : '&#9744; Không đạt';
             const handlingText = overallFail ? 'PKD làm việc với NCC để xác nhận và xử lý lô hàng trên.' : 'Đưa vào lưu trữ chờ sản xuất.';
             const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
+            const warehouseKeeperSign = generalInfo.daDuyet
+                ? escapeHtml(generalInfo.nguoiDuyet || 'Lê Đức Văn')
+                : '<span class="pending-sign">(Chờ duyệt)</span>';
+
             return `
             <div class="report-page">
                 ${getCompanyHeaderHTML('BIÊN BẢN KIỂM TRA PHỤ LIỆU', '(LOẠI PHỤ LIỆU KHÔNG ĐẾM ĐƯỢC)', 'CL-BM-PL-02')}
                 <div class="info-grid">
-                    <div><label>Buyer (Kh.hàng):</label> <span>${generalInfo.supplier || ''}</span></div>
-                    <div><label>PO#:</label> <span>${generalInfo.po || ''}</span></div>
-                    <div><label>Ngày nhập:</label> <span>${formatDate(generalInfo.ngayNhap)}</span></div>
-                    <div><label>Style (Mã hàng):</label> <span>${generalInfo.style || ''}</span></div>
-                    <div><label>Order q'ty (SL đơn hàng):</label> <span></span></div>
-                    <div><label>Ngày kiểm tra:</label> <span>${formatDate(generalInfo.ngayKiem)}</span></div>
-                    <div></div><div></div><div><label>Inspector (Người kiểm):</label> <span>${generalInfo.inspector || ''}</span></div>
+                    <div><label>Buyer (Kh.hàng):</label> <span>${escapeHtml(generalInfo.supplier || '')}</span></div>
+                    <div><label>PO#:</label> <span>${escapeHtml(generalInfo.po || '')}</span></div>
+                    <div><label>Ngày nhập:</label> <span>${escapeHtml(formatDate(generalInfo.ngayNhap))}</span></div>
+                    <div><label>Style (Mã hàng):</label> <span>${escapeHtml(generalInfo.style || '')}</span></div>
+                    <div><label>Order q'ty (SL đơn hàng):</label> <span>${escapeHtml(generalInfo.orderQty || '')}</span></div>
+                    <div><label>Ngày kiểm tra:</label> <span>${escapeHtml(formatDate(generalInfo.ngayKiem))}</span></div>
+                    <div></div><div></div><div><label>Inspector (Người kiểm):</label> <span>${escapeHtml(generalInfo.inspector || '')}</span></div>
                 </div>
                 <table class="report-table">
                     <thead>
@@ -1623,8 +1711,17 @@
                         <p><i>(2): Kiểm chất lượng 10% theo số lượng thực nhận. Yêu cầu: số lượng lỗi dưới 3%.</i></p>
                     </div>
                     <div class="signature-section">
-                        <div><p>Quản lý kho/Warehouse-keeper</p><div class="watermark"><p>${generalInfo.daDuyet ? (generalInfo.nguoiDuyet || 'Lê Đức Văn') : ''}</p><p style="font-weight:normal; font-size:10px;">${generalInfo.daDuyet ? approveDate : ''}</p></div></div>
-                        <div><p>Người kiểm tra/Inspector</p><div class="watermark"><p>${generalInfo.inspector || ''}</p></div></div>
+                        <div>
+                            <p>Quản lý kho/Warehouse-keeper</p>
+                            <div class="watermark">
+                                <p>${warehouseKeeperSign}</p>
+                                <p style="font-weight:normal; font-size:10px;">${generalInfo.daDuyet ? escapeHtml(approveDate) : ''}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p>Người kiểm tra/Inspector</p>
+                            <div class="watermark"><p>${escapeHtml(generalInfo.inspector || '')}</p></div>
+                        </div>
                     </div>
                 </div>
             </div>`;
@@ -1657,7 +1754,6 @@
             const toDateVal = document.getElementById('toDate').value;
             const status = document.getElementById('statusFilter').value;
 
-            // Hiển thị banner khi đang lọc theo một Khách hàng cụ thể
             const bannerEl = document.getElementById('activeBuyerBanner');
             const bannerNameEl = document.getElementById('activeBuyerName');
             if (selectedBuyer !== 'all') {
@@ -1667,13 +1763,12 @@
                 bannerEl.classList.remove('show');
             }
 
-            const filtered = allReports.filter(r => {
+            // Tập dữ liệu khớp Từ khóa + Ngày + Trạng thái (giữ tất cả Buyer để biểu đồ cột Buyer không bị mất các cột khác)
+            const baseFiltered = allReports.filter(r => {
                 const info = r.generalInfo || {};
                 const textMatch = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''}`
                     .toLowerCase()
                     .includes(keyword);
-
-                const buyerMatch = selectedBuyer === 'all' || (info.supplier || '').trim() === selectedBuyer;
 
                 let dateMatch = true;
                 if (fromDateVal || toDateVal) {
@@ -1693,10 +1788,16 @@
                 if (status === 'fail') statusMatch = isFail;
                 if (status === 'diff') statusMatch = hasDiff;
 
-                return textMatch && buyerMatch && dateMatch && statusMatch;
+                return textMatch && dateMatch && statusMatch;
             });
 
-            renderReports(filtered);
+            // Tập dữ liệu cuối cùng sau khi áp dụng thêm bộ lọc Buyer
+            const finalFiltered = baseFiltered.filter(r => {
+                const info = r.generalInfo || {};
+                return selectedBuyer === 'all' || (info.supplier || '').trim() === selectedBuyer;
+            });
+
+            renderReports(finalFiltered, baseFiltered);
         }
 
         fetchReportsFromGitHub();
