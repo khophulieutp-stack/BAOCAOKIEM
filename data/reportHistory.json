@@ -4,6 +4,48 @@
       "supplier": "DCL",
       "po": "R49372A3741",
       "style": "341410-SS27",
+      "date": "2026-11-02T06:39:15.367Z",
+      "ngayNhap": "2026-10-27",
+      "ngayKiem": "2026-10-28",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "341410-SS27",
+        "po": "R49372A3741",
+        "loai": "TRANG TRÍ DÂY",
+        "mau": "G20A BLUE",
+        "tsSize": "",
+        "donVi": "PCS",
+        "slNhap": "20364.0",
+        "ngay": "27/10",
+        "ngayNhap": "2026-10-27",
+        "ngayKiem": "2026-10-28",
+        "aqlSampleSize": "125",
+        "acceptedAql": "125",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1567
+  },
+  {
+    "generalInfo": {
+      "supplier": "DCL",
+      "po": "R49372A3741",
+      "style": "341410-SS27",
       "date": "2026-11-02T06:39:03.736Z",
       "ngayNhap": "2026-10-27",
       "ngayKiem": "2026-10-28",
