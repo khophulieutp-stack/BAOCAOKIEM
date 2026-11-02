@@ -2,14 +2,14 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Dashboard Báo Cáo Kho Phụ Liệu - Hòa Thọ Triệu Phong</title>
     <!-- Google Fonts & FontAwesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <style>
         :root {
             --primary: #19398a;
@@ -36,21 +36,25 @@
             --sticky-th-top: 144px;
         }
 
-        * { box-sizing: border-box; }
-        body {
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-body);
             margin: 0;
             padding: 0;
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         /* ================= TOP NAVBAR ================= */
         .top-navbar {
             background: linear-gradient(135deg, #0f172a 0%, #19398a 100%);
             color: #fff;
-            padding: 12px 28px;
+            padding: 12px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -59,11 +63,14 @@
             top: 0;
             z-index: 100;
         }
+
         .brand-box {
             display: flex;
             align-items: center;
             gap: 15px;
+            min-width: 0;
         }
+
         .brand-logo-wrap {
             width: 52px;
             height: 52px;
@@ -76,27 +83,33 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
             flex-shrink: 0;
         }
+
         .brand-logo-wrap img {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
+
         .brand-title h1 {
             margin: 0;
             font-size: 18px;
             font-weight: 700;
             letter-spacing: 0.3px;
         }
+
         .brand-title p {
             margin: 3px 0 0 0;
             font-size: 12px;
             color: #cbd5e1;
         }
+
         .nav-actions {
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-shrink: 0;
         }
+
         .btn-refresh {
             background: rgba(255,255,255,0.12);
             color: #fff;
@@ -110,23 +123,38 @@
             align-items: center;
             gap: 8px;
             transition: all 0.2s;
+            white-space: nowrap;
         }
-        .btn-refresh:hover { background: rgba(255,255,255,0.22); }
 
-        /* ================= DASHBOARD CONTAINER ================= */
+        .btn-refresh:hover {
+            background: rgba(255,255,255,0.22);
+        }
+
+        /* ================= DASHBOARD CONTAINER (FULL 100% MÀN HÌNH LỚN) ================= */
         .dashboard-container {
-            max-width: 1440px;
-            margin: 22px auto;
-            padding: 0 20px 40px 20px;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 16px 24px 40px 24px;
+        }
+
+        /* KHU VỰC TỔNG QUAN KPI + BIỂU ĐỒ */
+        .kpi-overview-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+            width: 100%;
         }
 
         /* ================= 5 SMART KPI CARDS ================= */
         .kpi-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(5, minmax(0, 1fr));
             gap: 16px;
-            margin-bottom: 20px;
+            width: 100%;
         }
+
         .kpi-card {
             background: var(--bg-card);
             border-radius: var(--radius);
@@ -140,7 +168,9 @@
             transition: transform 0.2s, box-shadow 0.2s;
             position: relative;
             overflow: hidden;
+            min-width: 0;
         }
+
         .kpi-card::after {
             content: "";
             position: absolute;
@@ -149,6 +179,7 @@
             width: 100%;
             height: 3px;
         }
+
         .kpi-card.total::after { background: var(--primary); }
         .kpi-card.styles::after { background: var(--indigo); }
         .kpi-card.pass::after { background: var(--success); }
@@ -159,6 +190,12 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
+
+        .kpi-info {
+            min-width: 0;
+            flex: 1;
+        }
+
         .kpi-info h4 {
             margin: 0 0 6px 0;
             font-size: 12px;
@@ -167,6 +204,7 @@
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
+
         .kpi-info .kpi-value {
             font-size: 26px;
             font-weight: 700;
@@ -174,12 +212,14 @@
             margin: 0;
             line-height: 1.15;
         }
+
         .kpi-info .kpi-sub {
             font-size: 12px;
             color: var(--text-muted);
             margin-top: 6px;
             font-weight: 500;
         }
+
         .kpi-icon {
             width: 46px;
             height: 46px;
@@ -190,6 +230,7 @@
             font-size: 20px;
             flex-shrink: 0;
         }
+
         .kpi-card.total .kpi-icon { background: var(--primary-light); color: var(--primary); }
         .kpi-card.styles .kpi-icon { background: var(--indigo-bg); color: var(--indigo); }
         .kpi-card.pass .kpi-icon { background: var(--success-bg); color: var(--success); }
@@ -201,8 +242,9 @@
             display: grid;
             grid-template-columns: 1.35fr 1fr 1.35fr;
             gap: 16px;
-            margin-bottom: 20px;
+            width: 100%;
         }
+
         .chart-card {
             background: var(--bg-card);
             border-radius: var(--radius);
@@ -211,14 +253,19 @@
             border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
+            min-width: 0;
+            min-height: 0;
         }
+
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 8px;
             margin-bottom: 12px;
+            flex-shrink: 0;
         }
+
         .chart-title {
             font-size: 14px;
             font-weight: 700;
@@ -228,9 +275,11 @@
             align-items: center;
             gap: 7px;
         }
+
         .chart-title i {
             color: var(--primary);
         }
+
         .chart-badge-hint {
             font-size: 11px;
             background: var(--primary-light);
@@ -240,10 +289,68 @@
             font-weight: 600;
             white-space: nowrap;
         }
+
         .chart-canvas-wrap {
             position: relative;
-            height: 250px;
+            height: 260px;
             width: 100%;
+            flex: 1;
+            min-height: 240px;
+        }
+
+        /* MÀN HÌNH LỚN: KHU VỰC KPI CHIẾM TRỌN 100% KHUNG NHÌN KHI MỞ WEBAPP */
+        @media (min-width: 1025px) {
+            .kpi-overview-section {
+                height: calc(100vh - var(--sticky-toolbar-top, 76px) - 32px);
+                min-height: 540px;
+                display: grid;
+                grid-template-rows: auto 1fr;
+                gap: 18px;
+                margin-bottom: 22px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+                gap: 18px;
+            }
+
+            .kpi-card {
+                padding: 22px 20px;
+            }
+
+            .kpi-info h4 {
+                font-size: 12.5px;
+            }
+
+            .kpi-info .kpi-value {
+                font-size: 32px;
+            }
+
+            .kpi-info .kpi-sub {
+                font-size: 13px;
+                margin-top: 8px;
+            }
+
+            .kpi-icon {
+                width: 52px;
+                height: 52px;
+                font-size: 22px;
+            }
+
+            .charts-grid {
+                height: 100%;
+                min-height: 0;
+                gap: 18px;
+            }
+
+            .chart-card {
+                height: 100%;
+            }
+
+            .chart-canvas-wrap {
+                height: 100%;
+                min-height: 0;
+            }
         }
 
         /* Active Buyer Filter Banner */
@@ -258,10 +365,14 @@
             border-radius: 8px;
             font-size: 13px;
             font-weight: 500;
+            gap: 10px;
+            flex-wrap: wrap;
         }
+
         .active-buyer-banner.show {
             display: flex;
         }
+
         .btn-clear-buyer {
             background: #fff;
             border: 1px solid #93c5fd;
@@ -273,11 +384,12 @@
             cursor: pointer;
             transition: all 0.15s;
         }
+
         .btn-clear-buyer:hover {
             background: #dbeafe;
         }
 
-        /* ================= FILTER & TOOLBAR (KHỚP KHÍT KHOẢNG HỞ = 0 VỚI TIÊU ĐỀ BẢNG) ================= */
+        /* ================= FILTER & TOOLBAR ================= */
         .toolbar-card {
             position: sticky;
             top: var(--sticky-toolbar-top, 76px);
@@ -286,18 +398,20 @@
             border-radius: var(--radius) var(--radius) 0 0;
             padding: 14px 16px;
             border: 1px solid var(--border-color);
-            border-bottom: border-bottom: none;
-            margin-bottom: 0; /* Khoảng hở = 0 so với bảng phía dưới */
+            border-bottom: none;
+            margin-bottom: 0;
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
-        /* Khi chuyển sang chế độ xem Dạng Thẻ thì bo tròn lại 4 góc và tạo khoảng cách dưới */
+
         .toolbar-card.card-mode {
             border-radius: var(--radius);
+            border-bottom: 1px solid var(--border-color);
             margin-bottom: 16px;
             box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
         }
+
         .toolbar-row {
             display: flex;
             flex-wrap: nowrap;
@@ -306,6 +420,7 @@
             justify-content: space-between;
             width: 100%;
         }
+
         .filter-group {
             display: flex;
             flex-wrap: nowrap;
@@ -314,6 +429,7 @@
             align-items: center;
             min-width: 0;
         }
+
         .search-wrapper input,
         .filter-select,
         .date-range-box,
@@ -322,14 +438,17 @@
             height: 40px;
             box-sizing: border-box;
         }
+
         .search-wrapper,
         .filter-select {
             flex: 1 1 0;
             min-width: 130px;
         }
+
         .search-wrapper {
             position: relative;
         }
+
         .search-wrapper i {
             position: absolute;
             left: 12px;
@@ -338,6 +457,7 @@
             color: var(--text-muted);
             font-size: 13px;
         }
+
         .search-wrapper input {
             width: 100%;
             padding: 0 10px 0 34px;
@@ -348,12 +468,14 @@
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
+
         .search-wrapper input:focus,
         .filter-select:focus,
         .date-input-group input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(25, 57, 138, 0.12);
         }
+
         .filter-select {
             padding: 0 10px;
             border: 1px solid var(--border-color);
@@ -382,6 +504,7 @@
             flex-shrink: 0;
             white-space: nowrap;
         }
+
         .date-input-group {
             display: flex;
             align-items: center;
@@ -390,6 +513,7 @@
             color: var(--text-muted);
             font-weight: 500;
         }
+
         .date-input-group input[type="date"] {
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -420,6 +544,7 @@
             white-space: nowrap;
             flex-shrink: 0;
         }
+
         .btn-reset:hover {
             background: #e2e8f0;
             color: var(--text-main);
@@ -434,6 +559,7 @@
             gap: 4px;
             flex-shrink: 0;
         }
+
         .view-btn {
             border: none;
             background: transparent;
@@ -450,6 +576,7 @@
             transition: all 0.2s;
             white-space: nowrap;
         }
+
         .view-btn.active {
             background: #fff;
             color: var(--primary);
@@ -465,12 +592,14 @@
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
+            white-space: nowrap;
         }
+
         .badge.pass { background: var(--success-bg); color: #047857; border: 1px solid #a7f3d0; }
         .badge.fail { background: var(--danger-bg); color: #b91c1c; border: 1px solid #fecaca; }
         .badge.diff { background: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; margin-left: 4px; }
 
-        /* ================= TABLE VIEW (NỐI LIỀN KHỐI VỚI TOOLBAR) ================= */
+        /* ================= TABLE VIEW ================= */
         .table-container {
             background: var(--bg-card);
             border-radius: 0 0 var(--radius) var(--radius);
@@ -478,7 +607,9 @@
             border: 1px solid var(--border-color);
             border-top: none;
             overflow: visible;
+            width: 100%;
         }
+
         .modern-table {
             width: 100%;
             border-collapse: separate;
@@ -486,12 +617,13 @@
             text-align: left;
             font-size: 14px;
         }
+
         .modern-table th {
             position: sticky;
             top: var(--sticky-th-top, 144px);
             z-index: 90;
             background: #19398a;
-            color:#ffffff;
+            color: #ffffff;
             font-weight: 600;
             font-size: 12px;
             text-transform: uppercase;
@@ -501,24 +633,30 @@
             border-bottom: 2px solid var(--border-color);
             box-shadow: 0 2px 4px rgba(15, 23, 42, 0.04);
         }
+
         .modern-table td {
             padding: 14px 16px;
             border-bottom: 1px solid var(--border-color);
             vertical-align: middle;
         }
+
         .modern-table tbody tr:last-child td {
             border-bottom: none;
         }
+
         .modern-table tbody tr:last-child td:first-child {
             border-bottom-left-radius: var(--radius);
         }
+
         .modern-table tbody tr:last-child td:last-child {
             border-bottom-right-radius: var(--radius);
         }
+
         .modern-table tbody tr { transition: background 0.15s; }
         .modern-table tbody tr:hover { background: #f8fafc; }
         .modern-table tbody tr.row-fail { background: #fffbfa; }
         .modern-table tbody tr.row-fail:hover { background: #fef2f2; }
+
         .po-tag {
             background: #f1f5f9;
             color: #334155;
@@ -529,12 +667,14 @@
             font-size: 13px;
         }
 
-        /* ================= GRID CARD VIEW ================= */
+        /* ================= GRID CARD VIEW (TỰ ĐỘNG GIÃN TRANG TRÊN MÀN HÌNH LỚN & TỐI ƯU ĐIỆN THOẠI) ================= */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 16px;
+            width: 100%;
         }
+
         .report-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -547,29 +687,93 @@
             justify-content: space-between;
             gap: 14px;
             transition: transform 0.2s, box-shadow 0.2s;
+            min-width: 0;
         }
-        .report-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-        .report-card.fail { border-top-color: var(--danger); }
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-        .card-style { font-size: 16px; font-weight: 700; color: var(--text-main); margin: 0; }
-        .card-supplier { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+        .report-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .report-card.fail {
+            border-top-color: var(--danger);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .card-title-group {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .card-style {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .card-supplier {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
         .card-body {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px 12px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px 14px;
             background: #f8fafc;
-            padding: 12px;
+            padding: 12px 14px;
             border-radius: 8px;
             font-size: 13px;
+            border: 1px solid #f1f5f9;
         }
-        .card-body div span { color: var(--text-muted); display: block; font-size: 11px; }
-        .card-body div strong { color: var(--text-main); font-weight: 600; }
+
+        .card-body div span {
+            color: var(--text-muted);
+            display: block;
+            font-size: 11px;
+            margin-bottom: 2px;
+        }
+
+        .card-body div strong {
+            color: var(--text-main);
+            font-weight: 600;
+            word-break: break-word;
+        }
+
         .card-footer {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
-            padding-top: 8px;
+            padding-top: 10px;
             border-top: 1px dashed var(--border-color);
+            gap: 10px;
+        }
+
+        .card-index-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
         }
 
         /* ================= BUTTONS ================= */
@@ -584,9 +788,11 @@
             font-size: 13px;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             transition: all 0.2s;
         }
+
         .btn:hover { background: var(--primary-hover); }
         .btn-back { background: #475569; }
         .btn-back:hover { background: #334155; }
@@ -602,10 +808,16 @@
             border: 1px dashed var(--border-color);
             border-top: none;
         }
-        .empty-state i { font-size: 40px; color: #cbd5e1; margin-bottom: 12px; }
+
+        .empty-state i {
+            font-size: 40px;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
 
         /* ================= GIAO DIỆN BIÊN BẢN A4 NGANG ================= */
         #detailView { display: none; padding: 20px; }
+
         .action-bar {
             max-width: 297mm;
             margin: 0 auto 20px auto;
@@ -618,9 +830,28 @@
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border-color);
         }
-        .action-bar-title { font-weight: 600; font-size: 15px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
-        
-        .report-page { font-family: 'Times New Roman', serif; font-size: 11px; width: 297mm; min-height: 210mm; padding: 10mm; margin: 0 auto 25px auto; background: white; box-shadow: 0 0 15px rgba(0,0,0,0.12); color: #000; }
+
+        .action-bar-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .report-page {
+            font-family: 'Times New Roman', serif;
+            font-size: 11px;
+            width: 297mm;
+            min-height: 210mm;
+            padding: 10mm;
+            margin: 0 auto 25px auto;
+            background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.12);
+            color: #000;
+        }
+
         .company-header { display: grid; grid-template-columns: 1.35fr 1.85fr 0.8fr; align-items: center; margin-bottom: 15px; padding-bottom: 5px; }
         .company-brand { display: flex; align-items: center; gap: 10px; }
         .report-logo { width: 46px; height: 44px; object-fit: contain; flex-shrink: 0; }
@@ -630,24 +861,29 @@
         .report-number { text-align: right; font-size: 9px; line-height: 1.3; }
         .header-title { font-size: 15px; font-weight: bold; }
         .subtitle { font-size: 13px; margin-top: 2px; font-weight: bold; }
+
         .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; margin-bottom: 10px; font-size: 10px; }
         .info-grid label { font-weight: bold; }
         .info-grid span { font-weight: normal; padding-left: 5px; }
+
         .report-table { width: 100%; border-collapse: collapse; border: 1.5px solid black; margin-bottom: 8px; }
         .report-table th, .report-table td { border: 1px solid black; padding: 4px 3px; text-align: center; vertical-align: middle; font-size: 10px; }
         .report-table th { font-weight: bold; background-color: #f2f2f2; font-size: 11px; line-height: 1.2; }
         .report-table td:first-child { text-align: left; padding-left: 5px; width: 220px; }
+
         .bottom-grid-dd { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 10px; align-items: start; }
         .bottom-block-kdd { margin-top: 10px; }
         .left-section { font-size: 11px; }
         .notes-section { font-size: 10px; line-height: 1.5; margin-top: 5px; }
         .notes-section p { margin: 3px 0; }
+
         .aql-container { background: white; border: 1px solid black; }
         .aql-header { background: #d9d9d9; text-align: center; font-weight: bold; font-size: 9px; padding: 2px; border-bottom: 1px solid black; }
         .aql-table { width: 100%; border-collapse: collapse; }
         .aql-table th, .aql-table td { border: 1px solid black; padding: 1px 2px; text-align: center; font-size: 8px; }
         .aql-table th { background: #f2f2f2; font-weight: bold; font-size: 7px; }
         .aql-table .reject-col { background: #ffcccc; }
+
         .signature-section { margin-top: 15px; padding-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; text-align: center; font-weight: bold; font-size: 11px; }
         .watermark { font-size: 12px; font-weight: bold; margin-top: 15px; min-height: 60px; color: #333; text-align: center; }
         .pending-sign { color: #94a3b8; font-weight: normal; font-style: italic; font-size: 11px; }
@@ -657,7 +893,7 @@
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-            body { background: white; padding: 0; margin: 0; }
+            body { background: white; padding: 0; margin: 0; overflow: visible; }
             .top-navbar, #listView, .action-bar, .pending-sign { display: none !important; }
             #detailView { display: block !important; padding: 0 !important; }
             .report-page {
@@ -671,22 +907,224 @@
             }
             .report-page:last-child { page-break-after: auto; }
         }
+
         @page { size: A4 landscape; margin: 0; }
 
-        @media (max-width: 1200px) {
-            .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-            .charts-grid { grid-template-columns: 1fr; }
-            .toolbar-row, .filter-group { flex-wrap: wrap; }
+        /* ================= RESPONSIVE TABLET & MOBILE ================= */
+        @media (max-width: 1024px) {
+            .kpi-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .toolbar-row, .filter-group {
+                flex-wrap: wrap;
+            }
+            .table-container {
+                overflow-x: auto;
+            }
+            .modern-table th {
+                position: static;
+            }
         }
-        @media (max-width: 992px) {
-            .table-container { overflow-x: auto; }
-            .modern-table th { position: static; }
-        }
+
+        /* TỐI ƯU CHUYÊN BIỆT DÀNH RIÊNG CHO ĐIỆN THOẠI (MOBILE-FIRST CARD VIEW) */
         @media (max-width: 768px) {
-            .top-navbar { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .toolbar-card { position: static; }
-            .action-bar { flex-direction: column; gap: 10px; align-items: stretch; }
-            .date-range-box { width: 100%; justify-content: space-between; }
+            .top-navbar {
+                padding: 10px 14px;
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .brand-logo-wrap {
+                width: 42px;
+                height: 42px;
+            }
+
+            .brand-title h1 {
+                font-size: 14px;
+                line-height: 1.25;
+            }
+
+            .brand-title p {
+                font-size: 11px;
+            }
+
+            .btn-refresh span {
+                display: none;
+            }
+
+            .btn-refresh {
+                padding: 8px 10px;
+            }
+
+            .dashboard-container {
+                padding: 12px 12px 32px 12px;
+            }
+
+            /* 5 Thẻ KPI xếp gọn 1 + 2 + 2 trên điện thoại */
+            .kpi-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .kpi-card.total {
+                grid-column: 1 / -1;
+            }
+
+            .kpi-card {
+                padding: 14px;
+            }
+
+            .kpi-info h4 {
+                font-size: 11px;
+            }
+
+            .kpi-info .kpi-value {
+                font-size: 22px;
+            }
+
+            .kpi-info .kpi-sub {
+                font-size: 11px;
+            }
+
+            .kpi-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
+
+            .chart-card {
+                padding: 14px;
+            }
+
+            .chart-canvas-wrap {
+                height: 220px;
+                min-height: 220px;
+            }
+
+            /* Thanh công cụ tìm kiếm & lọc trên điện thoại không bị tràn ngang */
+            .toolbar-card {
+                position: static;
+                padding: 12px;
+                border-radius: var(--radius);
+                border-bottom: 1px solid var(--border-color);
+                margin-bottom: 14px;
+            }
+
+            .toolbar-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .filter-group {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                width: 100%;
+            }
+
+            .search-wrapper {
+                grid-column: 1 / -1;
+                min-width: 0;
+            }
+
+            .filter-select {
+                min-width: 0;
+                width: 100%;
+            }
+
+            .date-range-box {
+                grid-column: 1 / -1;
+                height: auto;
+                padding: 8px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                white-space: normal;
+            }
+
+            .date-range-sep {
+                display: none;
+            }
+
+            .date-input-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+                width: 100%;
+            }
+
+            .date-input-group input[type="date"] {
+                width: 100%;
+                height: 34px;
+            }
+
+            .btn-reset {
+                grid-column: 1 / -1;
+                width: 100%;
+            }
+
+            .view-toggle {
+                width: 100%;
+                justify-content: stretch;
+            }
+
+            .view-btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            /* Chế độ Dạng Thẻ tối ưu riêng cho điện thoại */
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .report-card {
+                padding: 14px;
+                gap: 12px;
+                border-radius: 12px;
+                border-top-width: 4px;
+            }
+
+            .card-style {
+                font-size: 15px;
+            }
+
+            .card-body {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px 10px;
+                padding: 10px 12px;
+            }
+
+            .card-footer {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .card-footer .btn-detail {
+                width: 100%;
+                padding: 11px 16px;
+                font-size: 14px;
+                border-radius: 8px;
+            }
+
+            .action-bar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+                padding: 12px;
+            }
+
+            #detailView {
+                padding: 10px;
+                overflow-x: auto;
+            }
         }
     </style>
 </head>
@@ -705,106 +1143,109 @@
         </div>
         <div class="nav-actions">
             <button class="btn-refresh" onclick="fetchReportsFromGitHub()">
-                <i class="fa-solid fa-rotate"></i> Làm mới dữ liệu
+                <i class="fa-solid fa-rotate"></i> <span>Làm mới dữ liệu</span>
             </button>
         </div>
     </header>
 
     <!-- GIAO DIỆN DASHBOARD CHÍNH -->
     <div id="listView" class="dashboard-container">
-        
-        <!-- HỆ THỐNG 5 THẺ KPI THÔNG MINH -->
-        <div class="kpi-grid">
-            <!-- KPI 1: Tổng Biên Bản Kiểm -->
-            <div class="kpi-card total">
-                <div class="kpi-info">
-                    <h4>Tổng Biên Bản Kiểm</h4>
-                    <p class="kpi-value" id="kpiTotal">0</p>
-                    <div class="kpi-sub" id="kpiTotalItems">Tổng cộng: 0 mục phụ liệu</div>
-                </div>
-                <div class="kpi-icon"><i class="fa-solid fa-file-contract"></i></div>
-            </div>
 
-            <!-- KPI 2: Mã Hàng & Khách Hàng -->
-            <div class="kpi-card styles">
-                <div class="kpi-info">
-                    <h4>Mã Hàng & Khách Hàng</h4>
-                    <p class="kpi-value" id="kpiStyles" style="color: var(--indigo);">0 <span style="font-size:14px; font-weight:600; color:var(--text-muted);">Mã Hàng</span></p>
-                    <div class="kpi-sub" id="kpiBuyers">0 Khách Hàng</div>
-                </div>
-                <div class="kpi-icon"><i class="fa-solid fa-shirt"></i></div>
-            </div>
-
-            <!-- KPI 3: Lô Hàng Đạt (Pass) -->
-            <div class="kpi-card pass">
-                <div class="kpi-info">
-                    <h4>Lô Hàng Đạt (Pass)</h4>
-                    <p class="kpi-value" id="kpiPass" style="color: var(--success);">0</p>
-                    <div class="kpi-sub" id="kpiPassRate">Tỷ lệ đạt: 0%</div>
-                </div>
-                <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
-            </div>
-
-            <!-- KPI 4: Không Đạt (Fail) -->
-            <div class="kpi-card fail">
-                <div class="kpi-info">
-                    <h4>Không Đạt (Fail)</h4>
-                    <p class="kpi-value" id="kpiFail" style="color: var(--danger);">0</p>
-                    <div class="kpi-sub" id="kpiFailItems">0 mục lỗi cần PKD & NCC xử lý</div>
-                </div>
-                <div class="kpi-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            </div>
-
-            <!-- KPI 5: Lệch SL (Thừa/Thiếu) -->
-            <div class="kpi-card diff">
-                <div class="kpi-info">
-                    <h4>Lệch SL (Thừa / Thiếu)</h4>
-                    <p class="kpi-value" id="kpiDiff" style="color: var(--warning);">0 <span style="font-size:14px; font-weight:600; color:var(--text-muted);">mục</span></p>
-                    <div class="kpi-sub" id="kpiDiffSub">Thừa: 0 mục | Thiếu: 0 mục</div>
-                </div>
-                <div class="kpi-icon"><i class="fa-solid fa-scale-unbalanced"></i></div>
-            </div>
-        </div>
-
-        <!-- TRUNG TÂM 3 BIỂU ĐỒ PHÂN TÍCH TƯƠNG TÁC (CHART.JS) -->
-        <div class="charts-grid">
-            <!-- Biểu đồ 1: Khách hàng (Buyer) -->
-            <div class="chart-card">
-                <div class="chart-header">
-                    <div>
-                        <h3 class="chart-title"><i class="fa-solid fa-chart-column"></i> Thống Kê Khách Hàng</h3>
+        <!-- KHU VỰC TỔNG QUAN KPI CHIẾM TRỌN MÀN HÌNH LỚN KHI MỞ WEBAPP -->
+        <section class="kpi-overview-section">
+            <!-- HỆ THỐNG 5 THẺ KPI THÔNG MINH -->
+            <div class="kpi-grid">
+                <!-- KPI 1: Tổng Biên Bản Kiểm -->
+                <div class="kpi-card total">
+                    <div class="kpi-info">
+                        <h4>Tổng Biên Bản Kiểm</h4>
+                        <p class="kpi-value" id="kpiTotal">0</p>
+                        <div class="kpi-sub" id="kpiTotalItems">Tổng cộng: 0 mục phụ liệu</div>
                     </div>
-                    <span class="chart-badge-hint"><i class="fa-solid fa-hand-pointer"></i> Nhấn cột để lọc</span>
+                    <div class="kpi-icon"><i class="fa-solid fa-file-contract"></i></div>
                 </div>
-                <div class="chart-canvas-wrap">
-                    <canvas id="buyerChart"></canvas>
+
+                <!-- KPI 2: Mã Hàng & Khách Hàng -->
+                <div class="kpi-card styles">
+                    <div class="kpi-info">
+                        <h4>Mã Hàng & Khách Hàng</h4>
+                        <p class="kpi-value" id="kpiStyles" style="color: var(--indigo);">0 <span style="font-size:14px; font-weight:600; color:var(--text-muted);">Mã Hàng</span></p>
+                        <div class="kpi-sub" id="kpiBuyers">0 Khách Hàng</div>
+                    </div>
+                    <div class="kpi-icon"><i class="fa-solid fa-shirt"></i></div>
+                </div>
+
+                <!-- KPI 3: Lô Hàng Đạt (Pass) -->
+                <div class="kpi-card pass">
+                    <div class="kpi-info">
+                        <h4>Lô Hàng Đạt (Pass)</h4>
+                        <p class="kpi-value" id="kpiPass" style="color: var(--success);">0</p>
+                        <div class="kpi-sub" id="kpiPassRate">Tỷ lệ đạt: 0%</div>
+                    </div>
+                    <div class="kpi-icon"><i class="fa-solid fa-circle-check"></i></div>
+                </div>
+
+                <!-- KPI 4: Không Đạt (Fail) -->
+                <div class="kpi-card fail">
+                    <div class="kpi-info">
+                        <h4>Không Đạt (Fail)</h4>
+                        <p class="kpi-value" id="kpiFail" style="color: var(--danger);">0</p>
+                        <div class="kpi-sub" id="kpiFailItems">0 mục lỗi cần PKD & NCC xử lý</div>
+                    </div>
+                    <div class="kpi-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                </div>
+
+                <!-- KPI 5: Lệch SL (Thừa/Thiếu) -->
+                <div class="kpi-card diff">
+                    <div class="kpi-info">
+                        <h4>Lệch SL (Thừa / Thiếu)</h4>
+                        <p class="kpi-value" id="kpiDiff" style="color: var(--warning);">0 <span style="font-size:14px; font-weight:600; color:var(--text-muted);">mục</span></p>
+                        <div class="kpi-sub" id="kpiDiffSub">Thừa: 0 mục | Thiếu: 0 mục</div>
+                    </div>
+                    <div class="kpi-icon"><i class="fa-solid fa-scale-unbalanced"></i></div>
                 </div>
             </div>
 
-            <!-- Biểu đồ 2: Phân tích Chất lượng & Nguyên nhân lỗi -->
-            <div class="chart-card">
-                <div class="chart-header">
-                    <div>
-                        <h3 class="chart-title"><i class="fa-solid fa-chart-pie"></i> Chất Lượng & Nguyên Nhân Lỗi</h3>
+            <!-- TRUNG TÂM 3 BIỂU ĐỒ PHÂN TÍCH TƯƠNG TÁC (CHART.JS) -->
+            <div class="charts-grid">
+                <!-- Biểu đồ 1: Khách hàng (Buyer) -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <h3 class="chart-title"><i class="fa-solid fa-chart-column"></i> Thống Kê Khách Hàng</h3>
+                        </div>
+                        <span class="chart-badge-hint"><i class="fa-solid fa-hand-pointer"></i> Nhấn cột để lọc</span>
+                    </div>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="buyerChart"></canvas>
                     </div>
                 </div>
-                <div class="chart-canvas-wrap">
-                    <canvas id="defectChart"></canvas>
-                </div>
-            </div>
 
-            <!-- Biểu đồ 3: Xu hướng theo Ngày -->
-            <div class="chart-card">
-                <div class="chart-header">
-                    <div>
-                        <h3 class="chart-title"><i class="fa-solid fa-chart-line"></i> Xu Hướng Kiểm Hàng Theo Ngày</h3>
+                <!-- Biểu đồ 2: Phân tích Chất lượng & Nguyên nhân lỗi -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <h3 class="chart-title"><i class="fa-solid fa-chart-pie"></i> Chất Lượng & Nguyên Nhân Lỗi</h3>
+                        </div>
+                    </div>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="defectChart"></canvas>
                     </div>
                 </div>
-                <div class="chart-canvas-wrap">
-                    <canvas id="trendChart"></canvas>
+
+                <!-- Biểu đồ 3: Xu hướng theo Ngày -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <h3 class="chart-title"><i class="fa-solid fa-chart-line"></i> Xu Hướng Kiểm Hàng Theo Ngày</h3>
+                        </div>
+                    </div>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="trendChart"></canvas>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- THANH CÔNG CỤ TÌM KIẾM & LỌC -->
         <div class="toolbar-card" id="toolbarCard">
@@ -829,19 +1270,6 @@
                         <option value="all">🏢 Tất cả Khách hàng</option>
                     </select>
 
-                    <!-- Bộ lọc Từ ngày - Đến ngày -->
-                    <div class="date-range-box">
-                        <div class="date-input-group">
-                            <label for="fromDate"><i class="fa-regular fa-calendar"></i> Từ ngày:</label>
-                            <input type="date" id="fromDate">
-                        </div>
-                        <span style="color: #cbd5e1;">—</span>
-                        <div class="date-input-group">
-                            <label for="toDate">Đến ngày:</label>
-                            <input type="date" id="toDate">
-                        </div>
-                    </div>
-
                     <!-- Lọc trạng thái QC -->
                     <select id="statusFilter" class="filter-select">
                         <option value="all">📊 Tất cả kết quả</option>
@@ -849,6 +1277,19 @@
                         <option value="fail">❌ Chỉ xem Không Đạt (Fail)</option>
                         <option value="diff">⚠️ Có lệch SL (Thừa/Thiếu)</option>
                     </select>
+
+                    <!-- Bộ lọc Từ ngày - Đến ngày -->
+                    <div class="date-range-box">
+                        <div class="date-input-group">
+                            <label for="fromDate"><i class="fa-regular fa-calendar"></i> Từ ngày:</label>
+                            <input type="date" id="fromDate">
+                        </div>
+                        <span class="date-range-sep" style="color: #cbd5e1;">—</span>
+                        <div class="date-input-group">
+                            <label for="toDate"><i class="fa-regular fa-calendar"></i> Đến ngày:</label>
+                            <input type="date" id="toDate">
+                        </div>
+                    </div>
 
                     <!-- Nút đặt lại bộ lọc -->
                     <button type="button" class="btn-reset" onclick="resetFilters()" title="Xóa toàn bộ điều kiện lọc">
@@ -858,10 +1299,10 @@
 
                 <!-- Chuyển đổi chế độ xem -->
                 <div class="view-toggle">
-                    <button type="button" class="view-btn active" id="btnTableView" onclick="switchViewMode('table')">
+                    <button type="button" class="view-btn active" id="btnTableView" onclick="switchViewMode('table', true)">
                         <i class="fa-solid fa-table-list"></i> Dạng Bảng
                     </button>
-                    <button type="button" class="view-btn" id="btnCardView" onclick="switchViewMode('card')">
+                    <button type="button" class="view-btn" id="btnCardView" onclick="switchViewMode('card', true)">
                         <i class="fa-solid fa-grip"></i> Dạng Thẻ
                     </button>
                 </div>
@@ -892,849 +1333,774 @@
         <div id="reportRenderArea"></div>
     </div>
 
-    <script>
-        const REPO_OWNER = "khophulieutp-stack";
-        const REPO_NAME = "BAOCAOKIEM";
-        const BRANCH = "main";
-        const FILE_PATH = "data/reportHistory.json";
-        
-        // Logo Hòa Thọ chuẩn Vector nhúng trực tiếp
-        const DEFAULT_HOATHO_LOGO = "data:image/svg+xml;utf8," + encodeURIComponent(`
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260" width="100%" height="100%">
-                <rect width="300" height="260" fill="#ffffff"/>
-                <path d="M 35 175 L 55 120 Q 64 96 90 96 L 108 96 L 86 152 Q 77 175 52 175 Z" fill="#19398a"/>
-                <path d="M 112 175 L 148 80 Q 157 56 183 56 L 202 56 L 164 152 Q 155 175 130 175 Z" fill="#19398a"/>
-                <path d="M 188 175 L 240 38 Q 249 15 274 15 L 292 15 L 238 152 Q 229 175 204 175 Z" fill="#19398a"/>
-                <circle cx="110" cy="134" r="22" fill="#e31e24"/>
-                <circle cx="206" cy="54" r="22" fill="#e31e24"/>
-                <text x="162" y="232" font-family="Arial, Helvetica, sans-serif" font-size="47" font-weight="500" letter-spacing="4" fill="#e31e24" text-anchor="middle">HOATHO</text>
-            </svg>
-        `);
+<script>
+    const REPO_OWNER = "khophulieutp-stack";
+    const REPO_NAME = "BAOCAOKIEM";
+    const BRANCH = "main";
+    const FILE_PATH = "data/reportHistory.json";
 
-        const navLogoEl = document.getElementById('navLogo');
-        navLogoEl.onerror = function() {
-            this.onerror = null;
-            this.src = DEFAULT_HOATHO_LOGO;
-        };
+    // Logo Hòa Thọ chuẩn Vector nhúng trực tiếp
+    const DEFAULT_HOATHO_LOGO = "data:image/svg+xml;utf8," + encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 260" width="100%" height="100%">
+            <rect width="300" height="260" fill="#ffffff"/>
+            <path d="M 35 175 L 55 120 Q 64 96 90 96 L 108 96 L 86 152 Q 77 175 52 175 Z" fill="#19398a"/>
+            <path d="M 112 175 L 148 80 Q 157 56 183 56 L 202 56 L 164 152 Q 155 175 130 175 Z" fill="#19398a"/>
+            <path d="M 188 175 L 240 38 Q 249 15 274 15 L 292 15 L 238 152 Q 229 175 204 175 Z" fill="#19398a"/>
+            <circle cx="110" cy="134" r="22" fill="#e31e24"/>
+            <circle cx="206" cy="54" r="22" fill="#e31e24"/>
+            <text x="162" y="232" font-family="Arial, Helvetica, sans-serif" font-size="47" font-weight="500" letter-spacing="4" fill="#e31e24" text-anchor="middle">HOATHO</text>
+        </svg>
+    `);
 
-        let allReports = [];
-        let currentDisplayedReports = [];
-        let currentViewMode = 'table';
+    const navLogoEl = document.getElementById('navLogo');
+    navLogoEl.onerror = function() {
+        this.onerror = null;
+        this.src = DEFAULT_HOATHO_LOGO;
+    };
 
-        let buyerChartInstance = null;
-        let defectChartInstance = null;
-        let trendChartInstance = null;
+    let allReports = [];
+    let currentDisplayedReports = [];
+    // Tự động chọn chế độ Dạng Thẻ khi mở trên điện thoại (<= 768px)
+    let currentViewMode = window.innerWidth <= 768 ? 'card' : 'table';
+    let userManuallySwitchedView = false;
 
-        function escapeHtml(str) {
-            if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
+    let buyerChartInstance = null;
+    let defectChartInstance = null;
+    let trendChartInstance = null;
+
+    function syncViewModeUI() {
+        document.getElementById('btnTableView').classList.toggle('active', currentViewMode === 'table');
+        document.getElementById('btnCardView').classList.toggle('active', currentViewMode === 'card');
+        document.getElementById('toolbarCard').classList.toggle('card-mode', currentViewMode === 'card');
+    }
+    syncViewModeUI();
+
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    // Đồng bộ chính xác 100% vị trí ghim của Toolbar và Tiêu đề cột bảng (Khoảng hở = 0px)
+    function updateStickyTableOffset() {
+        const navEl = document.getElementById('topNavbar');
+        const toolEl = document.getElementById('toolbarCard');
+        if (!navEl || !toolEl) return;
+        const navHeight = Math.round(navEl.getBoundingClientRect().height);
+        const toolHeight = Math.round(toolEl.getBoundingClientRect().height);
+        document.documentElement.style.setProperty('--sticky-toolbar-top', `${navHeight}px`);
+        document.documentElement.style.setProperty('--sticky-th-top', `${navHeight + toolHeight - 1}px`);
+    }
+
+    window.addEventListener('resize', () => {
+        updateStickyTableOffset();
+        if (!userManuallySwitchedView) {
+            const targetMode = window.innerWidth <= 768 ? 'card' : 'table';
+            if (targetMode !== currentViewMode) {
+                currentViewMode = targetMode;
+                syncViewModeUI();
+                renderListOnly(currentDisplayedReports);
+            }
         }
+    });
 
-        // Đồng bộ chính xác 100% vị trí ghim của Toolbar và Tiêu đề cột bảng (Khoảng hở = 0px)
-        function updateStickyTableOffset() {
+    if (window.ResizeObserver) {
+        const stickyObserver = new ResizeObserver(() => updateStickyTableOffset());
+        window.addEventListener('DOMContentLoaded', () => {
             const navEl = document.getElementById('topNavbar');
             const toolEl = document.getElementById('toolbarCard');
-            if (!navEl || !toolEl) return;
+            if (navEl) stickyObserver.observe(navEl);
+            if (toolEl) stickyObserver.observe(toolEl);
+        });
+    }
 
-            const navHeight = Math.round(navEl.getBoundingClientRect().height);
-            const toolHeight = Math.round(toolEl.getBoundingClientRect().height);
+    async function fetchReportsFromGitHub() {
+        const loadingEl = document.getElementById('loading');
+        const listDiv = document.getElementById('reportList');
+        loadingEl.style.display = 'block';
+        loadingEl.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 28px; color: var(--primary); margin-bottom: 10px;"></i>
+            <div>Đang đồng bộ dữ liệu báo cáo từ kho ...</div>
+        `;
+        listDiv.innerHTML = '';
 
-            document.documentElement.style.setProperty('--sticky-toolbar-top', `${navHeight}px`);
-            // Trừ 1px để đường viền trên của th chồng khít lên đường viền dưới của toolbarCard, không bao giờ hở khe sáng
-            document.documentElement.style.setProperty('--sticky-th-top', `${navHeight + toolHeight - 1}px`);
-        }
+        const cacheBuster = Date.now();
+        const rawMainUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${FILE_PATH}?_t=${cacheBuster}`;
+        const rawMasterUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/master/${FILE_PATH}?_t=${cacheBuster}`;
+        const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?_t=${cacheBuster}`;
 
-        window.addEventListener('resize', updateStickyTableOffset);
-        if (window.ResizeObserver) {
-            const stickyObserver = new ResizeObserver(() => updateStickyTableOffset());
-            window.addEventListener('DOMContentLoaded', () => {
-                const navEl = document.getElementById('topNavbar');
-                const toolEl = document.getElementById('toolbarCard');
-                if (navEl) stickyObserver.observe(navEl);
-                if (toolEl) stickyObserver.observe(toolEl);
-            });
-        }
-
-        async function fetchReportsFromGitHub() {
-            const loadingEl = document.getElementById('loading');
-            const listDiv = document.getElementById('reportList');
-            loadingEl.style.display = 'block';
-            loadingEl.innerHTML = `
-                <i class="fa-solid fa-spinner fa-spin" style="font-size: 28px; color: var(--primary); margin-bottom: 10px;"></i>
-                <div>Đang đồng bộ dữ liệu báo cáo từ kho ...</div>
-            `;
-            listDiv.innerHTML = '';
-
-            const cacheBuster = Date.now();
-            const rawMainUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${FILE_PATH}?_t=${cacheBuster}`;
-            const rawMasterUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/master/${FILE_PATH}?_t=${cacheBuster}`;
-            const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?_t=${cacheBuster}`;
-
-            try {
-                let response = await fetch(rawMainUrl);
-                if (!response.ok) {
-                    response = await fetch(rawMasterUrl);
-                }
-                if (!response.ok) {
-                    response = await fetch(apiUrl, { headers: { 'Accept': 'application/vnd.github.raw+json' } });
-                }
-                if (!response.ok) throw new Error('Không thể tải dữ liệu từ kho lưu trữ GitHub.');
-
-                const data = await response.json();
-                allReports = Array.isArray(data) ? data : [];
-                loadingEl.style.display = 'none';
-                populateBuyerDropdown(allReports);
-                filterData();
-            } catch (error) {
-                loadingEl.innerHTML = `<span style="color:var(--danger); font-weight:600;"><i class="fa-solid fa-circle-exclamation"></i> Lỗi: ${escapeHtml(error.message)}</span>`;
+        try {
+            let response = await fetch(rawMainUrl);
+            if (!response.ok) {
+                response = await fetch(rawMasterUrl);
             }
-        }
-
-        function checkFail(report) {
-            return (report.items || []).some(item => 
-                item.resultAql === 'FAIL' || 
-                item.resultMetal === 'FAIL' || 
-                item.resultSample === 'FAIL'
-            );
-        }
-
-        function checkDiff(report) {
-            return (report.items || []).some(item => 
-                (parseFloat(item.qtyExceed) || 0) > 0 || 
-                (parseFloat(item.qtyShort) || 0) > 0
-            );
-        }
-
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            const str = String(dateString).trim();
-            if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
-                const parts = str.split('-');
-                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            if (!response.ok) {
+                response = await fetch(apiUrl, { headers: { 'Accept': 'application/vnd.github.raw+json' } });
             }
+            if (!response.ok) throw new Error('Không thể tải dữ liệu từ kho lưu trữ GitHub.');
+
+            const data = await response.json();
+            allReports = Array.isArray(data) ? data : [];
+            loadingEl.style.display = 'none';
+
+            populateBuyerDropdown(allReports);
+            filterData();
+        } catch (error) {
+            loadingEl.innerHTML = `<span style="color:var(--danger); font-weight:600;"><i class="fa-solid fa-circle-exclamation"></i> Lỗi: ${escapeHtml(error.message)}</span>`;
+        }
+    }
+
+    function checkFail(report) {
+        return (report.items || []).some(item =>
+            item.resultAql === 'FAIL' || item.resultMetal === 'FAIL' || item.resultSample === 'FAIL'
+        );
+    }
+
+    function checkDiff(report) {
+        return (report.items || []).some(item =>
+            (parseFloat(item.qtyExceed) || 0) > 0 || (parseFloat(item.qtyShort) || 0) > 0
+        );
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        const str = String(dateString).trim();
+        if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+            const parts = str.split('-');
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+        return str;
+    }
+
+    function extractReportYMD(info) {
+        const rawDate = info.ngayKiem || info.date || info.ngayNhap;
+        if (!rawDate) return null;
+        const str = String(rawDate).trim();
+        if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
             return str;
         }
+        const dmyMatch = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+        if (dmyMatch) {
+            return `${dmyMatch[3]}-${dmyMatch[2].padStart(2, '0')}-${dmyMatch[1].padStart(2, '0')}`;
+        }
+        const parsed = new Date(str);
+        if (!isNaN(parsed.getTime())) {
+            const y = parsed.getFullYear();
+            const m = String(parsed.getMonth() + 1).padStart(2, '0');
+            const d = String(parsed.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+        return null;
+    }
 
-        function extractReportYMD(info) {
-            const rawDate = info.ngayKiem || info.date || info.ngayNhap;
-            if (!rawDate) return null;
-            const str = String(rawDate).trim();
+    function getDisplayDate(info) {
+        const ymd = extractReportYMD(info);
+        return ymd ? formatDate(ymd) : '---';
+    }
 
-            if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
-                return str;
+    function populateBuyerDropdown(reports) {
+        const buyerSelect = document.getElementById('buyerFilter');
+        const currentVal = buyerSelect.value;
+        const buyersSet = new Set();
+
+        reports.forEach(r => {
+            const buyer = (r.generalInfo?.supplier || '').trim();
+            if (buyer) buyersSet.add(buyer);
+        });
+
+        const sortedBuyers = Array.from(buyersSet).sort((a, b) => a.localeCompare(b, 'vi'));
+        buyerSelect.innerHTML = '<option value="all">🏢 Tất cả Khách hàng</option>';
+        sortedBuyers.forEach(b => {
+            const opt = document.createElement('option');
+            opt.value = b;
+            opt.textContent = `🏢 ${b}`;
+            buyerSelect.appendChild(opt);
+        });
+
+        if (sortedBuyers.includes(currentVal)) {
+            buyerSelect.value = currentVal;
+        }
+    }
+
+    function updateKPIs(reports) {
+        const totalReports = reports.length;
+        let totalItems = 0;
+        let failReportsCount = 0;
+        let failItemsCount = 0;
+        let diffItemsCount = 0;
+        let exceedItemsCount = 0;
+        let shortItemsCount = 0;
+
+        const uniqueStyles = new Set();
+        const uniqueBuyers = new Set();
+
+        reports.forEach(r => {
+            const info = r.generalInfo || {};
+            const styleStr = (info.style || '').trim().toUpperCase();
+            const buyerStr = (info.supplier || '').trim().toUpperCase();
+            if (styleStr) uniqueStyles.add(styleStr);
+            if (buyerStr) uniqueBuyers.add(buyerStr);
+
+            if (checkFail(r)) failReportsCount++;
+
+            const items = r.items || [];
+            totalItems += items.length;
+
+            items.forEach(item => {
+                const isItemFail = item.resultAql === 'FAIL' || item.resultMetal === 'FAIL' || item.resultSample === 'FAIL';
+                if (isItemFail) failItemsCount++;
+
+                const exceed = parseFloat(item.qtyExceed) || 0;
+                const short = parseFloat(item.qtyShort) || 0;
+                if (exceed > 0) exceedItemsCount++;
+                if (short > 0) shortItemsCount++;
+                if (exceed > 0 || short > 0) diffItemsCount++;
+            });
+        });
+
+        const passReportsCount = totalReports - failReportsCount;
+        const passRate = totalReports > 0 ? Math.round((passReportsCount / totalReports) * 100) : 0;
+
+        document.getElementById('kpiTotal').textContent = totalReports;
+        document.getElementById('kpiTotalItems').textContent = `Tổng cộng: ${totalItems} mục phụ liệu`;
+
+        document.getElementById('kpiStyles').innerHTML = `${uniqueStyles.size} <span style="font-size:14px; font-weight:600; color:var(--text-muted);">Styles</span>`;
+        document.getElementById('kpiBuyers').textContent = `Thuộc ${uniqueBuyers.size} Khách hàng (Buyers)`;
+
+        document.getElementById('kpiPass').textContent = passReportsCount;
+        document.getElementById('kpiPassRate').textContent = `Tỷ lệ đạt: ${passRate}% (${passReportsCount}/${totalReports} lô)`;
+
+        document.getElementById('kpiFail').textContent = failReportsCount;
+        document.getElementById('kpiFailItems').textContent = `${failItemsCount} mục lỗi cần PKD & NCC xử lý`;
+
+        document.getElementById('kpiDiff').innerHTML = `${diffItemsCount} <span style="font-size:14px; font-weight:600; color:var(--text-muted);">mục</span>`;
+        document.getElementById('kpiDiffSub').textContent = `Thừa: ${exceedItemsCount} mục | Thiếu: ${shortItemsCount} mục`;
+    }
+
+    function updateCharts(filteredReports, reportsForBuyerChart) {
+        renderBuyerChart(reportsForBuyerChart || filteredReports);
+        renderDefectChart(filteredReports);
+        renderTrendChart(filteredReports);
+    }
+
+    function renderBuyerChart(reports) {
+        const selectedBuyer = document.getElementById('buyerFilter').value;
+        const buyerMap = {};
+
+        reports.forEach(r => {
+            const info = r.generalInfo || {};
+            const buyerName = (info.supplier || 'Chưa rõ').trim();
+            if (!buyerMap[buyerName]) {
+                buyerMap[buyerName] = { styles: new Set(), pass: 0, fail: 0 };
             }
+            const styleName = (info.style || '').trim().toUpperCase();
+            if (styleName) buyerMap[buyerName].styles.add(styleName);
 
-            const dmyMatch = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-            if (dmyMatch) {
-                return `${dmyMatch[3]}-${dmyMatch[2].padStart(2, '0')}-${dmyMatch[1].padStart(2, '0')}`;
-            }
-
-            const parsed = new Date(str);
-            if (!isNaN(parsed.getTime())) {
-                const y = parsed.getFullYear();
-                const m = String(parsed.getMonth() + 1).padStart(2, '0');
-                const d = String(parsed.getDate()).padStart(2, '0');
-                return `${y}-${m}-${d}`;
-            }
-            return null;
-        }
-
-        function getDisplayDate(info) {
-            const ymd = extractReportYMD(info);
-            return ymd ? formatDate(ymd) : '---';
-        }
-
-        function populateBuyerDropdown(reports) {
-            const buyerSelect = document.getElementById('buyerFilter');
-            const currentVal = buyerSelect.value;
-            const buyersSet = new Set();
-
-            reports.forEach(r => {
-                const buyer = (r.generalInfo?.supplier || '').trim();
-                if (buyer) buyersSet.add(buyer);
-            });
-
-            const sortedBuyers = Array.from(buyersSet).sort((a, b) => a.localeCompare(b, 'vi'));
-            buyerSelect.innerHTML = '<option value="all">🏢 Tất cả Khách hàng</option>';
-            sortedBuyers.forEach(b => {
-                const opt = document.createElement('option');
-                opt.value = b;
-                opt.textContent = `🏢 ${b}`;
-                buyerSelect.appendChild(opt);
-            });
-
-            if (sortedBuyers.includes(currentVal)) {
-                buyerSelect.value = currentVal;
-            }
-        }
-
-        function updateKPIs(reports) {
-            const totalReports = reports.length;
-            let totalItems = 0;
-            let failReportsCount = 0;
-            let failItemsCount = 0;
-            let diffItemsCount = 0;
-            let exceedItemsCount = 0;
-            let shortItemsCount = 0;
-
-            const uniqueStyles = new Set();
-            const uniqueBuyers = new Set();
-
-            reports.forEach(r => {
-                const info = r.generalInfo || {};
-                const styleStr = (info.style || '').trim().toUpperCase();
-                const buyerStr = (info.supplier || '').trim().toUpperCase();
-                if (styleStr) uniqueStyles.add(styleStr);
-                if (buyerStr) uniqueBuyers.add(buyerStr);
-
-                if (checkFail(r)) failReportsCount++;
-
-                const items = r.items || [];
-                totalItems += items.length;
-
-                items.forEach(item => {
-                    const isItemFail = item.resultAql === 'FAIL' || item.resultMetal === 'FAIL' || item.resultSample === 'FAIL';
-                    if (isItemFail) failItemsCount++;
-
-                    const exceed = parseFloat(item.qtyExceed) || 0;
-                    const short = parseFloat(item.qtyShort) || 0;
-                    if (exceed > 0) exceedItemsCount++;
-                    if (short > 0) shortItemsCount++;
-                    if (exceed > 0 || short > 0) diffItemsCount++;
-                });
-            });
-
-            const passReportsCount = totalReports - failReportsCount;
-            const passRate = totalReports > 0 ? Math.round((passReportsCount / totalReports) * 100) : 0;
-
-            document.getElementById('kpiTotal').textContent = totalReports;
-            document.getElementById('kpiTotalItems').textContent = `Tổng cộng: ${totalItems} mục phụ liệu`;
-
-            document.getElementById('kpiStyles').innerHTML = `${uniqueStyles.size} <span style="font-size:14px; font-weight:600; color:var(--text-muted);">Styles</span>`;
-            document.getElementById('kpiBuyers').textContent = `Thuộc ${uniqueBuyers.size} Khách hàng (Buyers)`;
-
-            document.getElementById('kpiPass').textContent = passReportsCount;
-            document.getElementById('kpiPassRate').textContent = `Tỷ lệ đạt: ${passRate}% (${passReportsCount}/${totalReports} lô)`;
-
-            document.getElementById('kpiFail').textContent = failReportsCount;
-            document.getElementById('kpiFailItems').textContent = `${failItemsCount} mục lỗi cần PKD & NCC xử lý`;
-
-            document.getElementById('kpiDiff').innerHTML = `${diffItemsCount} <span style="font-size:14px; font-weight:600; color:var(--text-muted);">mục</span>`;
-            document.getElementById('kpiDiffSub').textContent = `Thừa: ${exceedItemsCount} mục | Thiếu: ${shortItemsCount} mục`;
-        }
-
-        function updateCharts(filteredReports, reportsForBuyerChart) {
-            renderBuyerChart(reportsForBuyerChart || filteredReports);
-            renderDefectChart(filteredReports);
-            renderTrendChart(filteredReports);
-        }
-
-        function renderBuyerChart(reports) {
-            const selectedBuyer = document.getElementById('buyerFilter').value;
-            const buyerMap = {};
-            reports.forEach(r => {
-                const info = r.generalInfo || {};
-                const buyerName = (info.supplier || 'Chưa rõ').trim();
-                if (!buyerMap[buyerName]) {
-                    buyerMap[buyerName] = {
-                        styles: new Set(),
-                        pass: 0,
-                        fail: 0
-                    };
-                }
-                const styleName = (info.style || '').trim().toUpperCase();
-                if (styleName) buyerMap[buyerName].styles.add(styleName);
-
-                if (checkFail(r)) {
-                    buyerMap[buyerName].fail++;
-                } else {
-                    buyerMap[buyerName].pass++;
-                }
-            });
-
-            const labels = Object.keys(buyerMap).sort((a, b) => {
-                const totalB = buyerMap[b].pass + buyerMap[b].fail;
-                const totalA = buyerMap[a].pass + buyerMap[a].fail;
-                return totalB - totalA;
-            });
-
-            const styleCounts = labels.map(l => buyerMap[l].styles.size);
-            const passCounts = labels.map(l => buyerMap[l].pass);
-            const failCounts = labels.map(l => buyerMap[l].fail);
-
-            const styleColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#6366f1' : 'rgba(99, 102, 241, 0.25)');
-            const passColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#10b981' : 'rgba(16, 185, 129, 0.25)');
-            const failColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#ef4444' : 'rgba(239, 68, 68, 0.25)');
-
-            const ctx = document.getElementById('buyerChart').getContext('2d');
-            if (buyerChartInstance) buyerChartInstance.destroy();
-
-            buyerChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Số Mã hàng (Style)',
-                            data: styleCounts,
-                            backgroundColor: styleColors,
-                            borderRadius: 5
-                        },
-                        {
-                            label: 'Biên bản Đạt (Pass)',
-                            data: passCounts,
-                            backgroundColor: passColors,
-                            borderRadius: 5
-                        },
-                        {
-                            label: 'Không Đạt (Fail)',
-                            data: failCounts,
-                            backgroundColor: failColors,
-                            borderRadius: 5
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    onClick: (event, elements) => {
-                        if (elements.length > 0) {
-                            const index = elements[0].index;
-                            const clickedBuyer = labels[index];
-                            const buyerSelect = document.getElementById('buyerFilter');
-                            if (buyerSelect.value === clickedBuyer) {
-                                buyerSelect.value = 'all';
-                            } else {
-                                buyerSelect.value = clickedBuyer;
-                            }
-                            filterData();
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: { boxWidth: 12, font: { size: 11, family: 'Inter' } }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                footer: () => '💡 Nhấn vào cột để lọc / bỏ lọc Khách hàng này'
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: { font: { size: 11, family: 'Inter' } }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: { precision: 0, font: { size: 11, family: 'Inter' } }
-                        }
-                    }
-                }
-            });
-        }
-
-        function renderDefectChart(reports) {
-            let standardPass = 0;
-            let aqlDefect = 0;
-            let metalDefect = 0;
-            let sampleDefect = 0;
-            let qtyDiscrepancy = 0;
-
-            reports.forEach(r => {
-                (r.items || []).forEach(item => {
-                    const isAqlFail = item.resultAql === 'FAIL';
-                    const isMetalFail = item.resultMetal === 'FAIL';
-                    const isSampleFail = item.resultSample === 'FAIL';
-                    const isQtyDiff = (parseFloat(item.qtyExceed) || 0) > 0 || (parseFloat(item.qtyShort) || 0) > 0;
-
-                    if (isAqlFail) aqlDefect++;
-                    if (isMetalFail) metalDefect++;
-                    if (isSampleFail) sampleDefect++;
-                    if (isQtyDiff) qtyDiscrepancy++;
-
-                    if (!isAqlFail && !isMetalFail && !isSampleFail && !isQtyDiff) {
-                        standardPass++;
-                    }
-                });
-            });
-
-            const ctx = document.getElementById('defectChart').getContext('2d');
-            if (defectChartInstance) defectChartInstance.destroy();
-
-            defectChartInstance = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: [
-                        'Đạt chuẩn 100%',
-                        'Lỗi ngoại quan AQL',
-                        'Lỗi Dò kim loại',
-                        'Lỗi Mẫu phụ liệu',
-                        'Lệch SL (Thừa/Thiếu)'
-                    ],
-                    datasets: [{
-                        data: [standardPass, aqlDefect, metalDefect, sampleDefect, qtyDiscrepancy],
-                        backgroundColor: [
-                            '#10b981',
-                            '#ef4444',
-                            '#dc2626',
-                            '#8b5cf6',
-                            '#f59e0b'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '62%',
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: { boxWidth: 12, padding: 10, font: { size: 11, family: 'Inter' } }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const dataArr = context.dataset.data;
-                                    const sum = dataArr.reduce((acc, val) => acc + val, 0);
-                                    const val = context.parsed;
-                                    const pct = sum > 0 ? ((val / sum) * 100).toFixed(1) : 0;
-                                    return ` ${context.label}: ${val} mục (${pct}%)`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function renderTrendChart(reports) {
-            const dateMap = {};
-            reports.forEach(r => {
-                const info = r.generalInfo || {};
-                const ymd = extractReportYMD(info);
-                if (!ymd) return;
-
-                if (!dateMap[ymd]) {
-                    dateMap[ymd] = {
-                        reportCount: 0,
-                        styles: new Set()
-                    };
-                }
-                dateMap[ymd].reportCount++;
-                const styleName = (info.style || '').trim().toUpperCase();
-                if (styleName) dateMap[ymd].styles.add(styleName);
-            });
-
-            const sortedDates = Object.keys(dateMap).sort();
-            const displayDates = sortedDates.map(d => formatDate(d));
-            const reportSeries = sortedDates.map(d => dateMap[d].reportCount);
-            const styleSeries = sortedDates.map(d => dateMap[d].styles.size);
-
-            const ctx = document.getElementById('trendChart').getContext('2d');
-            if (trendChartInstance) trendChartInstance.destroy();
-
-            trendChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: displayDates,
-                    datasets: [
-                        {
-                            label: 'Số biên bản kiểm',
-                            data: reportSeries,
-                            borderColor: '#19398a',
-                            backgroundColor: 'rgba(25, 57, 138, 0.12)',
-                            fill: true,
-                            tension: 0.35,
-                            pointRadius: 4,
-                            pointBackgroundColor: '#19398a'
-                        },
-                        {
-                            label: 'Số mã hàng (Style)',
-                            data: styleSeries,
-                            borderColor: '#f59e0b',
-                            backgroundColor: 'rgba(245, 158, 11, 0.08)',
-                            borderDash: [5, 4],
-                            fill: false,
-                            tension: 0.35,
-                            pointRadius: 4,
-                            pointBackgroundColor: '#f59e0b'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: { boxWidth: 12, font: { size: 11, family: 'Inter' } }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: { font: { size: 11, family: 'Inter' } }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: { precision: 0, font: { size: 11, family: 'Inter' } }
-                        }
-                    }
-                }
-            });
-        }
-
-        function switchViewMode(mode) {
-            currentViewMode = mode;
-            document.getElementById('btnTableView').classList.toggle('active', mode === 'table');
-            document.getElementById('btnCardView').classList.toggle('active', mode === 'card');
-            document.getElementById('toolbarCard').classList.toggle('card-mode', mode === 'card');
-            renderReports(currentDisplayedReports);
-        }
-
-        function renderReports(reports, reportsForBuyerChart) {
-            currentDisplayedReports = reports;
-            updateKPIs(reports);
-            updateCharts(reports, reportsForBuyerChart);
-
-            const listDiv = document.getElementById('reportList');
-            listDiv.innerHTML = '';
-
-            if (!reports || reports.length === 0) {
-                listDiv.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fa-regular fa-folder-open"></i>
-                        <h3>Không tìm thấy biên bản nào phù hợp</h3>
-                        <p>Hãy thử điều chỉnh lại điều kiện lọc hoặc bấm nút "Đặt lại" trên thanh công cụ.</p>
-                    </div>`;
-                updateStickyTableOffset();
-                return;
-            }
-
-            if (currentViewMode === 'table') {
-                renderTableView(reports, listDiv);
+            if (checkFail(r)) {
+                buyerMap[buyerName].fail++;
             } else {
-                renderCardView(reports, listDiv);
+                buyerMap[buyerName].pass++;
             }
+        });
 
-            document.querySelectorAll('.btn-detail').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const index = Number(this.getAttribute('data-index'));
-                    showReportDetail(currentDisplayedReports[index]);
-                });
+        const labels = Object.keys(buyerMap).sort((a, b) => {
+            const totalB = buyerMap[b].pass + buyerMap[b].fail;
+            const totalA = buyerMap[a].pass + buyerMap[a].fail;
+            return totalB - totalA;
+        });
+
+        const styleCounts = labels.map(l => buyerMap[l].styles.size);
+        const passCounts = labels.map(l => buyerMap[l].pass);
+        const failCounts = labels.map(l => buyerMap[l].fail);
+
+        const styleColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#6366f1' : 'rgba(99, 102, 241, 0.25)');
+        const passColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#10b981' : 'rgba(16, 185, 129, 0.25)');
+        const failColors = labels.map(l => (selectedBuyer === 'all' || l === selectedBuyer) ? '#ef4444' : 'rgba(239, 68, 68, 0.25)');
+
+        const ctx = document.getElementById('buyerChart').getContext('2d');
+        if (buyerChartInstance) buyerChartInstance.destroy();
+
+        buyerChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Số Mã hàng (Style)',
+                        data: styleCounts,
+                        backgroundColor: styleColors,
+                        borderRadius: 5
+                    },
+                    {
+                        label: 'Biên bản Đạt (Pass)',
+                        data: passCounts,
+                        backgroundColor: passColors,
+                        borderRadius: 5
+                    },
+                    {
+                        label: 'Không Đạt (Fail)',
+                        data: failCounts,
+                        backgroundColor: failColors,
+                        borderRadius: 5
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const clickedBuyer = labels[index];
+                        const buyerSelect = document.getElementById('buyerFilter');
+                        if (buyerSelect.value === clickedBuyer) {
+                            buyerSelect.value = 'all';
+                        } else {
+                            buyerSelect.value = clickedBuyer;
+                        }
+                        filterData();
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { boxWidth: 12, font: { size: 11, family: 'Inter' } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            footer: () => '💡 Nhấn vào cột để lọc / bỏ lọc Khách hàng này'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { font: { size: 11, family: 'Inter' } }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0, font: { size: 11, family: 'Inter' } }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderDefectChart(reports) {
+        let standardPass = 0;
+        let aqlDefect = 0;
+        let metalDefect = 0;
+        let sampleDefect = 0;
+        let qtyDiscrepancy = 0;
+
+        reports.forEach(r => {
+            (r.items || []).forEach(item => {
+                const isAqlFail = item.resultAql === 'FAIL';
+                const isMetalFail = item.resultMetal === 'FAIL';
+                const isSampleFail = item.resultSample === 'FAIL';
+                const isQtyDiff = (parseFloat(item.qtyExceed) || 0) > 0 || (parseFloat(item.qtyShort) || 0) > 0;
+
+                if (isAqlFail) aqlDefect++;
+                if (isMetalFail) metalDefect++;
+                if (isSampleFail) sampleDefect++;
+                if (isQtyDiff) qtyDiscrepancy++;
+
+                if (!isAqlFail && !isMetalFail && !isSampleFail && !isQtyDiff) {
+                    standardPass++;
+                }
             });
+        });
 
+        const ctx = document.getElementById('defectChart').getContext('2d');
+        if (defectChartInstance) defectChartInstance.destroy();
+
+        defectChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Đạt chuẩn 100%',
+                    'Lỗi ngoại quan AQL',
+                    'Lỗi Dò kim loại',
+                    'Lỗi Mẫu phụ liệu',
+                    'Lệch SL (Thừa/Thiếu)'
+                ],
+                datasets: [{
+                    data: [standardPass, aqlDefect, metalDefect, sampleDefect, qtyDiscrepancy],
+                    backgroundColor: ['#10b981', '#ef4444', '#dc2626', '#8b5cf6', '#f59e0b'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '62%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { boxWidth: 12, padding: 10, font: { size: 11, family: 'Inter' } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const dataArr = context.dataset.data;
+                                const sum = dataArr.reduce((acc, val) => acc + val, 0);
+                                const val = context.parsed;
+                                const pct = sum > 0 ? ((val / sum) * 100).toFixed(1) : 0;
+                                return ` ${context.label}: ${val} mục (${pct}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderTrendChart(reports) {
+        const dateMap = {};
+
+        reports.forEach(r => {
+            const info = r.generalInfo || {};
+            const ymd = extractReportYMD(info);
+            if (!ymd) return;
+            if (!dateMap[ymd]) {
+                dateMap[ymd] = { reportCount: 0, styles: new Set() };
+            }
+            dateMap[ymd].reportCount++;
+            const styleName = (info.style || '').trim().toUpperCase();
+            if (styleName) dateMap[ymd].styles.add(styleName);
+        });
+
+        const sortedDates = Object.keys(dateMap).sort();
+        const displayDates = sortedDates.map(d => formatDate(d));
+        const reportSeries = sortedDates.map(d => dateMap[d].reportCount);
+        const styleSeries = sortedDates.map(d => dateMap[d].styles.size);
+
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        if (trendChartInstance) trendChartInstance.destroy();
+
+        trendChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: displayDates,
+                datasets: [
+                    {
+                        label: 'Số biên bản kiểm',
+                        data: reportSeries,
+                        borderColor: '#19398a',
+                        backgroundColor: 'rgba(25, 57, 138, 0.12)',
+                        fill: true,
+                        tension: 0.35,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#19398a'
+                    },
+                    {
+                        label: 'Số mã hàng (Style)',
+                        data: styleSeries,
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.08)',
+                        borderDash: [5, 4],
+                        fill: false,
+                        tension: 0.35,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#f59e0b'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { boxWidth: 12, font: { size: 11, family: 'Inter' } }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { font: { size: 11, family: 'Inter' } }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0, font: { size: 11, family: 'Inter' } }
+                    }
+                }
+            }
+        });
+    }
+
+    function switchViewMode(mode, isManual = false) {
+        if (isManual) userManuallySwitchedView = true;
+        currentViewMode = mode;
+        syncViewModeUI();
+        renderListOnly(currentDisplayedReports);
+    }
+
+    function renderListOnly(reports) {
+        const listDiv = document.getElementById('reportList');
+        listDiv.innerHTML = '';
+
+        if (!reports || reports.length === 0) {
+            listDiv.innerHTML = `
+                <div class="empty-state">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <h3>Không tìm thấy biên bản nào phù hợp</h3>
+                    <p>Hãy thử điều chỉnh lại điều kiện lọc hoặc bấm nút "Đặt lại" trên thanh công cụ.</p>
+                </div>`;
             updateStickyTableOffset();
+            return;
         }
 
-        function renderTableView(reports, container) {
-            let rowsHtml = '';
-            reports.forEach((report, idx) => {
-                const info = report.generalInfo || {};
-                const isFail = checkFail(report);
-                const hasDiff = checkDiff(report);
-                const itemCount = (report.items || []).length;
-                const dateStr = getDisplayDate(info);
-                const statusBadge = isFail 
-                    ? '<span class="badge fail"><i class="fa-solid fa-xmark"></i> KHÔNG ĐẠT</span>' 
-                    : '<span class="badge pass"><i class="fa-solid fa-check"></i> ĐẠT</span>';
-                const diffBadge = hasDiff
-                    ? '<span class="badge diff" title="Có phát sinh thừa hoặc thiếu số lượng"><i class="fa-solid fa-scale-unbalanced"></i> LỆCH SL</span>'
-                    : '';
+        if (currentViewMode === 'table') {
+            renderTableView(reports, listDiv);
+        } else {
+            renderCardView(reports, listDiv);
+        }
 
-                rowsHtml += `
-                    <tr class="${isFail ? 'row-fail' : ''}">
-                        <td><strong>#${idx + 1}</strong></td>
-                        <td>${escapeHtml(dateStr)}</td>
-                        <td><strong>${escapeHtml(info.supplier || '---')}</strong></td>
-                        <td><strong style="color: var(--primary);">${escapeHtml(info.style || '---')}</strong></td>
-                        <td><span class="po-tag">${escapeHtml(info.po || '---')}</span></td>
-                        <td style="text-align:center;"><b>${itemCount}</b> mục</td>
-                        <td>${escapeHtml(info.inspector || '---')}</td>
-                        <td>${statusBadge}${diffBadge}</td>
-                        <td style="text-align:right;">
-                            <button type="button" class="btn btn-detail" data-index="${idx}">
-                                <i class="fa-regular fa-eye"></i> Chi tiết
-                            </button>
-                        </td>
-                    </tr>
-                `;
+        document.querySelectorAll('.btn-detail').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = Number(this.getAttribute('data-index'));
+                showReportDetail(currentDisplayedReports[index]);
             });
+        });
 
-            container.innerHTML = `
-                <div class="table-container">
-                    <table class="modern-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 50px;">STT</th>
-                                <th>Ngày tạo/kiểm</th>
-                                <th>Khách hàng (Buyer)</th>
-                                <th>Mã hàng (Style)</th>
-                                <th>Số PO</th>
-                                <th style="text-align:center;">Số mục PL</th>
-                                <th>Người kiểm</th>
-                                <th>Kết quả QC</th>
-                                <th style="text-align:right;">Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>${rowsHtml}</tbody>
-                    </table>
+        updateStickyTableOffset();
+    }
+
+    function renderReports(reports, reportsForBuyerChart) {
+        currentDisplayedReports = reports;
+        updateKPIs(reports);
+        updateCharts(reports, reportsForBuyerChart);
+        renderListOnly(reports);
+    }
+
+    function renderTableView(reports, container) {
+        let rowsHtml = '';
+        reports.forEach((report, idx) => {
+            const info = report.generalInfo || {};
+            const isFail = checkFail(report);
+            const hasDiff = checkDiff(report);
+            const itemCount = (report.items || []).length;
+            const dateStr = getDisplayDate(info);
+
+            const statusBadge = isFail
+                ? '<span class="badge fail"><i class="fa-solid fa-xmark"></i> KHÔNG ĐẠT</span>'
+                : '<span class="badge pass"><i class="fa-solid fa-check"></i> ĐẠT</span>';
+
+            const diffBadge = hasDiff
+                ? '<span class="badge diff" title="Có phát sinh thừa hoặc thiếu số lượng"><i class="fa-solid fa-scale-unbalanced"></i> LỆCH SL</span>'
+                : '';
+
+            rowsHtml += `
+                <tr class="${isFail ? 'row-fail' : ''}">
+                    <td><strong>#${idx + 1}</strong></td>
+                    <td>${escapeHtml(dateStr)}</td>
+                    <td><strong>${escapeHtml(info.supplier || '---')}</strong></td>
+                    <td><strong style="color: var(--primary);">${escapeHtml(info.style || '---')}</strong></td>
+                    <td><span class="po-tag">${escapeHtml(info.po || '---')}</span></td>
+                    <td style="text-align:center;"><b>${itemCount}</b> mục</td>
+                    <td>${escapeHtml(info.inspector || '---')}</td>
+                    <td>${statusBadge}${diffBadge}</td>
+                    <td style="text-align:right;">
+                        <button type="button" class="btn btn-detail" data-index="${idx}">
+                            <i class="fa-regular fa-eye"></i> Chi tiết
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        container.innerHTML = `
+            <div class="table-container">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">STT</th>
+                            <th>Ngày tạo/kiểm</th>
+                            <th>Khách hàng (Buyer)</th>
+                            <th>Mã hàng (Style)</th>
+                            <th>Số PO</th>
+                            <th style="text-align:center;">Số mục PL</th>
+                            <th>Người kiểm</th>
+                            <th>Kết quả QC</th>
+                            <th style="text-align:right;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+            </div>
+        `;
+    }
+
+    function renderCardView(reports, container) {
+        const grid = document.createElement('div');
+        grid.className = 'cards-grid';
+
+        reports.forEach((report, idx) => {
+            const info = report.generalInfo || {};
+            const isFail = checkFail(report);
+            const hasDiff = checkDiff(report);
+            const itemCount = (report.items || []).length;
+            const dateStr = getDisplayDate(info);
+
+            const statusBadge = isFail
+                ? '<span class="badge fail"><i class="fa-solid fa-xmark"></i> KHÔNG ĐẠT</span>'
+                : '<span class="badge pass"><i class="fa-solid fa-check"></i> ĐẠT</span>';
+
+            const diffBadge = hasDiff
+                ? '<span class="badge diff"><i class="fa-solid fa-scale-unbalanced"></i> LỆCH SL</span>'
+                : '';
+
+            const card = document.createElement('div');
+            card.className = `report-card ${isFail ? 'fail' : ''}`;
+            card.innerHTML = `
+                <div>
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <h3 class="card-style">${escapeHtml(info.style || 'Chưa rõ Style')}</h3>
+                            <div class="card-supplier"><i class="fa-regular fa-building"></i> ${escapeHtml(info.supplier || '---')}</div>
+                        </div>
+                        <div class="card-badges">${statusBadge}${diffBadge}</div>
+                    </div>
+                    <div class="card-body" style="margin-top: 12px;">
+                        <div><span>Số PO</span><strong>${escapeHtml(info.po || '---')}</strong></div>
+                        <div><span>Ngày kiểm/tạo</span><strong>${escapeHtml(dateStr)}</strong></div>
+                        <div><span>Người kiểm</span><strong>${escapeHtml(info.inspector || '---')}</strong></div>
+                        <div><span>Số danh mục</span><strong>${itemCount} phụ liệu</strong></div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="card-index-label">Biên bản #${idx + 1}</span>
+                    <button type="button" class="btn btn-detail" data-index="${idx}">
+                        <i class="fa-regular fa-eye"></i> Xem Biên Bản
+                    </button>
                 </div>
             `;
-        }
+            grid.appendChild(card);
+        });
 
-        function renderCardView(reports, container) {
-            const grid = document.createElement('div');
-            grid.className = 'cards-grid';
+        container.appendChild(grid);
+    }
 
-            reports.forEach((report, idx) => {
-                const info = report.generalInfo || {};
-                const isFail = checkFail(report);
-                const hasDiff = checkDiff(report);
-                const itemCount = (report.items || []).length;
-                const dateStr = getDisplayDate(info);
-                const statusBadge = isFail 
-                    ? '<span class="badge fail"><i class="fa-solid fa-xmark"></i> KHÔNG ĐẠT</span>' 
-                    : '<span class="badge pass"><i class="fa-solid fa-check"></i> ĐẠT</span>';
-                const diffBadge = hasDiff
-                    ? '<span class="badge diff"><i class="fa-solid fa-scale-unbalanced"></i> LỆCH SL</span>'
-                    : '';
-
-                const card = document.createElement('div');
-                card.className = `report-card ${isFail ? 'fail' : ''}`;
-                card.innerHTML = `
-                    <div>
-                        <div class="card-header">
-                            <div>
-                                <h3 class="card-style">${escapeHtml(info.style || 'Chưa rõ Style')}</h3>
-                                <div class="card-supplier"><i class="fa-regular fa-building"></i> ${escapeHtml(info.supplier || '---')}</div>
-                            </div>
-                            <div>${statusBadge}${diffBadge}</div>
-                        </div>
-                        <div class="card-body" style="margin-top: 12px;">
-                            <div><span>Số PO</span><strong>${escapeHtml(info.po || '---')}</strong></div>
-                            <div><span>Ngày kiểm/tạo</span><strong>${escapeHtml(dateStr)}</strong></div>
-                            <div><span>Người kiểm</span><strong>${escapeHtml(info.inspector || '---')}</strong></div>
-                            <div><span>Số danh mục</span><strong>${itemCount} phụ liệu</strong></div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-detail" data-index="${idx}">
-                            <i class="fa-regular fa-eye"></i> Xem Biên Bản
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-
-            container.appendChild(grid);
-        }
-
-        function getCompanyHeaderHTML(title, subtitle, code) {
-            return `
-            <div class="company-header">
-                <div class="company-brand">
-                    <img class="report-logo" src="102537773_HT-logo.png" onerror="this.onerror=null;this.src=DEFAULT_HOATHO_LOGO;" alt="Hòa Thọ Logo">
-                    <div class="company-info">
-                        <div class="company-name">TỔNG CTY CP DỆT MAY HÒA THỌ</div>
-                        <div>Hoa Tho Textile- Garment J.S Corp</div>
-                        <div>Đơn vị: Hòa Thọ Triệu Phong</div>
-                    </div>
-                </div>
-                <div class="report-title">
-                    <div class="header-title">${title}</div>
-                    <div class="subtitle">${subtitle}</div>
-                </div>
-                <div class="report-number">
-                    <div><strong>Mã số: ${code}</strong></div>
-                    <div><strong>Lần SĐ: 01/</strong></div>
+    function getCompanyHeaderHTML(title, subtitle, code) {
+        return `
+        <div class="company-header">
+            <div class="company-brand">
+                <img class="report-logo" src="102537773_HT-logo.png" onerror="this.onerror=null;this.src=DEFAULT_HOATHO_LOGO;" alt="Hòa Thọ Logo">
+                <div class="company-info">
+                    <div class="company-name">TỔNG CTY CP DỆT MAY HÒA THỌ</div>
+                    <div>Hoa Tho Textile- Garment J.S Corp</div>
+                    <div>Đơn vị: Hòa Thọ Triệu Phong</div>
                 </div>
             </div>
-            `;
-        }
+            <div class="report-title">
+                <div class="header-title">${title}</div>
+                <div class="subtitle">${subtitle}</div>
+            </div>
+            <div class="report-number">
+                <div><strong>Mã số: ${code}</strong></div>
+                <div><strong>Lần SĐ: 01/</strong></div>
+            </div>
+        </div>
+        `;
+    }
 
-        function showReportDetail(report) {
-            if (!report || !report.items) return;
-            const info = report.generalInfo || {};
-            document.getElementById('detailPreviewTitle').innerHTML = `
-                <i class="fa-regular fa-file-lines"></i> Style: <b style="color:var(--primary)">${escapeHtml(info.style || '')}</b> | PO: <b>${escapeHtml(info.po || '')}</b> | Khách hàng: <b>${escapeHtml(info.supplier || '')}</b>
-            `;
+    function showReportDetail(report) {
+        if (!report || !report.items) return;
+        const info = report.generalInfo || {};
 
-            const isUncountable = item => {
-                const unit = (item.donVi || '').toLowerCase().trim();
-                return ['m', 'mét', 'met', 'yard', 'yards', 'yd', 'yds'].includes(unit);
-            };
-            const countableItems = report.items.filter(item => !isUncountable(item));
-            const uncountableItems = report.items.filter(item => isUncountable(item));
-            const renderArea = document.getElementById('reportRenderArea');
-            renderArea.innerHTML = '';
+        document.getElementById('detailPreviewTitle').innerHTML = `
+            <i class="fa-regular fa-file-lines"></i>
+            Style: <b style="color:var(--primary)">${escapeHtml(info.style || '')}</b> |
+            PO: <b>${escapeHtml(info.po || '')}</b> |
+            Khách hàng: <b>${escapeHtml(info.supplier || '')}</b>
+        `;
 
-            if (countableItems.length > 0) renderArea.innerHTML += buildCountableHTML(info, countableItems);
-            if (uncountableItems.length > 0) renderArea.innerHTML += buildUncountableHTML(info, uncountableItems);
+        const isUncountable = item => {
+            const unit = (item.donVi || '').toLowerCase().trim();
+            return ['m', 'mét', 'met', 'yard', 'yards', 'yd', 'yds'].includes(unit);
+        };
 
-            document.getElementById('listView').style.display = 'none';
-            document.getElementById('detailView').style.display = 'block';
-            window.scrollTo(0, 0);
-        }
+        const countableItems = report.items.filter(item => !isUncountable(item));
+        const uncountableItems = report.items.filter(item => isUncountable(item));
 
-        function closeDetail() {
-            document.getElementById('detailView').style.display = 'none';
-            document.getElementById('listView').style.display = 'block';
-            updateStickyTableOffset();
-        }
+        const renderArea = document.getElementById('reportRenderArea');
+        renderArea.innerHTML = '';
 
-        function calcActualQty(slNhap, qtyExceed, qtyShort) {
-            const total = (parseFloat(slNhap) || 0) + (parseFloat(qtyExceed) || 0) - (parseFloat(qtyShort) || 0);
-            return Number(total.toFixed(2));
-        }
+        if (countableItems.length > 0) renderArea.innerHTML += buildCountableHTML(info, countableItems);
+        if (uncountableItems.length > 0) renderArea.innerHTML += buildUncountableHTML(info, uncountableItems);
 
-        function buildCountableHTML(generalInfo, items) {
-            let overallFail = false;
-            let rowsHtml = '';
-            items.forEach(item => {
-                const slThucNhan = calcActualQty(item.slNhap, item.qtyExceed, item.qtyShort);
-                if (item.resultAql === 'FAIL' || item.resultSample === 'FAIL' || item.resultMetal === 'FAIL') overallFail = true;
-                rowsHtml += `
+        document.getElementById('listView').style.display = 'none';
+        document.getElementById('detailView').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+
+    function closeDetail() {
+        document.getElementById('detailView').style.display = 'none';
+        document.getElementById('listView').style.display = 'block';
+        updateStickyTableOffset();
+    }
+
+    function calcActualQty(slNhap, qtyExceed, qtyShort) {
+        const total = (parseFloat(slNhap) || 0) + (parseFloat(qtyExceed) || 0) - (parseFloat(qtyShort) || 0);
+        return Number(total.toFixed(2));
+    }
+
+    function buildCountableHTML(generalInfo, items) {
+        let overallFail = false;
+        let rowsHtml = '';
+
+        items.forEach(item => {
+            const slThucNhan = calcActualQty(item.slNhap, item.qtyExceed, item.qtyShort);
+            if (item.resultAql === 'FAIL' || item.resultSample === 'FAIL' || item.resultMetal === 'FAIL') overallFail = true;
+
+            rowsHtml += `
+                <tr>
+                    <td>${escapeHtml(item.loai || '')}_${escapeHtml(item.mau || '')}_${escapeHtml(item.tsSize || '')}</td>
+                    <td>${escapeHtml(item.donVi || '')}</td><td>${escapeHtml(item.slNhap || '0')}</td><td>${slThucNhan}</td>
+                    <td>${escapeHtml(item.aqlSampleSize || '0')}</td><td>${escapeHtml(item.acceptedAql || '0')}</td><td>${escapeHtml(item.defectAql || '0')}</td>
+                    <td>${escapeHtml(item.qtyExceed || '0')}</td><td>${escapeHtml(item.qtyShort || '0')}</td><td>${escapeHtml(item.metalSampleSize || '')}</td>
+                    <td>${escapeHtml(item.acceptedMetal || '')}</td><td>${escapeHtml(item.defectMetal || '')}</td><td>${escapeHtml(item.resultSample || '')}</td><td>${escapeHtml(item.remark || '')}</td>
+                </tr>`;
+        });
+
+        const passHtml = overallFail ? '&#9744; Đạt' : '&#9745; <span style="color:green; font-weight:bold;">Đạt</span>';
+        const failHtml = overallFail ? '&#9745; <span style="color:red; font-weight:bold;">Không đạt</span>' : '&#9744; Không đạt';
+        const handlingText = overallFail ? 'PKD làm việc với NCC để xác nhận và xử lý lô hàng trên.' : 'Đưa vào lưu trữ chờ sản xuất.';
+        const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
+        const warehouseKeeperSign = generalInfo.daDuyet
+            ? escapeHtml(generalInfo.nguoiDuyet || 'Lê Đức Văn')
+            : '<span class="pending-sign">(Chờ duyệt)</span>';
+
+        return `
+        <div class="report-page">
+            ${getCompanyHeaderHTML('BIÊN BẢN KIỂM TRA PHỤ LIỆU ĐẾM ĐƯỢC', 'COUNTABLE ACCESSORIES INSPECTION REPORT', 'CL-BM-PL-01')}
+            <div class="info-grid">
+                <div><label>Buyer (Kh.hàng):</label> <span>${escapeHtml(generalInfo.supplier || '')}</span></div>
+                <div><label>PO#:</label> <span>${escapeHtml(generalInfo.po || '')}</span></div>
+                <div><label>Ngày nhập:</label> <span>${escapeHtml(formatDate(generalInfo.ngayNhap))}</span></div>
+                <div><label>Style (Mã hàng):</label> <span>${escapeHtml(generalInfo.style || '')}</span></div>
+                <div><label>Order q'ty (SL đơn hàng):</label> <span>${escapeHtml(generalInfo.orderQty || '')}</span></div>
+                <div><label>Ngày kiểm tra:</label> <span>${escapeHtml(formatDate(generalInfo.ngayKiem))}</span></div>
+                <div></div><div></div><div><label>Inspector (Người kiểm):</label> <span>${escapeHtml(generalInfo.inspector || '')}</span></div>
+            </div>
+            <table class="report-table">
+                <thead>
                     <tr>
-                        <td>${escapeHtml(item.loai || '')}_${escapeHtml(item.mau || '')}_${escapeHtml(item.tsSize || '')}</td>
-                        <td>${escapeHtml(item.donVi || '')}</td><td>${escapeHtml(item.slNhap || '0')}</td><td>${slThucNhan}</td>
-                        <td>${escapeHtml(item.aqlSampleSize || '0')}</td><td>${escapeHtml(item.acceptedAql || '0')}</td><td>${escapeHtml(item.defectAql || '0')}</td>
-                        <td>${escapeHtml(item.qtyExceed || '0')}</td><td>${escapeHtml(item.qtyShort || '0')}</td><td>${escapeHtml(item.metalSampleSize || '')}</td>
-                        <td>${escapeHtml(item.acceptedMetal || '')}</td><td>${escapeHtml(item.defectMetal || '')}</td><td>${escapeHtml(item.resultSample || '')}</td><td>${escapeHtml(item.remark || '')}</td>
-                    </tr>`;
-            });
-            const passHtml = overallFail ? '&#9744; Đạt' : '&#9745; <span style="color:green; font-weight:bold;">Đạt</span>';
-            const failHtml = overallFail ? '&#9745; <span style="color:red; font-weight:bold;">Không đạt</span>' : '&#9744; Không đạt';
-            const handlingText = overallFail ? 'PKD làm việc với NCC để xác nhận và xử lý lô hàng trên.' : 'Đưa vào lưu trữ chờ sản xuất.';
-            const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
-            const warehouseKeeperSign = generalInfo.daDuyet
-                ? escapeHtml(generalInfo.nguoiDuyet || 'Lê Đức Văn')
-                : '<span class="pending-sign">(Chờ duyệt)</span>';
-
-            return `
-            <div class="report-page">
-                ${getCompanyHeaderHTML('BIÊN BẢN KIỂM TRA PHỤ LIỆU ĐẾM ĐƯỢC', 'COUNTABLE ACCESSORIES INSPECTION REPORT', 'CL-BM-PL-01')}
-                <div class="info-grid">
-                    <div><label>Buyer (Kh.hàng):</label> <span>${escapeHtml(generalInfo.supplier || '')}</span></div>
-                    <div><label>PO#:</label> <span>${escapeHtml(generalInfo.po || '')}</span></div>
-                    <div><label>Ngày nhập:</label> <span>${escapeHtml(formatDate(generalInfo.ngayNhap))}</span></div>
-                    <div><label>Style (Mã hàng):</label> <span>${escapeHtml(generalInfo.style || '')}</span></div>
-                    <div><label>Order q'ty (SL đơn hàng):</label> <span>${escapeHtml(generalInfo.orderQty || '')}</span></div>
-                    <div><label>Ngày kiểm tra:</label> <span>${escapeHtml(formatDate(generalInfo.ngayKiem))}</span></div>
-                    <div></div><div></div><div><label>Inspector (Người kiểm):</label> <span>${escapeHtml(generalInfo.inspector || '')}</span></div>
-                </div>
-                <table class="report-table">
-                    <thead>
-                        <tr>
-                            <th rowspan="2">Item<br>Phụ liệu</th><th rowspan="2">Unit<br>Đ.vị</th><th rowspan="2">P.list q'ty<br>SL theo P.list</th><th rowspan="2">Act. Q'ty<br>SL thực nhận</th><th rowspan="2">Inspected Q'ty<br>SL kiểm</th><th colspan="2">Inspected Q'ty<br>SL kiểm chất lượng(1)</th><th colspan="2">Checked Q'ty<br>SL kiểm</th><th colspan="3">Metal detection<br>Dò kim</th><th rowspan="2">Accessory sample/<br>Mẫu phụ liệu</th><th rowspan="2">Remarks/<br>Ghi chú</th>
-                        </tr>
-                        <tr><th>Accepted<br>Đạt</th><th>Rejected<br>Không đạt</th><th>Exceed<br>Thừa</th><th>Short<br>Thiếu</th><th>Detected 10%</th><th>Accepted<br>Đạt</th><th>Rejected<br>K.Đạt</th></tr>
-                    </thead>
-                    <tbody>${rowsHtml}</tbody>
-                </table>
-                <div class="bottom-grid-dd">
-                    <div class="left-section">
-                        <p>Kết luận: Lô hàng của các loại phụ liệu trên <b style="margin-left:15px;">${passHtml}</b>, <b style="margin-left:10px;">${failHtml}</b></p>
-                        <p style="margin-top:5px;"><strong>Hướng xử lý:</strong> <span>${handlingText}</span></p>
-                        <div class="notes-section"><p><i>(1): Số lượng kiểm lấy theo bảng AQL Kiểm Phụ Liệu bên góc phải của form này</i></p><p><i>(2): Dò kim 10% số lượng nhập kho đối với phụ liệu kim loại...</i></p></div>
-                        <div class="signature-section">
-                            <div>
-                                <p>Quản lý kho/Warehouse-keeper</p>
-                                <div class="watermark">
-                                    <p>${warehouseKeeperSign}</p>
-                                    <p style="font-weight:normal; font-size:10px;">${generalInfo.daDuyet ? escapeHtml(approveDate) : ''}</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p>Người kiểm tra/Inspector</p>
-                                <div class="watermark"><p>${escapeHtml(generalInfo.inspector || '')}</p></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="aql-container">
-                        <div class="aql-header">AQL 0.65 LEVEL I PHỤ LIỆU ĐẾM ĐƯỢC</div>
-                        <table class="aql-table">
-                            <thead><tr><th>LOT SIZE</th><th>CODE</th><th>SAMPLE</th><th>ACCEPT</th><th>REJECT</th></tr></thead>
-                            <tbody>
-                                <tr><td>2 -&gt; 8</td><td>A</td><td>2</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>9 -&gt; 15</td><td>A</td><td>2</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>16 -&gt; 25</td><td>B</td><td>3</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>26 -&gt; 50</td><td>C</td><td>5</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>51 -&gt; 90</td><td>C</td><td>5</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>91 -&gt; 150</td><td>D</td><td>8</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>151 -&gt; 280</td><td>E</td><td>13</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>281 -&gt; 500</td><td>F</td><td>20</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>501 -&gt; 1,200</td><td>G</td><td>32</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>1,201 -&gt; 3,200</td><td>H</td><td>50</td><td>0</td><td class="reject-col">1</td></tr>
-                                <tr><td>3,201 -&gt; 10,000</td><td>J</td><td>80</td><td>1</td><td class="reject-col">2</td></tr>
-                                <tr><td>10,001 -&gt; 35,000</td><td>K</td><td>125</td><td>2</td><td class="reject-col">3</td></tr>
-                                <tr><td>35,001 -&gt; 150,000</td><td>L</td><td>200</td><td>3</td><td class="reject-col">4</td></tr>
-                                <tr><td>150,001 -&gt; 500,000</td><td>M</td><td>315</td><td>5</td><td class="reject-col">6</td></tr>
-                                <tr><td>500,000 -&gt; over</td><td>N</td><td>500</td><td>7</td><td class="reject-col">8</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>`;
-        }
-
-        function buildUncountableHTML(generalInfo, items) {
-            let overallFail = false;
-            let rowsHtml = '';
-            items.forEach(item => {
-                const slThucNhan = calcActualQty(item.slNhap, item.qtyExceed, item.qtyShort);
-                if (item.resultAql === 'FAIL' || item.resultSample === 'FAIL') overallFail = true;
-                rowsHtml += `
-                    <tr>
-                        <td>${escapeHtml(item.loai || '')} - ${escapeHtml(item.mau || '')} - ${escapeHtml(item.tsSize || '')}</td>
-                        <td>${escapeHtml(item.donVi || '')}</td><td>${escapeHtml(item.slNhap || '0')}</td><td>${slThucNhan}</td>
-                        <td>${escapeHtml(item.aqlSampleSize || '0')}</td><td>${escapeHtml(item.acceptedAql || '0')}</td><td>${escapeHtml(item.defectAql || '0')}</td>
-                        <td>${escapeHtml(item.qtyExceed || '0')}</td><td>${escapeHtml(item.qtyShort || '0')}</td><td>${escapeHtml(item.resultSample || '')}</td><td>${escapeHtml(item.remark || '')}</td>
-                    </tr>`;
-            });
-            const passHtml = overallFail ? '&#9744; Đạt' : '&#9745; <span style="color:green; font-weight:bold;">Đạt</span>';
-            const failHtml = overallFail ? '&#9745; <span style="color:red; font-weight:bold;">Không đạt</span>' : '&#9744; Không đạt';
-            const handlingText = overallFail ? 'PKD làm việc với NCC để xác nhận và xử lý lô hàng trên.' : 'Đưa vào lưu trữ chờ sản xuất.';
-            const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
-            const warehouseKeeperSign = generalInfo.daDuyet
-                ? escapeHtml(generalInfo.nguoiDuyet || 'Lê Đức Văn')
-                : '<span class="pending-sign">(Chờ duyệt)</span>';
-
-            return `
-            <div class="report-page">
-                ${getCompanyHeaderHTML('BIÊN BẢN KIỂM TRA PHỤ LIỆU', '(LOẠI PHỤ LIỆU KHÔNG ĐẾM ĐƯỢC)', 'CL-BM-PL-02')}
-                <div class="info-grid">
-                    <div><label>Buyer (Kh.hàng):</label> <span>${escapeHtml(generalInfo.supplier || '')}</span></div>
-                    <div><label>PO#:</label> <span>${escapeHtml(generalInfo.po || '')}</span></div>
-                    <div><label>Ngày nhập:</label> <span>${escapeHtml(formatDate(generalInfo.ngayNhap))}</span></div>
-                    <div><label>Style (Mã hàng):</label> <span>${escapeHtml(generalInfo.style || '')}</span></div>
-                    <div><label>Order q'ty (SL đơn hàng):</label> <span>${escapeHtml(generalInfo.orderQty || '')}</span></div>
-                    <div><label>Ngày kiểm tra:</label> <span>${escapeHtml(formatDate(generalInfo.ngayKiem))}</span></div>
-                    <div></div><div></div><div><label>Inspector (Người kiểm):</label> <span>${escapeHtml(generalInfo.inspector || '')}</span></div>
-                </div>
-                <table class="report-table">
-                    <thead>
-                        <tr>
-                            <th rowspan="2">Item<br>Phụ liệu</th><th rowspan="2">Unit<br>Đ.vị</th><th rowspan="2">P.list q'ty<br>SL theo P.list</th><th rowspan="2">Act. Q'ty<br>SL thực nhận</th><th rowspan="2">Inspected Q'ty<br>SL kiểm 10%</th><th colspan="2">Inspected Q'ty<br>SL kiểm chất lượng(1)</th><th colspan="2">Checked Q'ty<br>SL kiểm</th><th rowspan="2">Accessory sample/<br>Mẫu phụ liệu</th><th rowspan="2">Remarks/<br>Ghi chú</th>
-                        </tr>
-                        <tr><th>Accepted<br>Đạt</th><th>Rejected<br>Không đạt</th><th>Exceed<br>Thừa</th><th>Short<br>Thiếu</th></tr>
-                    </thead>
-                    <tbody>${rowsHtml}</tbody>
-                </table>
-                <div class="bottom-block-kdd">
+                        <th rowspan="2">Item<br>Phụ liệu</th><th rowspan="2">Unit<br>Đ.vị</th><th rowspan="2">P.list q'ty<br>SL theo P.list</th><th rowspan="2">Act. Q'ty<br>SL thực nhận</th><th rowspan="2">Inspected Q'ty<br>SL kiểm</th><th colspan="2">Inspected Q'ty<br>SL kiểm chất lượng(1)</th><th colspan="2">Checked Q'ty<br>SL kiểm</th><th colspan="3">Metal detection<br>Dò kim</th><th rowspan="2">Accessory sample/<br>Mẫu phụ liệu</th><th rowspan="2">Remarks/<br>Ghi chú</th>
+                    </tr>
+                    <tr><th>Accepted<br>Đạt</th><th>Rejected<br>Không đạt</th><th>Exceed<br>Thừa</th><th>Short<br>Thiếu</th><th>Detected 10%</th><th>Accepted<br>Đạt</th><th>Rejected<br>K.Đạt</th></tr>
+                </thead>
+                <tbody>${rowsHtml}</tbody>
+            </table>
+            <div class="bottom-grid-dd">
+                <div class="left-section">
                     <p>Kết luận: Lô hàng của các loại phụ liệu trên <b style="margin-left:15px;">${passHtml}</b>, <b style="margin-left:10px;">${failHtml}</b></p>
                     <p style="margin-top:5px;"><strong>Hướng xử lý:</strong> <span>${handlingText}</span></p>
-                    <div class="notes-section">
-                        <p><i>(1): PL không đếm được (là những PL có đơn vị tính bằng mét, yard) gồm: thun, dây lưng, dây tape, dây luồn...</i></p>
-                        <p><i>(2): Kiểm chất lượng 10% theo số lượng thực nhận. Yêu cầu: số lượng lỗi dưới 3%.</i></p>
-                    </div>
+                    <div class="notes-section"><p><i>(1): Số lượng kiểm lấy theo bảng AQL Kiểm Phụ Liệu bên góc phải của form này</i></p><p><i>(2): Dò kim 10% số lượng nhập kho đối với phụ liệu kim loại...</i></p></div>
                     <div class="signature-section">
                         <div>
                             <p>Quản lý kho/Warehouse-keeper</p>
@@ -1749,81 +2115,175 @@
                         </div>
                     </div>
                 </div>
-            </div>`;
+                <div class="aql-container">
+                    <div class="aql-header">AQL 0.65 LEVEL I PHỤ LIỆU ĐẾM ĐƯỢC</div>
+                    <table class="aql-table">
+                        <thead><tr><th>LOT SIZE</th><th>CODE</th><th>SAMPLE</th><th>ACCEPT</th><th>REJECT</th></tr></thead>
+                        <tbody>
+                            <tr><td>2 -&gt; 8</td><td>A</td><td>2</td><td>0</td><td class="reject-col">1</td></tr>
+                            <tr><td>9 -&gt; 15</td><td>A</td><td>2</td><td>0</td><td class="reject-col">1</td></tr>
+                            <tr><td>16 -&gt; 25</td><td>B</td><td>3</td><td>0</td><td class="reject-col">1</td></tr>
+                            <tr><td>26 -&gt; 50</td><td>C</td><td>5</td><td>0</td><td class="reject-col">1</td></tr>
+                            <tr><td>51 -&gt; 90</td><td>C</td><td>5</td><td>0</td><td class="reject-col">1</td></tr>
+                            <tr><td>91 -&gt; 150</td><td>D</td><td>8</td><td>0</td><td class="reject-col">1</td></tr>
+                            <tr><td>151 -&gt; 280</td><td>E</td><td>13</td><td>0</td><td class="reject-col">1</td></tr>
+                            <tr><td>281 -&gt; 500</td><td>F</td><td>20</td><td>0</td><td class="reject-col">1</td></tr>
+                            <tr><td>501 -&gt; 1,200</td><td>G</td><td>32</td><td>0</td><td class="reject-col">1</td></tr>
+                            <tr><td>1,201 -&gt; 3,200</td><td>H</td><td>50</td><td>0</td><td class="reject-col">1</td></tr>
+                            <tr><td>3,201 -&gt; 10,000</td><td>J</td><td>80</td><td>1</td><td class="reject-col">2</td></tr>
+                            <tr><td>10,001 -&gt; 35,000</td><td>K</td><td>125</td><td>2</td><td class="reject-col">3</td></tr>
+                            <tr><td>35,001 -&gt; 150,000</td><td>L</td><td>200</td><td>3</td><td class="reject-col">4</td></tr>
+                            <tr><td>150,001 -&gt; 500,000</td><td>M</td><td>315</td><td>5</td><td class="reject-col">6</td></tr>
+                            <tr><td>500,000 -&gt; over</td><td>N</td><td>500</td><td>7</td><td class="reject-col">8</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function buildUncountableHTML(generalInfo, items) {
+        let overallFail = false;
+        let rowsHtml = '';
+
+        items.forEach(item => {
+            const slThucNhan = calcActualQty(item.slNhap, item.qtyExceed, item.qtyShort);
+            if (item.resultAql === 'FAIL' || item.resultSample === 'FAIL') overallFail = true;
+
+            rowsHtml += `
+                <tr>
+                    <td>${escapeHtml(item.loai || '')} - ${escapeHtml(item.mau || '')} - ${escapeHtml(item.tsSize || '')}</td>
+                    <td>${escapeHtml(item.donVi || '')}</td><td>${escapeHtml(item.slNhap || '0')}</td><td>${slThucNhan}</td>
+                    <td>${escapeHtml(item.aqlSampleSize || '0')}</td><td>${escapeHtml(item.acceptedAql || '0')}</td><td>${escapeHtml(item.defectAql || '0')}</td>
+                    <td>${escapeHtml(item.qtyExceed || '0')}</td><td>${escapeHtml(item.qtyShort || '0')}</td><td>${escapeHtml(item.resultSample || '')}</td><td>${escapeHtml(item.remark || '')}</td>
+                </tr>`;
+        });
+
+        const passHtml = overallFail ? '&#9744; Đạt' : '&#9745; <span style="color:green; font-weight:bold;">Đạt</span>';
+        const failHtml = overallFail ? '&#9745; <span style="color:red; font-weight:bold;">Không đạt</span>' : '&#9744; Không đạt';
+        const handlingText = overallFail ? 'PKD làm việc với NCC để xác nhận và xử lý lô hàng trên.' : 'Đưa vào lưu trữ chờ sản xuất.';
+        const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
+        const warehouseKeeperSign = generalInfo.daDuyet
+            ? escapeHtml(generalInfo.nguoiDuyet || 'Lê Đức Văn')
+            : '<span class="pending-sign">(Chờ duyệt)</span>';
+
+        return `
+        <div class="report-page">
+            ${getCompanyHeaderHTML('BIÊN BẢN KIỂM TRA PHỤ LIỆU', '(LOẠI PHỤ LIỆU KHÔNG ĐẾM ĐƯỢC)', 'CL-BM-PL-02')}
+            <div class="info-grid">
+                <div><label>Buyer (Kh.hàng):</label> <span>${escapeHtml(generalInfo.supplier || '')}</span></div>
+                <div><label>PO#:</label> <span>${escapeHtml(generalInfo.po || '')}</span></div>
+                <div><label>Ngày nhập:</label> <span>${escapeHtml(formatDate(generalInfo.ngayNhap))}</span></div>
+                <div><label>Style (Mã hàng):</label> <span>${escapeHtml(generalInfo.style || '')}</span></div>
+                <div><label>Order q'ty (SL đơn hàng):</label> <span>${escapeHtml(generalInfo.orderQty || '')}</span></div>
+                <div><label>Ngày kiểm tra:</label> <span>${escapeHtml(formatDate(generalInfo.ngayKiem))}</span></div>
+                <div></div><div></div><div><label>Inspector (Người kiểm):</label> <span>${escapeHtml(generalInfo.inspector || '')}</span></div>
+            </div>
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Item<br>Phụ liệu</th><th rowspan="2">Unit<br>Đ.vị</th><th rowspan="2">P.list q'ty<br>SL theo P.list</th><th rowspan="2">Act. Q'ty<br>SL thực nhận</th><th rowspan="2">Inspected Q'ty<br>SL kiểm 10%</th><th colspan="2">Inspected Q'ty<br>SL kiểm chất lượng(1)</th><th colspan="2">Checked Q'ty<br>SL kiểm</th><th rowspan="2">Accessory sample/<br>Mẫu phụ liệu</th><th rowspan="2">Remarks/<br>Ghi chú</th>
+                    </tr>
+                    <tr><th>Accepted<br>Đạt</th><th>Rejected<br>Không đạt</th><th>Exceed<br>Thừa</th><th>Short<br>Thiếu</th></tr>
+                </thead>
+                <tbody>${rowsHtml}</tbody>
+            </table>
+            <div class="bottom-block-kdd">
+                <p>Kết luận: Lô hàng của các loại phụ liệu trên <b style="margin-left:15px;">${passHtml}</b>, <b style="margin-left:10px;">${failHtml}</b></p>
+                <p style="margin-top:5px;"><strong>Hướng xử lý:</strong> <span>${handlingText}</span></p>
+                <div class="notes-section">
+                    <p><i>(1): PL không đếm được (là những PL có đơn vị tính bằng mét, yard) gồm: thun, dây lưng, dây tape, dây luồn...</i></p>
+                    <p><i>(2): Kiểm chất lượng 10% theo số lượng thực nhận. Yêu cầu: số lượng lỗi dưới 3%.</i></p>
+                </div>
+                <div class="signature-section">
+                    <div>
+                        <p>Quản lý kho/Warehouse-keeper</p>
+                        <div class="watermark">
+                            <p>${warehouseKeeperSign}</p>
+                            <p style="font-weight:normal; font-size:10px;">${generalInfo.daDuyet ? escapeHtml(approveDate) : ''}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p>Người kiểm tra/Inspector</p>
+                        <div class="watermark"><p>${escapeHtml(generalInfo.inspector || '')}</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    document.getElementById('searchInput').addEventListener('input', filterData);
+    document.getElementById('buyerFilter').addEventListener('change', filterData);
+    document.getElementById('fromDate').addEventListener('change', filterData);
+    document.getElementById('toDate').addEventListener('change', filterData);
+    document.getElementById('statusFilter').addEventListener('change', filterData);
+
+    function clearBuyerFilter() {
+        document.getElementById('buyerFilter').value = 'all';
+        filterData();
+    }
+
+    function resetFilters() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('buyerFilter').value = 'all';
+        document.getElementById('fromDate').value = '';
+        document.getElementById('toDate').value = '';
+        document.getElementById('statusFilter').value = 'all';
+        filterData();
+    }
+
+    function filterData() {
+        const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+        const selectedBuyer = document.getElementById('buyerFilter').value;
+        const fromDateVal = document.getElementById('fromDate').value;
+        const toDateVal = document.getElementById('toDate').value;
+        const status = document.getElementById('statusFilter').value;
+
+        const bannerEl = document.getElementById('activeBuyerBanner');
+        const bannerNameEl = document.getElementById('activeBuyerName');
+        if (selectedBuyer !== 'all') {
+            bannerNameEl.textContent = selectedBuyer;
+            bannerEl.classList.add('show');
+        } else {
+            bannerEl.classList.remove('show');
         }
 
-        document.getElementById('searchInput').addEventListener('input', filterData);
-        document.getElementById('buyerFilter').addEventListener('change', filterData);
-        document.getElementById('fromDate').addEventListener('change', filterData);
-        document.getElementById('toDate').addEventListener('change', filterData);
-        document.getElementById('statusFilter').addEventListener('change', filterData);
+        const baseFiltered = allReports.filter(r => {
+            const info = r.generalInfo || {};
+            const textMatch = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''}`
+                .toLowerCase()
+                .includes(keyword);
 
-        function clearBuyerFilter() {
-            document.getElementById('buyerFilter').value = 'all';
-            filterData();
-        }
-
-        function resetFilters() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('buyerFilter').value = 'all';
-            document.getElementById('fromDate').value = '';
-            document.getElementById('toDate').value = '';
-            document.getElementById('statusFilter').value = 'all';
-            filterData();
-        }
-
-        function filterData() {
-            const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
-            const selectedBuyer = document.getElementById('buyerFilter').value;
-            const fromDateVal = document.getElementById('fromDate').value;
-            const toDateVal = document.getElementById('toDate').value;
-            const status = document.getElementById('statusFilter').value;
-
-            const bannerEl = document.getElementById('activeBuyerBanner');
-            const bannerNameEl = document.getElementById('activeBuyerName');
-            if (selectedBuyer !== 'all') {
-                bannerNameEl.textContent = selectedBuyer;
-                bannerEl.classList.add('show');
-            } else {
-                bannerEl.classList.remove('show');
+            let dateMatch = true;
+            if (fromDateVal || toDateVal) {
+                const reportYMD = extractReportYMD(info);
+                if (!reportYMD) {
+                    dateMatch = false;
+                } else {
+                    if (fromDateVal && reportYMD < fromDateVal) dateMatch = false;
+                    if (toDateVal && reportYMD > toDateVal) dateMatch = false;
+                }
             }
 
-            const baseFiltered = allReports.filter(r => {
-                const info = r.generalInfo || {};
-                const textMatch = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''}`
-                    .toLowerCase()
-                    .includes(keyword);
+            const isFail = checkFail(r);
+            const hasDiff = checkDiff(r);
+            let statusMatch = true;
+            if (status === 'pass') statusMatch = !isFail;
+            if (status === 'fail') statusMatch = isFail;
+            if (status === 'diff') statusMatch = hasDiff;
 
-                let dateMatch = true;
-                if (fromDateVal || toDateVal) {
-                    const reportYMD = extractReportYMD(info);
-                    if (!reportYMD) {
-                        dateMatch = false;
-                    } else {
-                        if (fromDateVal && reportYMD < fromDateVal) dateMatch = false;
-                        if (toDateVal && reportYMD > toDateVal) dateMatch = false;
-                    }
-                }
+            return textMatch && dateMatch && statusMatch;
+        });
 
-                const isFail = checkFail(r);
-                const hasDiff = checkDiff(r);
-                let statusMatch = true;
-                if (status === 'pass') statusMatch = !isFail;
-                if (status === 'fail') statusMatch = isFail;
-                if (status === 'diff') statusMatch = hasDiff;
+        const finalFiltered = baseFiltered.filter(r => {
+            const info = r.generalInfo || {};
+            return selectedBuyer === 'all' || (info.supplier || '').trim() === selectedBuyer;
+        });
 
-                return textMatch && dateMatch && statusMatch;
-            });
+        renderReports(finalFiltered, baseFiltered);
+    }
 
-            const finalFiltered = baseFiltered.filter(r => {
-                const info = r.generalInfo || {};
-                return selectedBuyer === 'all' || (info.supplier || '').trim() === selectedBuyer;
-            });
-
-            renderReports(finalFiltered, baseFiltered);
-        }
-
-        fetchReportsFromGitHub();
-    </script>
+    fetchReportsFromGitHub();
+</script>
 </body>
 </html>
