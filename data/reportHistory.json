@@ -1,6 +1,48 @@
 [
   {
     "generalInfo": {
+      "supplier": "FAM",
+      "po": "KT 27.10",
+      "style": "GP016570",
+      "date": "2026-11-02T06:47:59.294Z",
+      "ngayNhap": "2026-10-27",
+      "ngayKiem": "2026-10-28",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "FAM",
+        "maHang": "GP016570",
+        "po": "KT 27.10",
+        "loai": "K22827",
+        "mau": "BLUE(MEDIUM IND",
+        "tsSize": "",
+        "donVi": "CUỘN",
+        "slNhap": "200.0",
+        "ngay": null,
+        "ngayNhap": "2026-10-27",
+        "ngayKiem": "2026-10-28",
+        "aqlSampleSize": "13",
+        "acceptedAql": "13",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1576
+  },
+  {
+    "generalInfo": {
       "supplier": "DCL",
       "po": "R49372A3822",
       "style": "341410-SS27",
