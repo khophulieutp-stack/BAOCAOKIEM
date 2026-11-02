@@ -2,6 +2,48 @@
   {
     "generalInfo": {
       "supplier": "DCL",
+      "po": "R49372A3836",
+      "style": "341410-SS27",
+      "date": "2026-11-02T06:33:01.584Z",
+      "ngayNhap": "2026-10-26",
+      "ngayKiem": "2026-10-26",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "341410-SS27",
+        "po": "R49372A3836",
+        "loai": "DÂY KÉO TÚI",
+        "mau": "VI385",
+        "tsSize": "19CM",
+        "donVi": "PCS",
+        "slNhap": "1500.0",
+        "ngay": "26/10",
+        "ngayNhap": "2026-10-26",
+        "ngayKiem": "2026-10-26",
+        "aqlSampleSize": "50",
+        "acceptedAql": "50",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1563
+  },
+  {
+    "generalInfo": {
+      "supplier": "DCL",
       "po": "R49372A3795",
       "style": "341410-SS27",
       "date": "2026-11-02T06:32:25.177Z",
