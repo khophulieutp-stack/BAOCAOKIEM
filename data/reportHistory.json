@@ -2,6 +2,90 @@
   {
     "generalInfo": {
       "supplier": "DCL",
+      "po": "R49372A3845-1",
+      "style": "341410-SS27",
+      "date": "2026-11-05T03:24:01.790Z",
+      "ngayNhap": "2026-10-31",
+      "ngayKiem": "2026-11-03",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "341410-SS27",
+        "po": "R49372A3845-1",
+        "loai": "THUN 40MM",
+        "mau": "NO DYE",
+        "tsSize": "40MM",
+        "donVi": "M",
+        "slNhap": "731.0",
+        "ngay": "31/10",
+        "ngayNhap": "2026-10-31",
+        "ngayKiem": "2026-11-03",
+        "aqlSampleSize": "73",
+        "acceptedAql": "73",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1599
+  },
+  {
+    "generalInfo": {
+      "supplier": "DCL",
+      "po": "R49372A3763",
+      "style": "341410-SS27",
+      "date": "2026-11-05T03:23:11.742Z",
+      "ngayNhap": "2026-10-31",
+      "ngayKiem": "2026-11-03",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "341410-SS27",
+        "po": "R49372A3763",
+        "loai": "TRANG TRÍ DÂY",
+        "mau": "K02A BROWN",
+        "tsSize": "",
+        "donVi": "PCS",
+        "slNhap": "20000.0",
+        "ngay": "27/10",
+        "ngayNhap": "2026-10-31",
+        "ngayKiem": "2026-11-03",
+        "aqlSampleSize": "125",
+        "acceptedAql": "125",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1598
+  },
+  {
+    "generalInfo": {
+      "supplier": "DCL",
       "po": "R49372A3763",
       "style": "341410-SS27",
       "date": "2026-11-05T03:23:03.470Z",
