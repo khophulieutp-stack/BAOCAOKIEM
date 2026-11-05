@@ -2,6 +2,48 @@
   {
     "generalInfo": {
       "supplier": "DCL",
+      "po": "R49372A3815",
+      "style": "339725-SS27",
+      "date": "2026-11-05T08:46:11.167Z",
+      "ngayNhap": "2026-11-02",
+      "ngayKiem": "2026-11-04",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "339725-SS27",
+        "po": "R49372A3815",
+        "loai": "Thun 40mm",
+        "mau": "G17C BLUE",
+        "tsSize": "40MM",
+        "donVi": "M",
+        "slNhap": "564.0",
+        "ngay": null,
+        "ngayNhap": "2026-11-02",
+        "ngayKiem": "2026-11-04",
+        "aqlSampleSize": "56",
+        "acceptedAql": "0",
+        "defectAql": "56",
+        "resultAql": "FAIL",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": "màu khác mẫu"
+      }
+    ],
+    "id": 1600
+  },
+  {
+    "generalInfo": {
+      "supplier": "DCL",
       "po": "R49372A3845-1",
       "style": "341410-SS27",
       "date": "2026-11-05T03:24:01.790Z",
