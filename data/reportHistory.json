@@ -2,6 +2,48 @@
   {
     "generalInfo": {
       "supplier": "DCL",
+      "po": "P49372A959",
+      "style": "351265-SS27",
+      "date": "2026-11-05T03:16:45.479Z",
+      "ngayNhap": "2026-11-02",
+      "ngayKiem": "2026-11-04",
+      "inspector": "Ngô Thị Lý",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "351265-SS27",
+        "po": "P49372A959",
+        "loai": "RFID",
+        "mau": "ORANGE",
+        "tsSize": "UK36 FR46 (L34)",
+        "donVi": "PCS",
+        "slNhap": "1000.0",
+        "ngay": "02/11",
+        "ngayNhap": "2026-11-02",
+        "ngayKiem": "2026-11-04",
+        "aqlSampleSize": "32",
+        "acceptedAql": "32",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1588
+  },
+  {
+    "generalInfo": {
+      "supplier": "DCL",
       "po": "R49372A3834",
       "style": "341410-SS27",
       "date": "2026-11-05T03:15:32.846Z",
