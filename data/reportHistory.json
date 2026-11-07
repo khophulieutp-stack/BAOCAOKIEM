@@ -1,6 +1,73 @@
 [
   {
     "generalInfo": {
+      "supplier": "FAM",
+      "po": "KT6.11",
+      "style": "GP016570",
+      "date": "2026-11-07T08:06:44.107Z",
+      "ngayNhap": "2026-11-06",
+      "ngayKiem": "2026-11-07",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "FAM",
+        "maHang": "GP016570",
+        "po": "KT6.11",
+        "loai": "752",
+        "mau": "WHITE (NEW OFF",
+        "tsSize": "",
+        "donVi": "CUỘN",
+        "slNhap": "1000.0",
+        "ngay": null,
+        "ngayNhap": "2026-11-06",
+        "ngayKiem": "2026-11-07",
+        "aqlSampleSize": "32",
+        "acceptedAql": "32",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      },
+      {
+        "khach": "FAM",
+        "maHang": "GP016570",
+        "po": "KT6.11",
+        "loai": "K22804",
+        "mau": "YELLOW (MAIZE)",
+        "tsSize": "",
+        "donVi": "CUỘN",
+        "slNhap": "1000.0",
+        "ngay": null,
+        "ngayNhap": "2026-11-06",
+        "ngayKiem": "2026-11-07",
+        "aqlSampleSize": "32",
+        "acceptedAql": "32",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1611
+  },
+  {
+    "generalInfo": {
       "supplier": "DCL",
       "po": "R49372A3889",
       "style": "111415-SS27",
