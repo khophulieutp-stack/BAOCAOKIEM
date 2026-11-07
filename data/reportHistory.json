@@ -2,6 +2,48 @@
   {
     "generalInfo": {
       "supplier": "DCL",
+      "po": "R49372A3886",
+      "style": "339725-SS27",
+      "date": "2026-11-07T05:50:44.098Z",
+      "ngayNhap": "2026-11-06",
+      "ngayKiem": "2026-11-06",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "339725-SS27",
+        "po": "R49372A3886",
+        "loai": "Thun viền 16mm",
+        "mau": "N06B GREY",
+        "tsSize": "16MM",
+        "donVi": "M",
+        "slNhap": "3162.0",
+        "ngay": "05/11/26",
+        "ngayNhap": "2026-11-06",
+        "ngayKiem": "2026-11-06",
+        "aqlSampleSize": "316",
+        "acceptedAql": "291",
+        "defectAql": "25",
+        "resultAql": "FAIL",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": "Lỏng biên khác mẫu"
+      }
+    ],
+    "id": 1607
+  },
+  {
+    "generalInfo": {
+      "supplier": "DCL",
       "po": "R49372A3884, R49372A3885",
       "style": "339725-SS27",
       "date": "2026-11-06T09:28:26.168Z",
