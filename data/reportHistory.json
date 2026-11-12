@@ -1,6 +1,48 @@
 [
   {
     "generalInfo": {
+      "supplier": "DCL",
+      "po": "R49372A3844",
+      "style": "341410-SS27",
+      "date": "2026-11-12T01:57:41.804Z",
+      "ngayNhap": "2026-11-11",
+      "ngayKiem": "2026-11-11",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": false,
+      "nguoiDuyet": "",
+      "ngayDuyet": ""
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "341410-SS27",
+        "po": "R49372A3844",
+        "loai": "TRANG TRÍ DÂY",
+        "mau": "G20A BLUE",
+        "tsSize": "",
+        "donVi": "PCS",
+        "slNhap": "17066.0",
+        "ngay": "11/11",
+        "ngayNhap": "2026-11-11",
+        "ngayKiem": "2026-11-11",
+        "aqlSampleSize": "125",
+        "acceptedAql": "125",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1647
+  },
+  {
+    "generalInfo": {
       "supplier": "FAM",
       "po": "PKD 71K",
       "style": "GP016570",
