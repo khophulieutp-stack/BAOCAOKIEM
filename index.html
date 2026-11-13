@@ -667,7 +667,7 @@
             font-size: 13px;
         }
 
-        /* ================= GRID CARD VIEW (TỰ ĐỘNG GIÃN TRANG TRÊN MÀN HÌNH LỚN & TỐI ƯU ĐIỆN THOẠI) ================= */
+        /* ================= GRID CARD VIEW ================= */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -1360,7 +1360,6 @@
 
     let allReports = [];
     let currentDisplayedReports = [];
-    // Tự động chọn chế độ Dạng Thẻ khi mở trên điện thoại (<= 768px)
     let currentViewMode = window.innerWidth <= 768 ? 'card' : 'table';
     let userManuallySwitchedView = false;
 
@@ -1385,7 +1384,6 @@
             .replace(/'/g, '&#39;');
     }
 
-    // Đồng bộ chính xác 100% vị trí ghim của Toolbar và Tiêu đề cột bảng (Khoảng hở = 0px)
     function updateStickyTableOffset() {
         const navEl = document.getElementById('topNavbar');
         const toolEl = document.getElementById('toolbarCard');
@@ -2070,10 +2068,9 @@
         const passHtml = overallFail ? '&#9744; Đạt' : '&#9745; <span style="color:green; font-weight:bold;">Đạt</span>';
         const failHtml = overallFail ? '&#9745; <span style="color:red; font-weight:bold;">Không đạt</span>' : '&#9744; Không đạt';
         const handlingText = overallFail ? 'PKD làm việc với NCC để xác nhận và xử lý lô hàng trên.' : 'Đưa vào lưu trữ chờ sản xuất.';
-        const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
-        const warehouseKeeperSign = generalInfo.daDuyet
-            ? escapeHtml(generalInfo.nguoiDuyet || 'Lê Đức Văn')
-            : '<span class="pending-sign">(Chờ duyệt)</span>';
+        
+        // ✅ TỰ ĐỘNG HIỂN THỊ TÊN QUẢN LÝ KHO (KHÔNG CẦN CHỜ DUYỆT)
+        const warehouseKeeperSign = escapeHtml(generalInfo.nguoiDuyet || 'Lê Đức Văn');
 
         return `
         <div class="report-page">
@@ -2106,7 +2103,6 @@
                             <p>Quản lý kho/Warehouse-keeper</p>
                             <div class="watermark">
                                 <p>${warehouseKeeperSign}</p>
-                                <p style="font-weight:normal; font-size:10px;">${generalInfo.daDuyet ? escapeHtml(approveDate) : ''}</p>
                             </div>
                         </div>
                         <div>
@@ -2162,10 +2158,9 @@
         const passHtml = overallFail ? '&#9744; Đạt' : '&#9745; <span style="color:green; font-weight:bold;">Đạt</span>';
         const failHtml = overallFail ? '&#9745; <span style="color:red; font-weight:bold;">Không đạt</span>' : '&#9744; Không đạt';
         const handlingText = overallFail ? 'PKD làm việc với NCC để xác nhận và xử lý lô hàng trên.' : 'Đưa vào lưu trữ chờ sản xuất.';
-        const approveDate = generalInfo.ngayDuyet ? new Date(generalInfo.ngayDuyet).toLocaleDateString('vi-VN') : '';
-        const warehouseKeeperSign = generalInfo.daDuyet
-            ? escapeHtml(generalInfo.nguoiDuyet || 'Lê Đức Văn')
-            : '<span class="pending-sign">(Chờ duyệt)</span>';
+        
+        // ✅ TỰ ĐỘNG HIỂN THỊ TÊN QUẢN LÝ KHO (KHÔNG CẦN CHỜ DUYỆT)
+        const warehouseKeeperSign = escapeHtml(generalInfo.nguoiDuyet || 'Lê Đức Văn');
 
         return `
         <div class="report-page">
@@ -2200,7 +2195,6 @@
                         <p>Quản lý kho/Warehouse-keeper</p>
                         <div class="watermark">
                             <p>${warehouseKeeperSign}</p>
-                            <p style="font-weight:normal; font-size:10px;">${generalInfo.daDuyet ? escapeHtml(approveDate) : ''}</p>
                         </div>
                     </div>
                     <div>
