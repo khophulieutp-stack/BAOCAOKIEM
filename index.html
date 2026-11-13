@@ -815,6 +815,209 @@
             margin-bottom: 12px;
         }
 
+        
+        /* ================= CỘT PHẢN HỒI NCC & ĐỒNG BỘ CLOUD ================= */
+        .ncc-reply-cell {
+            min-width: 240px;
+            max-width: 320px;
+        }
+
+        .ncc-input-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .ncc-reply-textarea {
+            width: 100%;
+            min-height: 54px;
+            padding: 7px 10px;
+            border: 1px solid #fca5a5;
+            border-radius: 7px;
+            font-size: 12.5px;
+            font-family: inherit;
+            line-height: 1.4;
+            color: var(--text-main);
+            background: #ffffff;
+            resize: vertical;
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+        }
+
+        .ncc-reply-textarea.has-content {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .ncc-reply-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(25, 57, 138, 0.12);
+            background: #ffffff;
+        }
+
+        .ncc-quick-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .ncc-tag-btn {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            font-size: 10.5px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 99px;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .ncc-tag-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .ncc-save-status {
+            font-size: 11px;
+            font-weight: 600;
+            color: #059669;
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .ncc-save-status.show {
+            display: inline-flex;
+        }
+
+        .ncc-pass-dash {
+            color: #94a3b8;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .ncc-optional-btn {
+            background: transparent;
+            border: 1px dashed #cbd5e1;
+            color: #64748b;
+            font-size: 11.5px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .ncc-optional-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .card-ncc-section {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+        }
+
+        .card-ncc-section.pass-note {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+        }
+
+        .card-ncc-label {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #b91c1c;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
+
+        .card-ncc-section.pass-note .card-ncc-label {
+            color: #334155;
+        }
+
+        /* Modal Đồng bộ GitHub cho Ghi chú NCC */
+        .gh-modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .gh-modal-backdrop.show {
+            display: flex;
+        }
+
+        .gh-modal {
+            background: #fff;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+        }
+
+        .gh-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .gh-modal-header h3 {
+            margin: 0;
+            font-size: 16px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gh-modal label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+
+        .gh-modal input[type="password"] {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13.5px;
+            margin-bottom: 12px;
+            outline: none;
+        }
+
+        .gh-modal input[type="password"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(25, 57, 138, 0.12);
+        }
+
+        .gh-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
         /* ================= GIAO DIỆN BIÊN BẢN A4 NGANG ================= */
         #detailView { display: none; padding: 20px; }
 
@@ -1142,6 +1345,9 @@
             </div>
         </div>
         <div class="nav-actions">
+            <button class="btn-refresh" onclick="openNccSyncModal()" title="Lưu phản hồi NCC lên GitHub để mọi máy cùng xem">
+                <i class="fa-solid fa-cloud-arrow-up"></i> <span>Đồng bộ Phản hồi NCC</span>
+            </button>
             <button class="btn-refresh" onclick="fetchReportsFromGitHub()">
                 <i class="fa-solid fa-rotate"></i> <span>Làm mới dữ liệu</span>
             </button>
@@ -1333,11 +1539,189 @@
         <div id="reportRenderArea"></div>
     </div>
 
+    <!-- MODAL ĐỒNG BỘ PHẢN HỒI NCC LÊN GITHUB -->
+    <div class="gh-modal-backdrop" id="nccSyncModal">
+        <div class="gh-modal">
+            <div class="gh-modal-header">
+                <h3><i class="fa-solid fa-cloud-arrow-up"></i> Đồng Bộ Kết Quả NCC Trả Lời</h3>
+                <button type="button" onclick="closeNccSyncModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#64748b;">&times;</button>
+            </div>
+            <p style="font-size:12.5px; color:#475569; margin:0 0 12px 0; line-height:1.45;">
+                Mọi nội dung ở cột <b>Kết quả NCC trả lời</b> đã được tự động lưu trên trình duyệt này. Nhập mật khẩu Admin & GitHub Token nếu bạn muốn đồng bộ lên đám mây cho các máy khác cùng xem:
+            </p>
+            <label for="nccAdminPass">Mật khẩu Admin (Mặc định: 123K)</label>
+            <input type="password" id="nccAdminPass" placeholder="Nhập mật khẩu Admin...">
+
+            <label for="nccGhToken">GitHub Token (PAT)</label>
+            <input type="password" id="nccGhToken" placeholder="ghp_xxxxxxxxxxxx">
+
+            <div id="nccSyncStatus" style="font-size:12.5px; font-weight:600; min-height:18px; margin-bottom:6px;"></div>
+
+            <div class="gh-modal-actions">
+                <button type="button" class="btn btn-back" onclick="closeNccSyncModal()">Đóng</button>
+                <button type="button" class="btn" id="btnPushNccCloud" onclick="pushNccRepliesToGitHub()">
+                    <i class="fa-solid fa-floppy-disk"></i> Lưu lên GitHub
+                </button>
+            </div>
+        </div>
+    </div>
+
 <script>
     const REPO_OWNER = "khophulieutp-stack";
     const REPO_NAME = "BAOCAOKIEM";
     const BRANCH = "main";
     const FILE_PATH = "data/reportHistory.json";
+    const NCC_STORAGE_KEY = "baocaokho_ncc_replies_v1";
+    const NCC_GH_TOKEN_KEY = "baocaokho_ncc_gh_token";
+    const ADMIN_PASS_NCC = "123K";
+
+    let localNccReplies = {};
+    try {
+        localNccReplies = JSON.parse(localStorage.getItem(NCC_STORAGE_KEY) || "{}");
+    } catch (e) {
+        localNccReplies = {};
+    }
+
+    function getReportKey(report) {
+        if (!report) return "";
+        if (report.id !== undefined && report.id !== null) return `id_${report.id}`;
+        const info = report.generalInfo || {};
+        return `key_${info.supplier || ''}_${info.style || ''}_${info.po || ''}_${info.date || info.ngayKiem || ''}`;
+    }
+
+    function getNccReply(report) {
+        const key = getReportKey(report);
+        if (key && localNccReplies[key] !== undefined) {
+            return localNccReplies[key];
+        }
+        return report?.generalInfo?.nccReply || report?.nccReply || "";
+    }
+
+    function saveNccReply(report, value, statusEl) {
+        if (!report) return;
+        const key = getReportKey(report);
+        const trimmed = String(value || "");
+        if (key) {
+            localNccReplies[key] = trimmed;
+            try {
+                localStorage.setItem(NCC_STORAGE_KEY, JSON.stringify(localNccReplies));
+            } catch (e) {
+                console.warn("Không thể lưu localStorage:", e);
+            }
+        }
+        if (!report.generalInfo) report.generalInfo = {};
+        report.generalInfo.nccReply = trimmed;
+
+        if (statusEl) {
+            statusEl.classList.add('show');
+            clearTimeout(statusEl._hideTimer);
+            statusEl._hideTimer = setTimeout(() => {
+                statusEl.classList.remove('show');
+            }, 2200);
+        }
+    }
+
+    function utf8ToBase64(str) {
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode('0x' + p1)));
+    }
+
+    function openNccSyncModal() {
+        const modal = document.getElementById('nccSyncModal');
+        const tokenInput = document.getElementById('nccGhToken');
+        const statusEl = document.getElementById('nccSyncStatus');
+        if (tokenInput) {
+            tokenInput.value = localStorage.getItem(NCC_GH_TOKEN_KEY) || '';
+        }
+        if (statusEl) statusEl.textContent = '';
+        modal.classList.add('show');
+    }
+
+    function closeNccSyncModal() {
+        document.getElementById('nccSyncModal').classList.remove('show');
+    }
+
+    async function pushNccRepliesToGitHub() {
+        const passInput = document.getElementById('nccAdminPass');
+        const tokenInput = document.getElementById('nccGhToken');
+        const statusEl = document.getElementById('nccSyncStatus');
+        const btn = document.getElementById('btnPushNccCloud');
+
+        if (passInput.value !== ADMIN_PASS_NCC) {
+            statusEl.style.color = '#dc2626';
+            statusEl.textContent = '❌ Sai mật khẩu Admin!';
+            return;
+        }
+
+        const token = tokenInput.value.trim();
+        if (!token) {
+            statusEl.style.color = '#dc2626';
+            statusEl.textContent = '⚠️ Vui lòng nhập GitHub Token (PAT)!';
+            return;
+        }
+
+        localStorage.setItem(NCC_GH_TOKEN_KEY, token);
+
+        try {
+            btn.disabled = true;
+            statusEl.style.color = '#19398a';
+            statusEl.textContent = '⏳ Đang đồng bộ kết quả NCC trả lời lên GitHub...';
+
+            // Đảm bảo tất cả ghi chú NCC trong localNccReplies được gán vào allReports
+            allReports.forEach(r => {
+                const reply = getNccReply(r);
+                if (!r.generalInfo) r.generalInfo = {};
+                if (reply) {
+                    r.generalInfo.nccReply = reply;
+                } else {
+                    delete r.generalInfo.nccReply;
+                }
+            });
+
+            const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`;
+            let sha = null;
+            const checkRes = await fetch(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github+json',
+                    'Cache-Control': 'no-cache'
+                }
+            });
+
+            if (checkRes.ok) {
+                const fileData = await checkRes.json();
+                sha = fileData.sha;
+            }
+
+            const payload = {
+                message: `Cập nhật kết quả NCC trả lời - ${new Date().toLocaleString('vi-VN')}`,
+                content: utf8ToBase64(JSON.stringify(allReports, null, 2))
+            };
+            if (sha) payload.sha = sha;
+
+            const putRes = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!putRes.ok) {
+                const errData = await putRes.json();
+                throw new Error(errData.message || 'Lỗi ghi dữ liệu lên GitHub');
+            }
+
+            statusEl.style.color = '#059669';
+            statusEl.textContent = `✅ Đã đồng bộ thành công lên GitHub (${new Date().toLocaleTimeString('vi-VN')})!`;
+        } catch (err) {
+            statusEl.style.color = '#dc2626';
+            statusEl.textContent = `❌ Lỗi: ${err.message}`;
+        } finally {
+            btn.disabled = false;
+        }
+    }
 
     // Logo Hòa Thọ chuẩn Vector nhúng trực tiếp
     const DEFAULT_HOATHO_LOGO = "data:image/svg+xml;utf8," + encodeURIComponent(`
@@ -1865,6 +2249,51 @@
             });
         });
 
+        // Gắn sự kiện lưu tự động cho ô nhập Kết quả NCC trả lời
+        document.querySelectorAll('.ncc-reply-textarea').forEach(textarea => {
+            textarea.addEventListener('input', function() {
+                const index = Number(this.getAttribute('data-index'));
+                const report = currentDisplayedReports[index];
+                const wrap = this.closest('.ncc-input-wrap');
+                const statusEl = wrap ? wrap.querySelector('.ncc-save-status') : null;
+                this.classList.toggle('has-content', this.value.trim().length > 0);
+                saveNccReply(report, this.value, statusEl);
+            });
+        });
+
+        // Gắn sự kiện cho các nút gợi ý nhanh phản hồi của NCC
+        document.querySelectorAll('.ncc-tag-btn').forEach(tagBtn => {
+            tagBtn.addEventListener('click', function() {
+                const index = Number(this.getAttribute('data-index'));
+                const textToInsert = this.getAttribute('data-text');
+                const wrap = this.closest('.ncc-input-wrap');
+                const textarea = wrap ? wrap.querySelector('.ncc-reply-textarea') : null;
+                const statusEl = wrap ? wrap.querySelector('.ncc-save-status') : null;
+                if (textarea) {
+                    const currentVal = textarea.value.trim();
+                    textarea.value = currentVal ? `${currentVal}; ${textToInsert}` : textToInsert;
+                    textarea.classList.add('has-content');
+                    textarea.focus();
+                    saveNccReply(currentDisplayedReports[index], textarea.value, statusEl);
+                }
+            });
+        });
+
+        // Nút mở ô ghi chú NCC cho lô Đạt nhưng có Lệch SL hoặc muốn ghi chú thêm
+        document.querySelectorAll('.ncc-optional-btn').forEach(optBtn => {
+            optBtn.addEventListener('click', function() {
+                const cell = this.closest('.ncc-reply-cell');
+                if (!cell) return;
+                const editor = cell.querySelector('.ncc-input-wrap');
+                if (editor) {
+                    editor.style.display = 'flex';
+                    this.style.display = 'none';
+                    const ta = editor.querySelector('.ncc-reply-textarea');
+                    if (ta) ta.focus();
+                }
+            });
+        });
+
         updateStickyTableOffset();
     }
 
@@ -1873,6 +2302,37 @@
         updateKPIs(reports);
         updateCharts(reports, reportsForBuyerChart);
         renderListOnly(reports);
+    }
+
+    function buildNccCellContent(report, idx, isFail, hasDiff) {
+        const currentReply = getNccReply(report);
+        const hasContent = currentReply.trim().length > 0;
+        const showEditorImmediately = isFail || hasDiff || hasContent;
+
+        const editorHtml = `
+            <div class="ncc-input-wrap" style="display: ${showEditorImmediately ? 'flex' : 'none'};">
+                <textarea class="ncc-reply-textarea ${hasContent ? 'has-content' : ''}" data-index="${idx}" placeholder="Ghi kết quả NCC trả lời (VD: NCC đổi trả, bù hàng, PKD xác nhận dùng được...)">${escapeHtml(currentReply)}</textarea>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:4px; flex-wrap:wrap;">
+                    <div class="ncc-quick-tags">
+                        <button type="button" class="ncc-tag-btn" data-index="${idx}" data-text="NCC đổi bù hàng mới">+ Đổi bù</button>
+                        <button type="button" class="ncc-tag-btn" data-index="${idx}" data-text="Lựa dùng & trả hàng lỗi">+ Lựa dùng</button>
+                        <button type="button" class="ncc-tag-btn" data-index="${idx}" data-text="PKD & NCC xác nhận cho dùng">+ Cho dùng</button>
+                    </div>
+                    <span class="ncc-save-status"><i class="fa-solid fa-check"></i> Đã lưu</span>
+                </div>
+            </div>
+        `;
+
+        if (showEditorImmediately) {
+            return editorHtml;
+        }
+
+        return `
+            <button type="button" class="ncc-optional-btn" title="Thêm phản hồi của NCC cho lô hàng này">
+                <i class="fa-regular fa-comment-dots"></i> + Ghi chú NCC
+            </button>
+            ${editorHtml}
+        `;
     }
 
     function renderTableView(reports, container) {
@@ -1892,6 +2352,8 @@
                 ? '<span class="badge diff" title="Có phát sinh thừa hoặc thiếu số lượng"><i class="fa-solid fa-scale-unbalanced"></i> LỆCH SL</span>'
                 : '';
 
+            const nccCellHtml = buildNccCellContent(report, idx, isFail, hasDiff);
+
             rowsHtml += `
                 <tr class="${isFail ? 'row-fail' : ''}">
                     <td><strong>#${idx + 1}</strong></td>
@@ -1902,6 +2364,7 @@
                     <td style="text-align:center;"><b>${itemCount}</b> mục</td>
                     <td>${escapeHtml(info.inspector || '---')}</td>
                     <td>${statusBadge}${diffBadge}</td>
+                    <td class="ncc-reply-cell">${nccCellHtml}</td>
                     <td style="text-align:right;">
                         <button type="button" class="btn btn-detail" data-index="${idx}">
                             <i class="fa-regular fa-eye"></i> Chi tiết
@@ -1924,6 +2387,7 @@
                             <th style="text-align:center;">Số mục PL</th>
                             <th>Người kiểm</th>
                             <th>Kết quả QC</th>
+                            <th>Kết quả NCC trả lời</th>
                             <th style="text-align:right;">Thao tác</th>
                         </tr>
                     </thead>
@@ -1943,6 +2407,7 @@
             const hasDiff = checkDiff(report);
             const itemCount = (report.items || []).length;
             const dateStr = getDisplayDate(info);
+            const currentReply = getNccReply(report);
 
             const statusBadge = isFail
                 ? '<span class="badge fail"><i class="fa-solid fa-xmark"></i> KHÔNG ĐẠT</span>'
@@ -1951,6 +2416,20 @@
             const diffBadge = hasDiff
                 ? '<span class="badge diff"><i class="fa-solid fa-scale-unbalanced"></i> LỆCH SL</span>'
                 : '';
+
+            const showNccBox = isFail || hasDiff || currentReply.trim().length > 0;
+            const nccCardSection = showNccBox ? `
+                <div class="card-ncc-section ${isFail ? '' : 'pass-note'} ncc-reply-cell">
+                    <div class="card-ncc-label">
+                        <span><i class="fa-solid fa-reply"></i> Kết quả NCC trả lời:</span>
+                    </div>
+                    ${buildNccCellContent(report, idx, true, hasDiff)}
+                </div>
+            ` : `
+                <div class="ncc-reply-cell" style="margin-top: 8px;">
+                    ${buildNccCellContent(report, idx, false, false)}
+                </div>
+            `;
 
             const card = document.createElement('div');
             card.className = `report-card ${isFail ? 'fail' : ''}`;
@@ -1969,6 +2448,7 @@
                         <div><span>Người kiểm</span><strong>${escapeHtml(info.inspector || '---')}</strong></div>
                         <div><span>Số danh mục</span><strong>${itemCount} phụ liệu</strong></div>
                     </div>
+                    ${nccCardSection}
                 </div>
                 <div class="card-footer">
                     <span class="card-index-label">Biên bản #${idx + 1}</span>
@@ -2244,7 +2724,8 @@
 
         const baseFiltered = allReports.filter(r => {
             const info = r.generalInfo || {};
-            const textMatch = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''}`
+            const nccReplyText = getNccReply(r);
+            const textMatch = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''} ${nccReplyText}`
                 .toLowerCase()
                 .includes(keyword);
 
