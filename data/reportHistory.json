@@ -2,6 +2,48 @@
   {
     "generalInfo": {
       "supplier": "DCL",
+      "po": "R49372A3876",
+      "style": "111415-SS27",
+      "date": "2026-11-13T08:18:16.566Z",
+      "ngayNhap": "2026-11-13",
+      "ngayKiem": "2026-11-16",
+      "inspector": "Ngô Thị Lý",
+      "daDuyet": true,
+      "nguoiDuyet": "Lê Đức Văn",
+      "ngayDuyet": "2026-11-16"
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "111415-SS27",
+        "po": "R49372A3876",
+        "loai": "Dây luồn 10mm",
+        "mau": "N07A BLACK",
+        "tsSize": "10MM",
+        "donVi": "M",
+        "slNhap": "26400.0",
+        "ngay": "10/11/26",
+        "ngayNhap": "2026-11-13",
+        "ngayKiem": "2026-11-16",
+        "aqlSampleSize": "2640",
+        "acceptedAql": "2640",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1652
+  },
+  {
+    "generalInfo": {
+      "supplier": "DCL",
       "po": "R49372A3872",
       "style": "323831-SS27",
       "date": "2026-11-13T08:17:53.671Z",
