@@ -1262,7 +1262,7 @@
                     <!-- Ô tìm kiếm từ khóa -->
                     <div class="search-wrapper">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="searchInput" placeholder="Mã hàng, Số PO, Khách hàng">
+                        <input type="text" id="searchInput" placeholder="Mã hàng, PO, Khách hàng, Tên vật tư, Màu, Quy cách...">
                     </div>
 
                     <!-- Bộ lọc Khách hàng (đồng bộ với Biểu đồ 1) -->
@@ -2226,8 +2226,22 @@
         filterData();
     }
 
+    // Chuẩn hóa chuỗi: chuyển về chữ thường và bỏ dấu tiếng Việt (hỗ trợ cả đ/Đ)
+    function normalizeSearchText(str) {
+        if (!str) return '';
+        return String(str)
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd')
+            .replace(/Đ/g, 'D')
+            .toLowerCase()
+            .trim();
+    }
+
     function filterData() {
-        const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+        const rawKeyword = document.getElementById('searchInput').value;
+        const searchTokens = normalizeSearchText(rawKeyword).split(/\s+/).filter(Boolean);
+
         const selectedBuyer = document.getElementById('buyerFilter').value;
         const fromDateVal = document.getElementById('fromDate').value;
         const toDateVal = document.getElementById('toDate').value;
@@ -2244,9 +2258,17 @@
 
         const baseFiltered = allReports.filter(r => {
             const info = r.generalInfo || {};
-            const textMatch = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''}`
-                .toLowerCase()
-                .includes(keyword);
+
+            // Gom thông tin chung của biên bản
+            const generalText = `${info.supplier || ''} ${info.style || ''} ${info.po || ''} ${info.inspector || ''}`;
+
+            // Gom toàn bộ tên vật tư (loai), màu (mau), quy cách (tsSize) và ghi chú (remark)
+            const itemsText = (r.items || [])
+                .map(item => `${item.loai || ''} ${item.mau || ''} ${item.tsSize || ''} ${item.remark || ''}`)
+                .join(' ');
+
+            const normalizedFullText = normalizeSearchText(`${generalText} ${itemsText}`);
+            const textMatch = searchTokens.length === 0 || searchTokens.every(token => normalizedFullText.includes(token));
 
             let dateMatch = true;
             if (fromDateVal || toDateVal) {
