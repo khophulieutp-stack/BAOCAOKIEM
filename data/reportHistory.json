@@ -2,6 +2,48 @@
   {
     "generalInfo": {
       "supplier": "FAM",
+      "po": "KGN 12.11",
+      "style": "GP016570",
+      "date": "2026-11-16T02:47:59.922Z",
+      "ngayNhap": "2026-11-12",
+      "ngayKiem": "2026-11-14",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": true,
+      "nguoiDuyet": "Lê Đức Văn",
+      "ngayDuyet": "2026-11-14"
+    },
+    "items": [
+      {
+        "khach": "FAM",
+        "maHang": "GP016570",
+        "po": "KGN 12.11",
+        "loai": "BAO PE",
+        "mau": "-",
+        "tsSize": "13X11.5+2",
+        "donVi": "PCS",
+        "slNhap": "13800.0",
+        "ngay": null,
+        "ngayNhap": "2026-11-12",
+        "ngayKiem": "2026-11-14",
+        "aqlSampleSize": "125",
+        "acceptedAql": "125",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1686
+  },
+  {
+    "generalInfo": {
+      "supplier": "FAM",
       "po": "TQT 9.11",
       "style": "GP016570",
       "date": "2026-11-16T02:47:24.194Z",
