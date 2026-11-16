@@ -1,6 +1,48 @@
 [
   {
     "generalInfo": {
+      "supplier": "FAM",
+      "po": "TQT 9.11",
+      "style": "GP016570",
+      "date": "2026-11-16T02:47:24.194Z",
+      "ngayNhap": "2026-11-09",
+      "ngayKiem": "2026-11-10",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": true,
+      "nguoiDuyet": "Lê Đức Văn",
+      "ngayDuyet": "2026-11-10"
+    },
+    "items": [
+      {
+        "khach": "FAM",
+        "maHang": "GP016570",
+        "po": "TQT 9.11",
+        "loai": "Đầu típ",
+        "mau": "GUN METAL",
+        "tsSize": "",
+        "donVi": "PCS",
+        "slNhap": "50000.0",
+        "ngay": null,
+        "ngayNhap": "2026-11-09",
+        "ngayKiem": "2026-11-10",
+        "aqlSampleSize": "200",
+        "acceptedAql": "200",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1685
+  },
+  {
+    "generalInfo": {
       "supplier": "DCL",
       "po": "R49372A3745",
       "style": "341410-SS27",
