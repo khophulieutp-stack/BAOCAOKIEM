@@ -2,6 +2,48 @@
   {
     "generalInfo": {
       "supplier": "DCL",
+      "po": "R49372A3975",
+      "style": "323831-SS27",
+      "date": "2026-11-18T03:50:28.030Z",
+      "ngayNhap": "2026-11-09",
+      "ngayKiem": "2026-11-10",
+      "inspector": "Ngô Thị Lý",
+      "daDuyet": true,
+      "nguoiDuyet": "Lê Đức Văn",
+      "ngayDuyet": "2026-11-10"
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "323831-SS27",
+        "po": "R49372A3975",
+        "loai": "CARE SIZE LABEL",
+        "mau": "",
+        "tsSize": "14-15Y",
+        "donVi": "SET",
+        "slNhap": "283.0",
+        "ngay": "09/11",
+        "ngayNhap": "2026-11-09",
+        "ngayKiem": "2026-11-10",
+        "aqlSampleSize": "20",
+        "acceptedAql": "20",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1700
+  },
+  {
+    "generalInfo": {
+      "supplier": "DCL",
       "po": "R49372A3909",
       "style": "308642-SS27",
       "date": "2026-11-18T03:49:49.591Z",
