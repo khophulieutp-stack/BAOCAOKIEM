@@ -2,6 +2,48 @@
   {
     "generalInfo": {
       "supplier": "DCL",
+      "po": "R4937A3919",
+      "style": "339725-SS27",
+      "date": "2026-11-18T03:51:27.758Z",
+      "ngayNhap": "2026-11-11",
+      "ngayKiem": "2026-11-13",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": true,
+      "nguoiDuyet": "Lê Đức Văn",
+      "ngayDuyet": "2026-11-13"
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "339725-SS27",
+        "po": "R4937A3919",
+        "loai": "CHỈ A08D",
+        "mau": "BLUE",
+        "tsSize": "UNISPUN TEX 27 (40/2)",
+        "donVi": "CUỘN",
+        "slNhap": "37.0",
+        "ngay": "11/11",
+        "ngayNhap": "2026-11-11",
+        "ngayKiem": "2026-11-13",
+        "aqlSampleSize": "5",
+        "acceptedAql": "5",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1701
+  },
+  {
+    "generalInfo": {
+      "supplier": "DCL",
       "po": "R49372A3975",
       "style": "323831-SS27",
       "date": "2026-11-18T03:50:28.030Z",
