@@ -56687,48 +56687,6 @@
   {
     "generalInfo": {
       "supplier": "DCL",
-      "po": "R49372A3016",
-      "style": "306243-AW26",
-      "date": "2026-06-15T02:03:59.687Z",
-      "ngayNhap": "2026-04-16",
-      "ngayKiem": "2026-04-20",
-      "inspector": "Ngô Thị Lý",
-      "daDuyet": false,
-      "nguoiDuyet": "",
-      "ngayDuyet": ""
-    },
-    "items": [
-      {
-        "khach": "DCL",
-        "maHang": "306243-AW26",
-        "po": "R49372A3016",
-        "loai": "LOGOTYPE QUECHU",
-        "mau": "5232574 - MC006",
-        "tsSize": "",
-        "donVi": "PCS",
-        "slNhap": "7799.0",
-        "ngay": "16/04",
-        "ngayNhap": "2026-04-16",
-        "ngayKiem": "2026-04-20",
-        "aqlSampleSize": "80",
-        "acceptedAql": "0",
-        "defectAql": "80",
-        "resultAql": "FAIL",
-        "qtyExceed": "0",
-        "qtyShort": "0",
-        "metalSampleSize": "",
-        "acceptedMetal": "",
-        "defectMetal": "",
-        "resultMetal": "",
-        "resultSample": "",
-        "remark": "Nhãn khác màu"
-      }
-    ],
-    "id": 1002
-  },
-  {
-    "generalInfo": {
-      "supplier": "DCL",
       "po": "260402",
       "style": "338453-AW26",
       "date": "2026-06-11T10:01:46.984Z",
@@ -63378,48 +63336,6 @@
       }
     ],
     "id": 939
-  },
-  {
-    "generalInfo": {
-      "supplier": "DCL",
-      "po": "R49372A3099-1",
-      "style": "352954-AW26",
-      "date": "2026-06-10T03:24:34.699Z",
-      "ngayNhap": "2026-06-05",
-      "ngayKiem": "2026-06-08",
-      "inspector": "Nguyễn Văn Đông",
-      "daDuyet": true,
-      "nguoiDuyet": "Lê Đức Văn",
-      "ngayDuyet": "2026-06-10T03:24:45.937Z"
-    },
-    "items": [
-      {
-        "khach": "DCL",
-        "maHang": "352954-AW26",
-        "po": "R49372A3099-1",
-        "loai": "THUN VIỀN 16M",
-        "mau": "5307505 - G21A",
-        "tsSize": "16MM",
-        "donVi": "M",
-        "slNhap": "1857.0",
-        "ngay": "05/06",
-        "ngayNhap": "2026-06-05",
-        "ngayKiem": "2026-06-08",
-        "aqlSampleSize": "186",
-        "acceptedAql": "0",
-        "defectAql": "186",
-        "resultAql": "FAIL",
-        "qtyExceed": "0",
-        "qtyShort": "0",
-        "metalSampleSize": "",
-        "acceptedMetal": "",
-        "defectMetal": "",
-        "resultMetal": "",
-        "resultSample": "",
-        "remark": "KHÁC MÀU MẪU"
-      }
-    ],
-    "id": 938
   },
   {
     "generalInfo": {
