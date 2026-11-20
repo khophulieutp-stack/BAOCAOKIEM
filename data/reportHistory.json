@@ -28269,48 +28269,6 @@
   {
     "generalInfo": {
       "supplier": "DCL",
-      "po": "R49372A3624-1",
-      "style": "339725-SS27",
-      "date": "2026-10-15T07:37:00.833Z",
-      "ngayNhap": "2026-10-14",
-      "ngayKiem": "2026-10-14",
-      "inspector": "Nguyễn Văn Đông",
-      "daDuyet": true,
-      "nguoiDuyet": "Lê Đức Văn",
-      "ngayDuyet": "2026-10-15T07:37:13.482Z"
-    },
-    "items": [
-      {
-        "khach": "DCL",
-        "maHang": "339725-SS27",
-        "po": "R49372A3624-1",
-        "loai": "Thun viền 16mm",
-        "mau": "N06B GREY",
-        "tsSize": "16MM",
-        "donVi": "M",
-        "slNhap": "4676.0",
-        "ngay": null,
-        "ngayNhap": "2026-10-14",
-        "ngayKiem": "2026-10-14",
-        "aqlSampleSize": "468",
-        "acceptedAql": "0",
-        "defectAql": "468",
-        "resultAql": "FAIL",
-        "qtyExceed": "0",
-        "qtyShort": "0",
-        "metalSampleSize": "",
-        "acceptedMetal": "",
-        "defectMetal": "",
-        "resultMetal": "",
-        "resultSample": "",
-        "remark": "khác màu so mẫu"
-      }
-    ],
-    "id": 1443
-  },
-  {
-    "generalInfo": {
-      "supplier": "DCL",
       "po": "R49372A3781",
       "style": "341279-SS27",
       "date": "2026-10-13T08:29:30.677Z",
@@ -50313,90 +50271,6 @@
       }
     ],
     "id": 1075
-  },
-  {
-    "generalInfo": {
-      "supplier": "DCL",
-      "po": "R49372A3354",
-      "style": "341410-SS26",
-      "date": "2026-07-20T10:19:41.821Z",
-      "ngayNhap": "2026-07-13",
-      "ngayKiem": "2026-07-18",
-      "inspector": "Nguyễn Văn Đông",
-      "daDuyet": false,
-      "nguoiDuyet": "",
-      "ngayDuyet": ""
-    },
-    "items": [
-      {
-        "khach": "DCL",
-        "maHang": "341410-SS26",
-        "po": "R49372A3354",
-        "loai": "PULLER",
-        "mau": "4221037 - DKT-K",
-        "tsSize": "55MM",
-        "donVi": "PCS",
-        "slNhap": "3202.0",
-        "ngay": "13/07",
-        "ngayNhap": "2026-07-13",
-        "ngayKiem": "2026-07-18",
-        "aqlSampleSize": "80",
-        "acceptedAql": "0",
-        "defectAql": "80",
-        "resultAql": "FAIL",
-        "qtyExceed": "0",
-        "qtyShort": "0",
-        "metalSampleSize": "",
-        "acceptedMetal": "",
-        "defectMetal": "",
-        "resultMetal": "",
-        "resultSample": "",
-        "remark": "KHÁC MÀU"
-      }
-    ],
-    "id": 1074
-  },
-  {
-    "generalInfo": {
-      "supplier": "DCL",
-      "po": "R49372A387",
-      "style": "339725-SS26",
-      "date": "2026-07-20T10:12:20.062Z",
-      "ngayNhap": "2026-07-18",
-      "ngayKiem": "2026-07-22",
-      "inspector": "Nguyễn Văn Đông",
-      "daDuyet": false,
-      "nguoiDuyet": "",
-      "ngayDuyet": ""
-    },
-    "items": [
-      {
-        "khach": "DCL",
-        "maHang": "339725-SS26",
-        "po": "R49372A387",
-        "loai": "THUN 40MM",
-        "mau": "N07A BLACK",
-        "tsSize": "40MM",
-        "donVi": "M",
-        "slNhap": "835.0",
-        "ngay": "18/07",
-        "ngayNhap": "2026-07-18",
-        "ngayKiem": "2026-07-22",
-        "aqlSampleSize": "84",
-        "acceptedAql": "0",
-        "defectAql": "84",
-        "resultAql": "FAIL",
-        "qtyExceed": "0",
-        "qtyShort": "0",
-        "metalSampleSize": "",
-        "acceptedMetal": "",
-        "defectMetal": "",
-        "resultMetal": "",
-        "resultSample": "",
-        "remark": "KHÁC MÀU"
-      }
-    ],
-    "id": 1073
   },
   {
     "generalInfo": {
