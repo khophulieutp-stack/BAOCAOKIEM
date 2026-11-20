@@ -4,6 +4,48 @@
       "supplier": "HM",
       "po": "173K",
       "style": "WIN",
+      "date": "2026-11-20T05:30:20.622Z",
+      "ngayNhap": "2026-11-17",
+      "ngayKiem": "2026-11-18",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": true,
+      "nguoiDuyet": "Lê Đức Văn",
+      "ngayDuyet": "2026-11-18"
+    },
+    "items": [
+      {
+        "khach": "HM",
+        "maHang": "WIN",
+        "po": "173K",
+        "loai": "Hook - khuy quần",
+        "mau": "-",
+        "tsSize": "20L",
+        "donVi": "SET",
+        "slNhap": "59053.0",
+        "ngay": null,
+        "ngayNhap": "2026-11-17",
+        "ngayKiem": "2026-11-18",
+        "aqlSampleSize": "200",
+        "acceptedAql": "200",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1724
+  },
+  {
+    "generalInfo": {
+      "supplier": "HM",
+      "po": "173K",
+      "style": "WIN",
       "date": "2026-11-20T05:30:01.925Z",
       "ngayNhap": "2026-11-17",
       "ngayKiem": "2026-11-18",
