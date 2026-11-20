@@ -50275,73 +50275,6 @@
   {
     "generalInfo": {
       "supplier": "DCL",
-      "po": "R49372A3407",
-      "style": "328197-AW26",
-      "date": "2026-07-20T10:08:28.070Z",
-      "ngayNhap": "2026-07-16",
-      "ngayKiem": "2026-07-20",
-      "inspector": "Nguyễn Văn Đông",
-      "daDuyet": false,
-      "nguoiDuyet": "",
-      "ngayDuyet": ""
-    },
-    "items": [
-      {
-        "khach": "DCL",
-        "maHang": "328197-AW26",
-        "po": "R49372A3407",
-        "loai": "CAP SNAP A+B",
-        "mau": "BLACK",
-        "tsSize": "15MM",
-        "donVi": "SET",
-        "slNhap": "30000.0",
-        "ngay": "16/07",
-        "ngayNhap": "2026-07-16",
-        "ngayKiem": "2026-07-20",
-        "aqlSampleSize": "125",
-        "acceptedAql": "122",
-        "defectAql": "3",
-        "resultAql": "FAIL",
-        "qtyExceed": "0",
-        "qtyShort": "0",
-        "metalSampleSize": "",
-        "acceptedMetal": "",
-        "defectMetal": "",
-        "resultMetal": "",
-        "resultSample": "",
-        "remark": "MẶT B ÂM DUNG SAI"
-      },
-      {
-        "khach": "DCL",
-        "maHang": "328197-AW26",
-        "po": "R49372A3407",
-        "loai": "CAP SNAP C+D",
-        "mau": "BLACK",
-        "tsSize": "15MM",
-        "donVi": "SET",
-        "slNhap": "30000.0",
-        "ngay": "16/07",
-        "ngayNhap": "2026-07-16",
-        "ngayKiem": "2026-07-20",
-        "aqlSampleSize": "125",
-        "acceptedAql": "122",
-        "defectAql": "3",
-        "resultAql": "FAIL",
-        "qtyExceed": "0",
-        "qtyShort": "0",
-        "metalSampleSize": "",
-        "acceptedMetal": "",
-        "defectMetal": "",
-        "resultMetal": "",
-        "resultSample": "",
-        "remark": "MẶT B ÂM DUNG SAI"
-      }
-    ],
-    "id": 1071
-  },
-  {
-    "generalInfo": {
-      "supplier": "DCL",
       "po": "R49372A3354",
       "style": "341410-SS26",
       "date": "2026-07-20T10:05:18.742Z",
@@ -54526,48 +54459,6 @@
       }
     ],
     "id": 1028
-  },
-  {
-    "generalInfo": {
-      "supplier": "DCL",
-      "po": "R49372A3354",
-      "style": "341410-SS26",
-      "date": "2026-07-04T00:56:45.539Z",
-      "ngayNhap": "2026-06-29",
-      "ngayKiem": "2026-07-03",
-      "inspector": "Nguyễn Văn Đông",
-      "daDuyet": true,
-      "nguoiDuyet": "Lê Đức Văn",
-      "ngayDuyet": "2026-07-04T00:57:07.232Z"
-    },
-    "items": [
-      {
-        "khach": "DCL",
-        "maHang": "341410-SS26",
-        "po": "R49372A3354",
-        "loai": "PULLER",
-        "mau": "4221037 - DKT-K",
-        "tsSize": "55MM",
-        "donVi": "PCS",
-        "slNhap": "20000.0",
-        "ngay": "29/06",
-        "ngayNhap": "2026-06-29",
-        "ngayKiem": "2026-07-03",
-        "aqlSampleSize": "125",
-        "acceptedAql": "0",
-        "defectAql": "125",
-        "resultAql": "FAIL",
-        "qtyExceed": "0",
-        "qtyShort": "0",
-        "metalSampleSize": "",
-        "acceptedMetal": "",
-        "defectMetal": "",
-        "resultMetal": "",
-        "resultSample": "",
-        "remark": "Khác màu"
-      }
-    ],
-    "id": 1027
   },
   {
     "generalInfo": {
