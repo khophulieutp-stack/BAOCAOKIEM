@@ -50275,48 +50275,6 @@
   {
     "generalInfo": {
       "supplier": "DCL",
-      "po": "R49372A3461",
-      "style": "339725-SS26",
-      "date": "2026-07-20T10:10:45.037Z",
-      "ngayNhap": "2026-07-18",
-      "ngayKiem": "2026-07-20",
-      "inspector": "Nguyễn Văn Đông",
-      "daDuyet": false,
-      "nguoiDuyet": "",
-      "ngayDuyet": ""
-    },
-    "items": [
-      {
-        "khach": "DCL",
-        "maHang": "339725-SS26",
-        "po": "R49372A3461",
-        "loai": "THUN VIỀN 16M",
-        "mau": "N06B GREY",
-        "tsSize": "16MM",
-        "donVi": "M",
-        "slNhap": "3782.0",
-        "ngay": "18/07",
-        "ngayNhap": "2026-07-18",
-        "ngayKiem": "2026-07-20",
-        "aqlSampleSize": "378",
-        "acceptedAql": "0",
-        "defectAql": "387",
-        "resultAql": "FAIL",
-        "qtyExceed": "0",
-        "qtyShort": "0",
-        "metalSampleSize": "",
-        "acceptedMetal": "",
-        "defectMetal": "",
-        "resultMetal": "",
-        "resultSample": "",
-        "remark": "KHÁC MÀU"
-      }
-    ],
-    "id": 1072
-  },
-  {
-    "generalInfo": {
-      "supplier": "DCL",
       "po": "R49372A3407",
       "style": "328197-AW26",
       "date": "2026-07-20T10:08:28.070Z",
