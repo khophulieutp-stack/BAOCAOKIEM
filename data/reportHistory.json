@@ -27693,48 +27693,6 @@
       "supplier": "FAM",
       "po": "1K TCT",
       "style": "GP016570",
-      "date": "2026-10-16T05:31:55.402Z",
-      "ngayNhap": "2026-10-15",
-      "ngayKiem": "2026-10-16",
-      "inspector": "Ngô Thị Lý",
-      "daDuyet": false,
-      "nguoiDuyet": "",
-      "ngayDuyet": ""
-    },
-    "items": [
-      {
-        "khach": "FAM",
-        "maHang": "GP016570",
-        "po": "1K TCT",
-        "loai": "Nhãn care",
-        "mau": "WHITE",
-        "tsSize": "COSTCO ORDER",
-        "donVi": "PCS",
-        "slNhap": "30000.0",
-        "ngay": null,
-        "ngayNhap": "2026-10-15",
-        "ngayKiem": "2026-10-16",
-        "aqlSampleSize": "125",
-        "acceptedAql": "122",
-        "defectAql": "3",
-        "resultAql": "FAIL",
-        "qtyExceed": "0",
-        "qtyShort": "0",
-        "metalSampleSize": "",
-        "acceptedMetal": "",
-        "defectMetal": "",
-        "resultMetal": "",
-        "resultSample": "",
-        "remark": ""
-      }
-    ],
-    "id": 1453
-  },
-  {
-    "generalInfo": {
-      "supplier": "FAM",
-      "po": "1K TCT",
-      "style": "GP016570",
       "date": "2026-10-16T05:30:52.345Z",
       "ngayNhap": "2026-10-15",
       "ngayKiem": "2026-10-19",
@@ -36934,48 +36892,6 @@
       }
     ],
     "id": 1385
-  },
-  {
-    "generalInfo": {
-      "supplier": "DCL",
-      "po": "R49372A3687",
-      "style": "341410-SS27",
-      "date": "2026-10-06T06:17:13.977Z",
-      "ngayNhap": "2026-09-23",
-      "ngayKiem": "2026-10-06",
-      "inspector": "Nguyễn Văn Đông",
-      "daDuyet": true,
-      "nguoiDuyet": "Lê Đức Văn",
-      "ngayDuyet": "2026-10-06T06:17:25.898Z"
-    },
-    "items": [
-      {
-        "khach": "DCL",
-        "maHang": "341410-SS27",
-        "po": "R49372A3687",
-        "loai": "NÚT 4TP",
-        "mau": "BLACK SILVER",
-        "tsSize": "19MM",
-        "donVi": "SET",
-        "slNhap": "80000.0",
-        "ngay": "23/09",
-        "ngayNhap": "2026-09-23",
-        "ngayKiem": "2026-10-06",
-        "aqlSampleSize": "200",
-        "acceptedAql": "165",
-        "defectAql": "35",
-        "resultAql": "FAIL",
-        "qtyExceed": "0",
-        "qtyShort": "0",
-        "metalSampleSize": "",
-        "acceptedMetal": "",
-        "defectMetal": "",
-        "resultMetal": "",
-        "resultSample": "",
-        "remark": "Kiểm 500pcs lỗi  76pcs- Mặt A sơn không đều khác mẫu"
-      }
-    ],
-    "id": 1384
   },
   {
     "generalInfo": {
