@@ -1,6 +1,48 @@
 [
   {
     "generalInfo": {
+      "supplier": "DCL",
+      "po": "R49372A3891",
+      "style": "111415-SS27",
+      "date": "2026-11-26T03:23:14.794Z",
+      "ngayNhap": "2026-11-26",
+      "ngayKiem": "2026-11-27",
+      "inspector": "Nguyễn Văn Đông",
+      "daDuyet": true,
+      "nguoiDuyet": "Lê Đức Văn",
+      "ngayDuyet": "2026-11-27"
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "111415-SS27",
+        "po": "R49372A3891",
+        "loai": "MÓC TREO DCB42",
+        "mau": "",
+        "tsSize": "",
+        "donVi": "PCS",
+        "slNhap": "23581.0",
+        "ngay": "25/11",
+        "ngayNhap": "2026-11-26",
+        "ngayKiem": "2026-11-27",
+        "aqlSampleSize": "125",
+        "acceptedAql": "125",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1766
+  },
+  {
+    "generalInfo": {
       "supplier": "FAM",
       "po": "KGN 21.11",
       "style": "GP016570",
