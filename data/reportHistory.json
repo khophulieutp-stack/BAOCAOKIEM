@@ -2,6 +2,48 @@
   {
     "generalInfo": {
       "supplier": "DCL",
+      "po": "R49372A3974",
+      "style": "323831-SS27",
+      "date": "2026-11-26T02:37:19.703Z",
+      "ngayNhap": "2026-11-20",
+      "ngayKiem": "2026-11-24",
+      "inspector": "Ngô Thị Lý",
+      "daDuyet": true,
+      "nguoiDuyet": "Lê Đức Văn",
+      "ngayDuyet": "2026-11-24"
+    },
+    "items": [
+      {
+        "khach": "DCL",
+        "maHang": "323831-SS27",
+        "po": "R49372A3974",
+        "loai": "LEAFLET ADEQUAT",
+        "mau": "",
+        "tsSize": "14-15Y",
+        "donVi": "PCS",
+        "slNhap": "281.0",
+        "ngay": "20/11",
+        "ngayNhap": "2026-11-20",
+        "ngayKiem": "2026-11-24",
+        "aqlSampleSize": "20",
+        "acceptedAql": "20",
+        "defectAql": "0",
+        "resultAql": "PASS",
+        "qtyExceed": "0",
+        "qtyShort": "0",
+        "metalSampleSize": "",
+        "acceptedMetal": "",
+        "defectMetal": "",
+        "resultMetal": "",
+        "resultSample": "",
+        "remark": ""
+      }
+    ],
+    "id": 1756
+  },
+  {
+    "generalInfo": {
+      "supplier": "DCL",
       "po": "R49372A3914",
       "style": "351265-SS27",
       "date": "2026-11-26T02:35:18.157Z",
